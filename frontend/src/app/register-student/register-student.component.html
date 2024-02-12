@@ -1,0 +1,120 @@
+
+  <!-- ======= Header ======= -->
+  <header id="header" class="fixed-top">
+    <div class="container d-flex align-items-center">
+
+      <h1 class="logo me-auto"><a href="">Najdraži nastavnik</a></h1>
+      <!-- Uncomment below if you prefer to use an image logo -->
+      <!-- <a href="index.html" class="logo me-auto"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>-->
+
+      <a href="login" class="get-started-btn">Uloguj se</a>
+      <a href="registerStudent" class="get-started-btn">Registruj se kao učenik</a>
+      <a href="courses.html" class="get-started-btn">Registruj se kao nastavnik</a>
+    </div>
+  </header><!-- End Header -->
+
+  <main id="main">
+    <h3>Registrujte se kao učenik</h3>
+    <section id="about" class="about">
+      <div class="container">
+        <h3>Registrujte se kao učenik</h3>
+        <div class="row">
+          <div class="col-lg-6 pt-4 pt-lg-0 order-2 order-lg-1 content">
+          <form #login="ngForm">
+            <br>
+            <div class="form-group">
+              <label for="exampleInputEmail1">Korisničko ime</label>
+              <input type="email" class="form-control" [(ngModel)]="username" id = "exampleInputEmail1" name="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Unesite korisničko ime">
+            </div>
+            <br>
+            <div class="form-group" style="margin-bottom: 15px;">
+              <label for="exampleInputPassword1">Lozinka</label>
+              <input type="password" class="form-control" [(ngModel)]="password" id = "exampleInputPassword1" name="exampleInputPassword1" placeholder="Unesite lozinku">
+            </div>
+            <div class="form-group" style="margin-bottom: 15px;">
+              <label for="bez1">Bezbednosno pitanje</label>
+              <input type="text" class="form-control" name="b1" id = "bez1" [(ngModel)]="safeQuestion" placeholder="Unesite bezbednosno pitanje">
+              <br>
+              <input type="text" class="form-control" name="b2" id = "b2" [(ngModel)]="safeResponse" placeholder="Unesite odgovor na pitanje">
+            </div>
+            <div class="form-group">
+              <label for="ime">Ime</label>
+              <input type="text" class="form-control" name="ime" id = "ime" [(ngModel)]="name" placeholder="Unesite ime">
+            </div>
+            <div class="form-group">
+              <label for="prez">Prezime</label>
+              <input type="text" class="form-control" name="prez" id = "prez" [(ngModel)]="lastName" placeholder="Unesite prezime">
+            </div>
+            <br>
+            <div>Pol</div>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" value="m" [(ngModel)]="gender">
+              <label class="form-check-label" for="flexRadioDefault1">
+                M
+              </label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked value="f" [(ngModel)]="gender">
+              <label class="form-check-label" for="flexRadioDefault2">
+                Ž
+              </label>
+            </div>
+            <br>
+            <div class="form-group">
+              <label for="adr">Adresa</label>
+              <input type="text" class="form-control" name="adr" id = "adr" placeholder="Unesite adresu" [(ngModel)]="adr">
+            </div>
+            <br>
+            <div class="form-group">
+              <label for="broj">Broj telefona</label>
+              <input type="text" class="form-control" name="broj" id = "broj" placeholder="Unesite broj telefona u obliku +381..." [(ngModel)]="phone">
+            </div>
+            <br>
+            <div class="form-group">
+              <label for="mejl">Mejl</label>
+              <input type="text" class="form-control" name="mejl" id = "mejl" placeholder="Unesite mejl" [(ngModel)]="email">
+            </div>
+            <br>
+            <div class="form-group">
+              <label for="tipS">Tip škole</label>
+              <br>
+              <select name="sel" name="ts" class="form-select" id = "tipS" [(ngModel)]="schoolType">
+                <option value="gimn">Gimnazija</option>
+                <option value="strucna">Srednja stručna</option>
+                <option value="osnovna">Osnovna škola</option>
+              </select>
+            </div>
+            <br>
+            <div class="form-group">
+              <label for="slika" class="form-label">Slika</label>
+              <input class="form-control" type="file" name="slika" id = "slika" (change)="onFileSelected($event)">
+            </div>
+            <br>
+            <div class="form-group">
+              <label for="razred">Razred</label>
+              <br>
+              <input type="number" class="form-control" name="razred" id="razred" placeholder="Unesite razred" [(ngModel)]="grade">
+            </div>
+            <br>
+          </form>
+          <button type="submit" class="btn get-started-btn" style="margin: 0;" [disabled]="!login.invalid" (click)="registerUser()">Potvrdi</button>
+        </div>
+        </div>
+        </div>
+    </section>
+    <div *ngIf="login.invalid" style="color: red;">
+      {{message}}
+    </div>
+  </main><!-- End #main -->
+
+  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+  <!-- Vendor JS Files -->
+  <script src="../../assets/vendor/purecounter/purecounter_vanilla.js"></script>
+  <script src="../../assets/vendor/aos/aos.js"></script>
+  <script src="../../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="../../assets/vendor/swiper/swiper-bundle.min.js"></script>
+  <script src="../../assets/vendor/php-email-form/validate.js"></script>
+
+  <!-- Template Main JS File -->
+  <script src="assets/js/main.js"></script>
