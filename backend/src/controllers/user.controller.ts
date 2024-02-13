@@ -1,99 +1,123 @@
 import express from 'express'
 import UserM from '../models/user'
+interface User {
+    ime: string;
+    prezime: string;
+    korIme: string;
+    lozinka: string;
+    pol: string;
+    adresa: string;
+    telefon: string;
+    mejl: string;
+    tip: string;
+    aktivan: boolean;
+    tipSkole: string;
+    trenutniRazred: number;
+    bezPitanje: { pitanje: string; odgovor: string };
+    slika: string;
+    nastavnikPitanja: { zeljeniPredmeti: any[]; zeljeniRazredi: any[]; izvor: string };
+    cv: string;
+  }
+  
+
+
+import crypto from 'crypto';
+
+function encryptPassword(password: string): string {
+    const secret = 'tajni_kljuc';
+    const hash = crypto.createHmac('sha256', secret)
+        .update(password)
+        .digest('hex');
+    return hash;
+}
+
 
 export class UserController{
     login = (req: express.Request, res: express.Response)=>{
         let usernameP = req.body.username;
         let passwordP = req.body.password;
-
-        /*
-            let query = UserM.findOne({username: usernameP, password: passwordP});
-
-            Mongoose queries are not promises. Queries are thenables. Code above is executed synchronously.
-
-            Unlike promises, calling a query's .then() executes the query and it gets called immediately, 
-            but execution is asynchronous and THEN CALLBACK is called after finish.
-
-            Then function returs Promise, but we are not returning promises to front, 
-            from then callback we are returning just data in response that is later inserted into Observable.
-        */
-
-        UserM.findOne({username: usernameP, 
-        password: passwordP}).then((user)=>{
+        console.log(encryptPassword(passwordP))
+        UserM.findOne({korIme: usernameP, lozinka: encryptPassword(passwordP)}).then((user)=>{
             res.json(user)
         }).catch((err)=>{
             console.log(err)
+        })
+    }
+
+    register = (req: express.Request, res: express.Response)=>{
+        const user: User = req.body.user;
+
+        // provera username
+        UserM.findOne({korIme:user.korIme}).then((user1)=>{
+            if(user1){
+                res.json({"msg":"exists", "code":"2"});
+                return;
+            }else{
+                UserM.findOne({mejl:user.mejl}).then((user2)=>{
+                    if(user2){
+                        res.json({"msg":"exists", "code":"3"});
+                    }else{
+                        let newStudent = new UserM();
+                        newStudent.ime = user.ime
+                        newStudent.prezime = user.prezime
+                        newStudent.korIme = user.korIme
+                        newStudent.lozinka = encryptPassword(user.lozinka)
+                        newStudent.pol = user.pol;
+                        newStudent.adresa = user.adresa;
+                        newStudent.telefon = user.telefon;
+                        newStudent.mejl = user.mejl
+                        newStudent.tip = user.tip
+                        newStudent.aktivan = user.aktivan
+                        newStudent.tipSkole = user.tipSkole
+                        newStudent.trenutniRazred = user.trenutniRazred
+                        newStudent.bezPitanje = user.bezPitanje
+                        newStudent.slika = user.slika
+                        newStudent.nastavnikPitanja = user.nastavnikPitanja
+                        newStudent.cv = user.cv
+
+                        newStudent.save().then((user)=>{
+                            res.json({"msg":"ok", "code":"0"});
+                        }).catch((err)=>{
+                            res.json({"msg":"error", "code":"1"});
+                        })
+                    }
+                }).catch((err)=>{
+                    res.json({"msg":"error", "code":"1"});
+                })
+            }
+        }).catch((err)=>{
+            res.json({"msg":"error", "code":"1"});
         })
 
         
     }
 
-    register = (req: express.Request, res: express.Response)=>{
-        let username = req.body.username;
-        let password = req.body.password;
-        let firstname = req.body.firstname;
-        let lastname = req.body.lastname;
-
-        let user = {
-            username: username,
-            password: password,
-            firstname: firstname,
-            lastname: lastname
-        }
-
-        new UserM(user).save().then(ok=>{
-            res.json({message: "ok"})
-        }).catch(err=>{
+    checkAnswer = (req: express.Request, res: express.Response)=>{
+        let usernameP = req.body.username;
+        let answer = req.body.answer;
+    
+        UserM.findOne({korIme: usernameP}).then((user)=>{
+            if(user){
+                if(user.bezPitanje?.odgovor == answer){
+                    res.json({"msg":"ok", "code":"0"});
+                }else{
+                    res.json({"msg":"error", "code":"1"});
+                }
+            }else{
+                res.json({"msg":"error", "code":"1"});
+            }
+        }).catch((err)=>{
             console.log(err)
         })
     }
 
-    addToFavourites= (req: express.Request, res: express.Response)=>{
-        let datee = new Date();
-        let dateStr = datee.getFullYear() + "-" + 
-        (datee.getMonth()+1) + "-" + datee.getDate();
-        let fav = {
-            name: req.body.name,
-            author: req.body.author,
-            date: dateStr
-        }
-        UserM.updateOne({username: req.body.user}, 
-            {$push: {favourites: fav}}).then(data=>{
-                res.json({message: "Ok"})
-            }).catch(err=>{
-                res.json({message: "Fail"})
-            })
-    }
-
-    getUserByUsername = (req: express.Request,
-        res: express.Response) =>{
-            let username = req.params.username;
-            UserM.findOne({username: username}).then(
-                user=>{
-                    res.json(user)
-                }
-            ).catch(err=>console.log(err))
-
-            /*UserM.findOne({_id: "658c42827618b2cf3e3edae6"}).then(
-                user=>{
-                    res.json(user)
-                }
-            ).catch(err=>console.log(err))*/
-        }
-
-    changeFavourite=(req: express.Request, res: express.Response)=>{
-        let user = req.body.user;
-        let bookname = req.body.bookname;
-
-        /*UserM.updateOne({username: user},
-        {$pull: {favourites: {name: bookname}}}).then(
-                ok=>res.json({message: "Ok"})
-        ).catch(err=>console.log(err))*/
-
-        UserM.updateOne({username: user}, 
-            {$set: {"favourites.$[f].name": "Changed name"}}, 
-            {arrayFilters: [{"f.name": bookname}]}).then(
-                ok=>res.json({message: "Ok"})
-        ).catch(err=>console.log(err))
+    changePassword = (req: express.Request, res: express.Response)=>{
+        let usernameP = req.body.username;
+        let passwordP = req.body.newPassword;
+        UserM.updateOne({korIme: usernameP},{lozinka: encryptPassword(passwordP)}).then((user)=>{
+            res.json({"msg":"ok", "code":"0"});
+        }).catch((err)=>{
+            res.json({"msg":"error", "code":"1"});
+        })
     }
 }

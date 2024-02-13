@@ -1,33 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
 
-<head>
-  <meta charset="utf-8">
-  <meta content="width=device-width, initial-scale=1.0" name="viewport">
-
-  <title>Mentor Bootstrap Template - Index</title>
-  <meta content="" name="description">
-  <meta content="" name="keywords">
-
-  <!-- Favicons -->
-  <link href="../../assets/img/favicon.png" rel="icon">
-  <link href="../../assets/img/apple-touch-icon.png" rel="apple-touch-icon">
-
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
-
-
-
-  <!-- =======================================================
-  * Template Name: Mentor
-  * Updated: Jan 29 2024 with Bootstrap v5.3.2
-  * Template URL: https://bootstrapmade.com/mentor-free-education-bootstrap-theme/
-  * Author: BootstrapMade.com
-  * License: https://bootstrapmade.com/license/
-  ======================================================== -->
-</head>
-
-<body>
 
   <!-- ======= Header ======= -->
   <header id="header" class="fixed-top">
@@ -37,9 +8,9 @@
       <!-- Uncomment below if you prefer to use an image logo -->
       <!-- <a href="index.html" class="logo me-auto"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>-->
 
-      <a routerLink="login" class="get-started-btn">Uloguj se</a>
+      <a href="login" class="get-started-btn">Uloguj se</a>
       <a href="registerStudent" class="get-started-btn">Registruj se kao učenik</a>
-      <a href="courses.html" class="get-started-btn">Registruj se kao nastavnik</a>
+      <a href="registerStudent" class="get-started-btn">Registruj se kao nastavnik</a>
     </div>
   </header><!-- End Header -->
 
@@ -50,24 +21,27 @@
         <h3>Ulogujte se</h3>
         <div class="row">
           <div class="col-lg-6 pt-4 pt-lg-0 order-2 order-lg-1 content">
-          <form>
+          <form #loginF="ngForm">
             <br>
             <div class="form-group">
               <label for="exampleInputEmail1">Korisničko ime</label>
-              <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Unesite korisničko ime">
+              <input type="email" class="form-control" id="exampleInputEmail1" name="exampleInputEmail1" aria-describedby="emailHelp" [(ngModel)]="username" placeholder="Unesite korisničko ime" required>
             </div>
             <br>
             <div class="form-group" style="margin-bottom: 15px;">
               <label for="exampleInputPassword1">Lozinka</label>
-              <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Unesite lozinku">
+              <input type="password" class="form-control" id="exampleInputPassword1" name="exampleInputPassword1" [(ngModel)]="password" placeholder="Unesite lozinku" required>
             </div>
-            <a href="secureQuestion.html">Zaboravil ste lozinku?</a>
+            <a href="forgotPassword">Zaboravili ste lozinku?</a>
             <br>
             <br>
-            <button type="submit" class="btn get-started-btn" style="margin: 0;">Potvrdi</button>
           </form>
+          <button type="submit" class="btn get-started-btn" style="margin: 0;" [disabled]="loginF.invalid" (click)="login()">Potvrdi</button>
         </div>
         </div>
+        </div>
+        <div style="margin-left: 80px; margin-top: 10px;color: crimson;">
+          {{message}}
         </div>
     </section>
   </main><!-- End #main -->
@@ -83,7 +57,3 @@
 
   <!-- Template Main JS File -->
   <script src="../../assets/js/main.js"></script>
-
-</body>
-
-</html>

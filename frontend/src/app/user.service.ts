@@ -8,18 +8,58 @@ import { Msg } from './models/msg';
 })
 export class UserService {
 
-  url:string = "http://localhost:4000/users";
+  url:string = "http://localhost:4000";
 
   constructor(private http:HttpClient) { }
 
-  registerStudent(us:User){
-    return this.http.post<Msg>(`${this.url}/registerStudent`, us);
+  register(us:User){
+    const data =
+    {
+      user: us
+    }
+    return this.http.post<Msg>(`${this.url}/users/register`, data);
   }
 
-  uploadPhoto(photo:any){
+  uploadPhoto(photo:any, user:string){
     const formData = new FormData();
-    formData.append('image', photo);
+    formData.append('file', photo);
+    formData.append('user', user);
 
-    return this.http.post<User>(`${this.url}/upload`, formData);
+    return this.http.post<any>(`${this.url}/uploadPhoto`, formData);
+  }
+
+  uploadCV(cv:any, user:string){
+    const formData = new FormData();
+    formData.append('file', cv);
+    formData.append('user', user);
+
+    return this.http.post<any>(`${this.url}/uploadCV`, formData);
+  }
+
+  login(username:string, pass:string){
+    const data = {
+      username:username,
+      password:pass
+    }
+
+    return this.http.post<User>(`${this.url}/users/login`, data);
+  }
+
+  checkAnswer(username:string, answer:string){
+    const data = {
+      username:username,
+      answer:answer
+    }
+
+    return this.http.post<Msg>(`${this.url}/users/checkAnswer`, data);
+  }
+
+  changePassword(username:string, newPass:string){
+    const data = {
+      username:username,
+      newPassword:newPass
+    }
+
+    return this.http.post<Msg>(`${this.url}/users/changePassword`, data);
   }
 }
