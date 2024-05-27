@@ -7,10 +7,8 @@ import { LoginComponent } from './login/login.component';
 import { StartingPageComponent } from './starting-page/starting-page.component';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-import { RegisterStudentComponent } from './register-student/register-student.component';
-import { RegisterTeacherComponent } from './register-teacher/register-teacher.component';
-import { StudentStartComponent } from './student-start/student-start.component';
-import { TeacherStartComponent } from './teacher-start/teacher-start.component';
+import { RegisterGuestComponent } from './register-guest/register-guest.component';
+import { GuestStartComponent } from './guest-start/guest-start.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 
 @NgModule({
@@ -18,10 +16,8 @@ import { ForgotPasswordComponent } from './forgot-password/forgot-password.compo
     AppComponent,
     LoginComponent,
     StartingPageComponent,
-    RegisterStudentComponent,
-    RegisterTeacherComponent,
-    StudentStartComponent,
-    TeacherStartComponent,
+    RegisterGuestComponent,
+    GuestStartComponent,
     ForgotPasswordComponent
   ],
   imports: [

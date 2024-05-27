@@ -14,20 +14,12 @@ let userSchema = new Schema(
     mejl:String,
     tip:String,
     aktivan:Boolean,
-    tipSkole: String,
-    trenutniRazred:Number,
     bezPitanje:
         {
             pitanje:String, odgovor:String
         },
     slika:String,
-    nastavnikPitanja:
-        {
-            zeljeniPredmeti: Array,
-            zeljeniRazredi: Array,
-            izvor:String
-        },
-    cv:String
+    brojKreditneKartice:String
   },
   {
     versionKey:false

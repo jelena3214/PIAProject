@@ -1,59 +1,35 @@
 
-
-  <!-- ======= Header ======= -->
-  <header id="header" class="fixed-top">
-    <div class="container d-flex align-items-center">
-
-      <h1 class="logo me-auto"><a routerLink="">Najdraži nastavnik</a></h1>
-      <!-- Uncomment below if you prefer to use an image logo -->
-      <!-- <a href="index.html" class="logo me-auto"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>-->
-
-      <a href="login" class="get-started-btn">Uloguj se</a>
-      <a href="registerStudent" class="get-started-btn">Registruj se kao učenik</a>
-      <a href="registerStudent" class="get-started-btn">Registruj se kao nastavnik</a>
-    </div>
-  </header><!-- End Header -->
-
-  <main id="main">
-    <h3>Ulogujte se</h3>
-    <section id="about" class="about">
-      <div class="container">
-        <h3>Ulogujte se</h3>
-        <div class="row">
-          <div class="col-lg-6 pt-4 pt-lg-0 order-2 order-lg-1 content">
-          <form #loginF="ngForm">
-            <br>
-            <div class="form-group">
-              <label for="exampleInputEmail1">Korisničko ime</label>
-              <input type="email" class="form-control" id="exampleInputEmail1" name="exampleInputEmail1" aria-describedby="emailHelp" [(ngModel)]="username" placeholder="Unesite korisničko ime" required>
-            </div>
-            <br>
-            <div class="form-group" style="margin-bottom: 15px;">
-              <label for="exampleInputPassword1">Lozinka</label>
-              <input type="password" class="form-control" id="exampleInputPassword1" name="exampleInputPassword1" [(ngModel)]="password" placeholder="Unesite lozinku" required>
-            </div>
-            <a href="forgotPassword">Zaboravili ste lozinku?</a>
-            <br>
-            <br>
-          </form>
-          <button type="submit" class="btn get-started-btn" style="margin: 0;" [disabled]="loginF.invalid" (click)="login()">Potvrdi</button>
+<main id="main">
+  <section id="about" class="about">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-6 pt-4 pt-lg-0 order-2 order-lg-1 content" style="margin-top: 30px;">
+          <h3>Ulogujte se</h3>
         </div>
-        </div>
-        </div>
-        <div style="margin-left: 80px; margin-top: 10px;color: crimson;">
-          {{message}}
-        </div>
-    </section>
-  </main><!-- End #main -->
-
-  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
-
-  <!-- Vendor JS Files -->
-  <script src="../../assets/vendor/purecounter/purecounter_vanilla.js"></script>
-  <script src="../../assets/vendor/aos/aos.js"></script>
-  <script src="../../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-  <script src="../../assets/vendor/swiper/swiper-bundle.min.js"></script>
-  <script src="../../assets/vendor/php-email-form/validate.js"></script>
-
-  <!-- Template Main JS File -->
-  <script src="../../assets/js/main.js"></script>
+      </div>
+      <div class="row">
+        <div class="col-lg-6 pt-4 pt-lg-0 order-2 order-lg-1 content">
+        <form #loginF="ngForm">
+          <br>
+          <div class="form-group">
+            <label for="exampleInputEmail1">Korisničko ime</label>
+            <input type="email" class="form-control" id="exampleInputEmail1" name="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Unesite korisničko ime" required [(ngModel)]="username">
+          </div>
+          <br>
+          <div class="form-group" style="margin-bottom: 15px;">
+            <label for="exampleInputPassword1">Lozinka</label>
+            <input type="password" class="form-control" id="exampleInputPassword1" name="exampleInputPassword1" placeholder="Unesite lozinku" required [(ngModel)]="password">
+          </div>
+          <a href="forgotPassword">Zaboravili ste lozinku?</a>
+          <br>
+          <br>
+        </form>
+        <button type="submit" class="btn get-started-btn" style="margin: 0;" [disabled]="loginF.invalid" (click)="login()">Potvrdi</button>
+      </div>
+      </div>
+      </div>
+      <div style="margin-left: 80px; margin-top: 10px;color: crimson;">
+        {{message}}
+      </div>
+  </section>
+</main><!-- End #main -->

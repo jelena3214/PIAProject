@@ -3,19 +3,24 @@ import cors from 'cors'
 import userRouter from './routers/user.router';
 import mongoose from 'mongoose'
 import UserM from './models/user'
+import guestRouter from './routers/guest.router';
 
 const app = express();
 app.use(cors())
 app.use(express.json())
 
-mongoose.connect('mongodb://127.0.0.1:27017/NajdraziNastavnik')
+mongoose.connect('mongodb://127.0.0.1:27017/KutakDobreHrane')
 const conn = mongoose.connection
 conn.once('open', ()=>{
     console.log("DB ok")
 })
 
 const router = express.Router()
-router.use('/users', userRouter)
+router.use('/user', userRouter)
+router.use('/guest', guestRouter)
+
+
+// Helpers for photo upload
 
 var multer = require("multer");
 const storage = multer.diskStorage({
@@ -36,24 +41,6 @@ router.post('/uploadPhoto',  upload.single('file'), (req, res) => {
     const user = req.body.user
 
     UserM.updateOne({ korIme: user }, { slika: path }).then((user1)=>{
-        UserM.findOne({korIme:user}).then((user2)=>{
-            res.json(user2);
-        }).catch((err)=>{
-            res.json(null);
-        })
-    }).catch((err)=>{
-        res.json(null);
-    })
-    console.log(filename)
-    console.log(user)
-});
-
-router.post('/uploadCV',  upload.single('file'), (req, res) => {
-    const filename = req.file?.filename;
-    const path = req.file?.path;
-    const user = req.body.user
-
-    UserM.updateOne({ korIme: user }, { cv: path }).then((user1)=>{
         UserM.findOne({korIme:user}).then((user2)=>{
             res.json(user2);
         }).catch((err)=>{
