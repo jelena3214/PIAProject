@@ -20,6 +20,36 @@ export class UserController{
             res.json(user)
         }).catch((err)=>{
             console.log(err)
+            res.json(null)
+        })
+    }
+
+    getSafeQA = (req: express.Request, res: express.Response)=>{
+        let usernameP = req.body.username;
+
+        UserM.findOne({korIme: usernameP}).then(
+            (user)=>{
+                if(user){
+                    res.json({"question": user.bezPitanje?.pitanje, "answer":user.bezPitanje?.odgovor})
+                }else{
+                    res.json(null)
+                }
+        }).catch((err)=>{
+            console.log(err)
+            res.json(null)
+        })
+    }
+
+    changePassword = (req: express.Request, res: express.Response)=>{
+        let usernameP = req.body.username;
+        let passwordP = req.body.password;
+
+        UserM.updateOne({korIme: usernameP}, {lozinka: encryptPassword(passwordP)}).then(
+            (user)=>{
+                res.json({"msg":"ok", "code":"0"})
+        }).catch((err)=>{
+            console.log(err);
+            res.json({"msg":"error", "code":"1"});
         })
     }
 }

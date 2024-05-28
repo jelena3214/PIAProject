@@ -10,6 +10,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { RegisterGuestComponent } from './register-guest/register-guest.component';
 import { GuestStartComponent } from './guest-start/guest-start.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
+import { ForgotPasswordSafeqaComponent } from './forgot-password-safeqa/forgot-password-safeqa.component';
+import { ForgotPasswordChangePassComponent } from './forgot-password-change-pass/forgot-password-change-pass.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +20,9 @@ import { ForgotPasswordComponent } from './forgot-password/forgot-password.compo
     StartingPageComponent,
     RegisterGuestComponent,
     GuestStartComponent,
-    ForgotPasswordComponent
+    ForgotPasswordComponent,
+    ForgotPasswordSafeqaComponent,
+    ForgotPasswordChangePassComponent
   ],
   imports: [
     BrowserModule,

@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { User } from '../models/user';
 import { Msg } from '../models/msg';
+import { SafeQA } from '../models/safeqa';
 
 @Injectable({
   providedIn: 'root'
@@ -35,5 +36,22 @@ export class UserService {
     }
 
     return this.http.post<User>(`${this.url}/user/login`, data);
+  }
+
+  getUsersSafeQA(username:string){
+    const data = {
+      username: username
+    }
+
+    return this.http.post<SafeQA>(`${this.url}/user/getSafeQA`, data);
+  }
+
+  changePassword(username:string, password:string){
+    const data = {
+      username: username,
+      password: password
+    }
+
+    return this.http.post<Msg>(`${this.url}/user/changePassword`, data);
   }
 }
