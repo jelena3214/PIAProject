@@ -13,14 +13,6 @@ export class UserService {
 
   constructor(private http:HttpClient) { }
 
-  registerGuest(us:User){
-    const data =
-    {
-      user: us
-    }
-    return this.http.post<Msg>(`${this.url}/guest/register`, data);
-  }
-
   uploadPhoto(photo:any, user:string){
     const formData = new FormData();
     formData.append('file', photo);

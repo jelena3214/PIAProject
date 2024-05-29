@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../services/user.service';
 import { HttpClient } from '@angular/common/http';
+import { Restaurant } from '../models/restaurant';
+import { GuestService } from '../services/guest.service';
+import { RestaurantService } from '../services/restaurant.service';
 
 @Component({
   selector: 'app-starting-page',
@@ -8,39 +11,90 @@ import { HttpClient } from '@angular/common/http';
   styleUrls: ['./starting-page.component.css']
 })
 export class StartingPageComponent {
-  // totalStudents: number = 0;
-  // totalActiveTeachers: number = 0;
-  // predmetiNastavnici: any[] = [];
+  numberOfRestaurants: number = 0;
+  numberOfGuests: number = 0;
+  restaurantInfo: Restaurant[] = [];
+  filteredRestaurants: Restaurant[] = [];
+  name:string = ""
+  address:string = ""
+  type:string = ""
 
-  // constructor(private http: HttpClient) { }
 
-  // ngOnInit(): void {
-  //   this.fetchGeneralInfo();
-  //   this.getSubjectsTeachersList();
-  // }
+  constructor(private http: HttpClient, private guestService:GuestService, private restaurantService:RestaurantService) { }
 
-  // getSubjectsTeachersList() {
-  //   this.http.get<any>('http://localhost:4000/users/subjectsTeachersList').subscribe(
-  //     (response) => {
-  //       this.predmetiNastavnici = response.predmeti;
-  //     },
-  //     (error) => {
-  //       console.log('Greška pri dobijanju liste predmeta sa nastavnicima:', error);
-  //     }
-  //   );
-  // }
+  ngOnInit(): void {
+    this.guestService.getNumberOfGuests().subscribe(
+      (number)=>{
+        if(number){
+          console.log(number)
+          this.numberOfGuests = number
+        }
+      }
+    )
 
-  // fetchGeneralInfo() {
-  //   this.http.get<any>('http://localhost:4000/users/generalInfo').subscribe(
-  //     data => {
-  //       this.totalStudents = data.totalStudents;
-  //       this.totalActiveTeachers = data.totalActiveTeachers;
-  //     },
-  //     error => {
-  //       console.error('Error fetching general info:', error);
-  //     }
-  //   );
-  // }
+    this.restaurantService.getNumberOfRestaurants().subscribe(
+      (number)=>{
+        if(number){
+          this.numberOfRestaurants = number
+        }
+      }
+    )
+
+    this.restaurantService.getAllRestaurants().subscribe(
+      (restaurants)=>{
+        if(restaurants){
+          this.restaurantInfo = restaurants
+          this.filteredRestaurants = restaurants
+        }
+      }
+    )
+  }
+
+  searchRestaurants() {
+    this.filteredRestaurants = this.restaurantInfo.filter(restaurant => {
+      const nazivLower = restaurant.Naziv.toLowerCase();
+      const adresaLower = restaurant.Adresa.toLowerCase();
+      const tipLower = restaurant.Tip.toLowerCase();
+      const searchNameLower = this.name.toLowerCase();
+      const searchAddressLower = this.address.toLowerCase();
+      const searchTypeLower = this.type.toLowerCase();
+
+      const isNameMatch = this.name.trim() === '' || nazivLower.includes(searchNameLower);
+      const isAddressMatch = this.address.trim() === '' || adresaLower.includes(searchAddressLower);
+      const isTypeMatch = this.type.trim() === '' || tipLower.includes(searchTypeLower);
+
+      return isNameMatch && isAddressMatch && isTypeMatch;
+    })
+  }
+
+  currentSortDirection: { [key: string]: string } = {
+    'Naziv': 'asc',
+    'Adresa': 'asc',
+    'Tip': 'asc'
+  };
+
+  sort(key: string): void {
+    this.currentSortDirection[key] = this.currentSortDirection[key] === 'asc' ? 'desc' : 'asc';
+
+    this.filteredRestaurants.sort((a, b) => {
+        let valA
+        let valB
+        if(key == "adresa"){
+          valA = a.Adresa.toLowerCase();
+          valB = b.Adresa.toLowerCase();
+        }else if(key == "naziv"){
+          valA = a.Naziv.toLowerCase();
+          valB = b.Naziv.toLowerCase();
+        }else{
+          valA = a.Tip.toLowerCase();
+          valB = b.Tip.toLowerCase();
+        }
+        if (valA < valB) return this.currentSortDirection[key] === 'asc' ? -1 : 1;
+        if (valA > valB) return this.currentSortDirection[key] === 'asc' ? 1 : -1;
+        return 0;
+    });
+  }
+
 
   // sortPredmet(){
   //   this.predmetiNastavnici.sort((a, b) => {

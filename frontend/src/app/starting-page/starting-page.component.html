@@ -14,61 +14,61 @@
     <div class="container">
 
       <div class="row">
-        <div class="col-lg-6 pt-4 pt-lg-0 order-2 order-lg-1 content">
-          <!-- <h3>Predmeti.</h3>
+        <div class="content">
+          <h3>Pretraži restoran. DODATI IME PREZIME I BROJ REZ</h3>
           <table>
             <thead>
               <tr>
-                <th>Predmet</th>
-                <th>Nastavnik</th>
+                <th>Naziv</th>
+                <th>Adresa</th>
+                <th>Tip</th>
+                <th>Konobari</th>
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let predmetNastavnik of predmetiNastavnici">
-                <td>{{ predmetNastavnik.predmet }}</td>
-                <td *ngFor="let nastavnik of predmetNastavnik.nastavnici">{{ nastavnik.ime }} {{nastavnik.prezime}}</td>
+              <tr *ngFor="let rest of filteredRestaurants">
+                <td>{{ rest.Naziv }}</td>
+                <td>{{ rest.Adresa }}</td>
+                <td>{{ rest.Tip }}</td>
+                <td>{{ rest.Konobari.join(', ') }}</td>
               </tr>
             </tbody>
           </table>
-          <button (click)="sortPredmet()">Sort predmet</button>
-          <button (click)="sortIme()">Sort ime</button>
-          <button (click)="sortPrezime()">Sort prezime</button>
-          <br>
-          ime:<input type="text" [(ngModel)]="ime">
-          <br>
-          prezime:<input type="text" [(ngModel)]="prezime">
-          <br>
-          predmet:<input type="text" [(ngModel)]="predmet">
-          <button (click)="pretraziNastavnike()">Pretrazi</button> -->
         </div>
       </div>
-
-    </div>
-  </section><!-- End About Section -->
-
-  <!-- ======= About Section ======= -->
-  <section id="about" class="about">
-    <div class="container">
-
-      <div class="row">
-        <div class="col-lg-6 order-1 order-lg-2">
-          <img src="../../assets/img/about.jpg" class="img-fluid" alt="">
+      <br>
+      <div class="row" style="margin-top: 20px;">
+        <div class="col-lg-2 col-6 text-center">
+          <div class="form-group" style="max-width: 300px;">
+            <label for="exampleInputEmail1">Naziv</label>
+            <input type="text" class="form-control" [(ngModel)]="name">
+          </div>
         </div>
-        <div class="col-lg-6 pt-4 pt-lg-0 order-2 order-lg-1 content">
-          <h3>Pretraži nastavnika.</h3>
-          <p class="fst-italic">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
-            magna aliqua.
-          </p>
-          <ul>
-            <li><i class="bi bi-check-circle"></i> Ullamco laboris nisi ut aliquip ex ea commodo consequat.</li>
-            <li><i class="bi bi-check-circle"></i> Duis aute irure dolor in reprehenderit in voluptate velit.</li>
-            <li><i class="bi bi-check-circle"></i> Ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate trideta storacalaperda mastiro dolore eu fugiat nulla pariatur.</li>
-          </ul>
-          <p>
-            Ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
-          </p>
-
+        <div class="col-lg-2 col-6 text-center">
+          <div class="form-group" style="max-width: 300px;">
+            <label for="exampleInputEmail1">Adresa</label>
+            <input type="text" class="form-control" [(ngModel)]="address">
+          </div>
+        </div>
+        <div class="col-lg-2 col-6 text-center">
+          <div class="form-group" style="max-width: 300px;">
+            <label for="exampleInputEmail1">Tip</label>
+            <input type="text" class="form-control" [(ngModel)]="type">
+          </div>
+        </div>
+        <div class="col-lg-2 col-6" style="margin-top: 20px;">
+          <button class="btn get-started-btn" (click)="searchRestaurants()">Pretraži</button>
+        </div>
+      </div>
+      <div class="row" style="margin-top: 30px;">
+        <div class="col-lg-4 ol-md-4 col-sm-12">
+          <button type="submit" class="btn get-started-btn" (click)="sort('naziv')">Sortiraj po nazivu</button>
+        </div>
+        <div class="col-lg-4 ol-md-4 col-sm-12">
+          <button type="submit" class="btn get-started-btn" (click)="sort('adresa')">Sortiraj po adresi</button>
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-12">
+          <button type="submit" class="btn get-started-btn" (click)="sort('tip')">Sortiraj po tipu</button>
         </div>
       </div>
 
@@ -77,31 +77,36 @@
 
   <!-- ======= Counts Section ======= -->
   <section id="counts" class="counts section-bg">
-    <div class="container">
+    <div class="container" style="margin-left: 120px;">
 
       <div class="row counters">
 
-        <!-- <div class="col-lg-3 col-6 text-center">
+        <div class="col-lg-2 col-md-2 col-sm-12 text-center">
           <span data-purecounter-start="0" data-purecounter-end="1232" data-purecounter-duration="1" class="purecounter"></span>
-          <p>Broj učenika</p>
-          <p>{{totalStudents}}</p>
+          <p>Broj restorana</p>
+          <p>{{numberOfRestaurants}}</p>
         </div>
 
-        <div class="col-lg-3 col-6 text-center">
+        <div class="col-lg-2 col-md-2 col-sm-12 text-center">
           <span data-purecounter-start="0" data-purecounter-end="64" data-purecounter-duration="1" class="purecounter"></span>
-          <p>Broj nastavnika</p>
-          <p>{{totalActiveTeachers}}</p>
+          <p>Broj registrovanih gostiju</p>
+          <p>{{numberOfGuests}}</p>
         </div>
 
-        <div class="col-lg-3 col-6 text-center">
+        <div class="col-lg-2 col-md-2 col-sm-12 text-center">
           <span data-purecounter-start="0" data-purecounter-end="42" data-purecounter-duration="1" class="purecounter"></span>
-          <p>Broj časova u prethodnih sedam dana</p>
+          <p>Broj rezervacija u prethodnih 24h</p>
         </div>
 
-        <div class="col-lg-3 col-6 text-center">
+        <div class="col-lg-2 col-md-2 col-sm-12 text-center">
+          <span data-purecounter-start="0" data-purecounter-end="42" data-purecounter-duration="1" class="purecounter"></span>
+          <p>Broj rezervacija u prethodnih sedam dana</p>
+        </div>
+
+        <div class="col-lg-2 col-md-2 col-sm-12 text-center">
           <span data-purecounter-start="0" data-purecounter-end="15" data-purecounter-duration="1" class="purecounter"></span>
-          <p>Broj časova u prethodnih mesec dana</p>
-        </div> -->
+          <p>Broj rezervacija u prethodnih mesec dana</p>
+        </div>
 
       </div>
 

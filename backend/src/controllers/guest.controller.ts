@@ -74,6 +74,17 @@ export class GuestController{
         
     }
 
+    getNumberOfGuests = (req: express.Request, res: express.Response)=>{
+        UserM.countDocuments({ tip: 'gost' })
+            .then(numberOfGuests => {
+                res.json(numberOfGuests);
+            })
+        .catch(err => {
+            console.error(err);
+            res.json(null);
+        });
+    }
+
     // checkAnswer = (req: express.Request, res: express.Response)=>{
     //     let usernameP = req.body.username;
     //     let answer = req.body.answer;

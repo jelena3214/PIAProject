@@ -8,4 +8,8 @@ guestRouter.route("/register").post(
     (req,res)=>new GuestController().register(req,res)
 )
 
+guestRouter.route("/getNumberOfGuests").get(
+    (req,res)=>new GuestController().getNumberOfGuests(req,res)
+)
+
 export default guestRouter;

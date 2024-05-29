@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { UserService } from '../services/user.service';
 import { User } from '../models/user';
+import { GuestService } from '../services/guest.service';
 
 @Component({
   selector: 'app-register-guest',
@@ -8,7 +9,7 @@ import { User } from '../models/user';
   styleUrls: ['./register-guest.component.css']
 })
 export class RegisterGuestComponent {
-  constructor(private userService:UserService){}
+  constructor(private userService:UserService, private guestService:GuestService){}
 
   username:string = ""
   password:string = ""
@@ -83,7 +84,7 @@ export class RegisterGuestComponent {
     const imagePath = 'upload/user.png';
     let newGuest = new User(this.name, this.lastName, this.username, this.password, this.gender, this.adr, this.phone, this.email, "gost", false, {pitanje:this.safeQuestion, odgovor:this.safeResponse}, imagePath, this.creditCard);
 
-    this.userService.registerGuest(newGuest).subscribe(
+    this.guestService.registerGuest(newGuest).subscribe(
       (msg)=>{
         this.message = msg.mess;
         if(msg.code == 1){

@@ -4,6 +4,7 @@ import userRouter from './routers/user.router';
 import mongoose from 'mongoose'
 import UserM from './models/user'
 import guestRouter from './routers/guest.router';
+import restaurantRouter from './routers/restaurant.router';
 
 const app = express();
 app.use(cors())
@@ -18,6 +19,7 @@ conn.once('open', ()=>{
 const router = express.Router()
 router.use('/user', userRouter)
 router.use('/guest', guestRouter)
+router.use('/restaurant', restaurantRouter)
 
 
 // Helpers for photo upload
