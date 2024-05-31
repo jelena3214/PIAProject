@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { UserService } from '../services/user.service';
 import { Router } from '@angular/router';
+import { AppComponent } from '../app.component';
 
 @Component({
   selector: 'app-login',
@@ -8,7 +9,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent {
-  constructor(private userService:UserService, private router:Router){}
+  constructor(private userService:UserService, private router:Router, private appComp:AppComponent){}
 
   username:string = ""
   password:string = ""
@@ -22,6 +23,7 @@ export class LoginComponent {
           return;
         }else if (user.aktivan){
           localStorage.setItem("user", JSON.stringify(user));
+          this.appComp.changeNavBar()
           if(user.tip == 'gost'){
             this.router.navigate(['guestStart']);
           }else{

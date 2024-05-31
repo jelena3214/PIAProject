@@ -3,9 +3,18 @@
 
     <h1 class="logo me-auto"><a routerLink="">Kutak dobre hrane</a></h1>
 
-    <a href="login" class="get-started-btn">Uloguj se</a>
-    <a href="registerGuest" class="get-started-btn">Registruj se kao gost</a>
-    <a href="" class="get-started-btn">Izloguj se</a>
+    <ng-container *ngIf="isGuest; else loggedOut">
+      <a href="" class="get-started-btn">Profil</a>
+      <a href="" class="get-started-btn">Restorani</a>
+      <a href="" class="get-started-btn">Rezervacije</a>
+      <a href="" class="get-started-btn">Dostava hrane</a>
+      <a href="" class="get-started-btn" (click)="logOut()">Izloguj se</a>
+    </ng-container>
+
+    <ng-template #loggedOut>
+      <a href="login" class="get-started-btn">Uloguj se</a>
+      <a href="registerGuest" class="get-started-btn">Registruj se kao gost</a>
+    </ng-template>
   </div>
 </header>
 
