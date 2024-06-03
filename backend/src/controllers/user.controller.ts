@@ -52,4 +52,50 @@ export class UserController{
             res.json({"msg":"error", "code":"1"});
         })
     }
+
+    updateUser = (req: express.Request, res: express.Response)=>{
+        const updatedUser = req.body;
+        UserM.updateOne({ _id: updatedUser._id }, { $set: updatedUser }).then(
+            (user)=>{
+                res.json({"msg":"ok", "code":"0"})
+        }).catch((err)=>{
+            console.log(err);
+            res.json({"msg":"error", "code":"1"});
+        })
+    }
+
+    checkIfUserWithEmailExists = (req: express.Request, res: express.Response)=>{
+        const email = req.params.email;
+
+        UserM.findOne({ mejl: email })
+          .then(user => {
+            if (user) {
+              res.json({ exists: true }); // Korisnik sa datim emailom postoji
+            } else {
+              res.json({ exists: false }); // Korisnik sa datim emailom ne postoji
+            }
+          })
+          .catch(err => {
+            console.error('Greška pri pronalaženju korisnika:', err);
+            res.status(500).json({ error: 'Greška pri pronalaženju korisnika' });
+        });
+    }
+
+    checkPassword = (req: express.Request, res: express.Response)=>{
+        let username = req.body.username;
+        let password = req.body.password;
+
+        UserM.findOne({ korIme: username })
+          .then(user => {
+            if (user) {
+              res.json({ correct: user.lozinka ==  encryptPassword(password)});
+            } else {
+              res.json({ correct: false });
+            }
+          })
+          .catch(err => {
+            console.error('Greška pri promeri lozinke:', err);
+            res.status(500).json({ error: 'Greška'});
+        });
+    }
 }

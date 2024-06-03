@@ -9,6 +9,7 @@ import restaurantRouter from './routers/restaurant.router';
 const app = express();
 app.use(cors())
 app.use(express.json())
+app.use(express.static('upload'));
 
 mongoose.connect('mongodb://127.0.0.1:27017/KutakDobreHrane')
 const conn = mongoose.connection
@@ -37,12 +38,19 @@ const upload = multer({
     storage: storage
 })
 
+const fs = require('fs')
+const path = require('path')
+
 router.post('/uploadPhoto',  upload.single('file'), (req, res) => {
     const filename = req.file?.filename;
-    const path = req.file?.path;
     const user = req.body.user
+    
+    const newPath = user + "_" + filename; // Dodajemo korisničko ime korisnika u naziv slike
+    fs.renameSync(req.file?.path, path.join(req.file?.destination, newPath)); // Preimenujemo sliku na serveru
+    const imageUrl = newPath; // Novi naziv slike koji ćemo sačuvati u bazi ili koristiti za prikaz
+       
 
-    UserM.updateOne({ korIme: user }, { slika: path }).then((user1)=>{
+    UserM.updateOne({ korIme: user }, { slika: imageUrl }).then((user1)=>{
         UserM.findOne({korIme:user}).then((user2)=>{
             res.json(user2);
         }).catch((err)=>{

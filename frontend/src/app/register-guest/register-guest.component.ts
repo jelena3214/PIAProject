@@ -81,7 +81,7 @@ export class RegisterGuestComponent {
       }
     }
 
-    const imagePath = 'upload/user.png';
+    const imagePath = 'user.png';
     let newGuest = new User(this.name, this.lastName, this.username, this.password, this.gender, this.adr, this.phone, this.email, "gost", false, {pitanje:this.safeQuestion, odgovor:this.safeResponse}, imagePath, this.creditCard);
 
     this.guestService.registerGuest(newGuest).subscribe(

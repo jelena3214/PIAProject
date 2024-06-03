@@ -15,4 +15,16 @@ userRouter.route("/changePassword").post(
     (req,res)=>new UserController().changePassword(req,res)
 )
 
+userRouter.route("/updateUser").put(
+    (req,res)=>new UserController().updateUser(req,res)
+)
+
+userRouter.route("/checkEmail/:email").get(
+    (req,res)=>new UserController().checkIfUserWithEmailExists(req,res)
+)
+
+userRouter.route("/checkPassword").post(
+    (req,res)=>new UserController().checkPassword(req,res)
+)
+
 export default userRouter;

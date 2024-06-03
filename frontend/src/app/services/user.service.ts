@@ -46,4 +46,21 @@ export class UserService {
 
     return this.http.post<Msg>(`${this.url}/user/changePassword`, data);
   }
+
+  updateUser(user: User) {
+    return this.http.put<Msg>(`${this.url}/user/updateUser`, user);
+  }
+
+  checkIfUserWithEmailExists(email:string){
+    return this.http.get<any>(`${this.url}/user/checkEmail/${email}`);
+  }
+
+  checkPassword(username:string, password: string){
+    const data = {
+      username: username,
+      password: password
+    }
+
+    return this.http.post<any>(`${this.url}/user/checkPassword`, data);
+  }
 }
