@@ -1,0 +1,68 @@
+<main id="main">
+  <section id="about" class="about">
+    <div class="container" style="margin-top: 10px;">
+      <div class="row">
+        <div class="content">
+          <h3>Restorani</h3>
+          <table>
+            <thead>
+              <tr>
+                <th>Naziv</th>
+                <th>Adresa</th>
+                <th>Tip</th>
+                <th>Konobari</th>
+                <th>Prosečna ocena</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let rest of filteredRestaurants">
+                <td><a [routerLink]="['/restaurant', rest._id]">{{ rest.Naziv }}</a></td>
+                <td>{{ rest.Adresa }}</td>
+                <td>{{ rest.Tip }}</td>
+                <td>{{ rest.Konobari.join(', ') }}</td>
+                <td>
+                  <div class="rating">
+                    <span>{{ rest.ProsecnaOcena }}</span> <!-- Numerička vrednost ocene -->
+                    <span class="stars">
+                      <ng-container *ngFor="let _ of fullStars(rest.ProsecnaOcena)">
+                        <i class="fa fa-star"></i>
+                      </ng-container>
+                      <i *ngIf="hasHalfStar(rest.ProsecnaOcena)" class="fa fa-star-half-o"></i>
+                      <ng-container *ngFor="let _ of emptyStars(rest.ProsecnaOcena)">
+                        <i class="fa fa-star-o"></i>
+                      </ng-container>
+                    </span>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <br>
+      <div class="row" style="margin-top: 20px;">
+        <div class="col-lg-2 col-6 text-center">
+          <div class="form-group" style="max-width: 300px;">
+            <label for="exampleInputEmail1">Naziv</label>
+            <input type="text" class="form-control" [(ngModel)]="name">
+          </div>
+        </div>
+        <div class="col-lg-2 col-6 text-center">
+          <div class="form-group" style="max-width: 300px;">
+            <label for="exampleInputEmail1">Adresa</label>
+            <input type="text" class="form-control" [(ngModel)]="address">
+          </div>
+        </div>
+        <div class="col-lg-2 col-6 text-center">
+          <div class="form-group" style="max-width: 300px;">
+            <label for="exampleInputEmail1">Tip</label>
+            <input type="text" class="form-control" [(ngModel)]="type">
+          </div>
+        </div>
+        <div class="col-lg-2 col-6" style="margin-top: 20px;">
+          <button class="btn get-started-btn" (click)="searchRestaurants()">Pretraži</button>
+        </div>
+        </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>

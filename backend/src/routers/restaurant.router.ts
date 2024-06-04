@@ -11,4 +11,8 @@ restaurantRouter.route("/getAll").get(
     (req,res)=>new RestaurantController().getAll(req,res)
 )
 
+restaurantRouter.route('/:id').get(
+    (req,res)=>new RestaurantController().getById(req,res)
+)
+
 export default restaurantRouter;

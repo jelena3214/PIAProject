@@ -7,7 +7,9 @@ let restaurantSchema = new Schema(
     Naziv:String,
     Adresa:String,
     Tip:String,
-    Konobari:Array
+    Konobari:Array,
+    ProsecnaOcena:Number,
+    Telefon:String
   },
   {
     versionKey:false

@@ -1,0 +1,29 @@
+.comment-list {
+  margin: 20px 0;
+}
+
+.comment {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-bottom: 15px;
+}
+
+.comment-header {
+  background-color: #f0f0f0;
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+}
+
+.comment-header h3 {
+  margin: 0;
+}
+
+.comment-body {
+  padding: 10px;
+}
+
+#map {
+  height: 60vh;
+  width: 80vh;
+  margin: auto;
+}

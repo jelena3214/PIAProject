@@ -23,4 +23,15 @@ export class RestaurantController{
             res.json(null);
         });
     }
+
+    getById = (req: express.Request, res: express.Response)=>{
+        RestaurantM.findById(req.params.id)
+            .then(restaurant => {
+                res.json(restaurant);
+            })
+        .catch(err => {
+            console.error(err);
+            res.json(null);
+        });
+    }
 }

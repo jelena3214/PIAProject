@@ -1,0 +1,13 @@
+.rating {
+  display: flex;
+  align-items: center;
+}
+
+.stars {
+  margin-left: 10px;
+}
+
+.fa {
+  color: gold;
+  margin-right: 5px;
+}
