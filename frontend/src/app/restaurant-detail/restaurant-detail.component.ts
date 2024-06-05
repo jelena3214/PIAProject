@@ -4,6 +4,8 @@ import { RestaurantService } from '../services/restaurant.service';
 import { Restaurant } from '../models/restaurant';
 import * as L from 'leaflet';
 import { HttpClient } from '@angular/common/http';
+import { Reservation } from '../models/reservation';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 interface Comment {
   id: number;
@@ -18,19 +20,50 @@ interface Comment {
 })
 export class RestaurantDetailComponent implements OnInit {
   restaurant: Restaurant | undefined;
-
-  comments: Comment[] = [
-    { id: 1, author: 'John Doe', text: 'Lorem ipsum dolor sit amet.' },
-    { id: 2, author: 'Jane Smith', text: 'Consectetur adipiscing elit.' },
-    { id: 3, author: 'Alice Johnson', text: 'Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.' },
-    { id: 4, author: 'Bob Brown', text: 'Nullam id dolor id nibh ultricies vehicula ut id elit.' }
-  ];
+  reservations: Reservation[] = []
+  reservationForm: FormGroup
+  message:string = ""
 
   constructor(
     private route: ActivatedRoute,
     private restaurantService: RestaurantService,
-    private http: HttpClient
-  ) { }
+    private http: HttpClient,
+    private fb: FormBuilder
+  ) {
+    this.reservationForm = this.fb.group({
+      date: ['', [Validators.required, this.minDateValidator()]],
+      time: ['', [Validators.required, this.minTimeValidator()]],
+      numberOfPeople: ['', [Validators.required, Validators.min(1)]],
+      additionalRequests: ['']
+    });
+  }
+
+  minDateValidator() {
+    return (control: { value: string | number | Date; }) => {
+      const selectedDate = new Date(control.value);
+      const currentDate = new Date();
+      if (selectedDate < currentDate) {
+        return { 'invalidDate': true };
+      }
+      return null;
+    };
+  }
+
+  minTimeValidator() {
+    return (control: { value: any; }) => {
+      const selectedDate = this.reservationForm?.get('date')?.value;
+      if (!selectedDate) return null;
+
+      const selectedDateTime = new Date(`${selectedDate}T${control.value}`);
+      const currentDateTime = new Date();
+      if (selectedDateTime < currentDateTime) {
+        return { 'invalidTime': true };
+      }
+      return null;
+    };
+  }
+
+
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id')!;
@@ -39,6 +72,11 @@ export class RestaurantDetailComponent implements OnInit {
       console.log(this.restaurant?.Adresa)
       this.initMap(this.restaurant?.Adresa || "");
     });
+    this.restaurantService.getRestaurantReservationsById(id).subscribe(
+      (reservations)=>{
+        this.reservations = reservations
+      }
+    )
   }
 
   //https://www.here.com/docs/bundle/getting-here-credentials/page/README.html nekasifra1
@@ -68,5 +106,52 @@ export class RestaurantDetailComponent implements OnInit {
     }, (error) => {
       console.error('Greška prilikom dobijanja koordinata:', error);
     });
+  }
+
+  submitReservation(): void {
+    if (this.reservationForm.valid) {
+      const reservation = this.reservationForm.value;
+      const reservationDateTime = new Date(`${reservation.date}T${reservation.time}`);
+      const dayOfWeek = reservationDateTime.getDay();
+      const dayOfWeekNumber = dayOfWeek === 0 ? 7 : dayOfWeek;
+
+      if (this.restaurant && this.restaurant.RadniDani[dayOfWeekNumber]) {
+        const workingHours = this.restaurant.RadniDani[dayOfWeekNumber];
+        const reservationTime = reservation.time;
+
+        if (reservationTime >= workingHours.od && reservationTime <= workingHours.do) {
+          const availableTables = this.restaurant.Stolovi.filter(table => table.maksimalanBrojLjudi >= reservation.numberOfPeople);
+          if (availableTables.length > 0) {
+            const newReservation: Reservation = {
+              korIme: JSON.parse(localStorage.getItem("user") || "").korIme,
+              restoranId: this.restaurant._id,
+              uToku: true,
+              komentar: "",
+              ocena: 0,
+              datumVreme: reservationDateTime,
+              brojOsoba: reservation.numberOfPeople,
+              opis: reservation.additionalRequests
+            };
+            this.restaurantService.makeReservation(newReservation).subscribe(
+              (reservation)=>{
+                if(reservation){
+                  this.message = 'Vaša rezervacija je uspešna!';
+                }else{
+                  this.message = 'Greska pri rezervaciji.';
+                }
+              }
+            )
+          } else {
+            this.message = 'Nema slobodnih mesta za traženi broj ljudi i termin.';
+          }
+        } else {
+          this.message = 'Restoran ne radi u tom periodu.';
+        }
+      } else {
+        this.message = 'Restoran ne radi tog dana.';
+      }
+    } else {
+      this.message = 'Molimo Vas da popunite sta polja ispravno.';
+    }
   }
 }
