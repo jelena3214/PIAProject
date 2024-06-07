@@ -22,4 +22,8 @@ export class GuestService {
   getNumberOfGuests(){
     return this.http.get<number>(`${this.url}/guest/getNumberOfGuests`);
   }
+
+  getAllGuests(){
+    return this.http.get<User[]>(`${this.url}/guest/getAll`);
+  }
 }

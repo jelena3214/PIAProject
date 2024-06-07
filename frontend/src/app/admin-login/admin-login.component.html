@@ -1,0 +1,33 @@
+
+<main id="main">
+  <section id="about" class="about">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-6 pt-4 pt-lg-0 order-2 order-lg-1 content" style="margin-top: 30px;">
+          <h3>Ulogujte se</h3>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-6 pt-4 pt-lg-0 order-2 order-lg-1 content">
+        <form #loginF="ngForm">
+          <br>
+          <div class="form-group">
+            <label for="exampleInputEmail1">Korisničko ime</label>
+            <input type="email" class="form-control" id="exampleInputEmail1" name="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Unesite korisničko ime" required [(ngModel)]="username">
+          </div>
+          <br>
+          <div class="form-group" style="margin-bottom: 15px;">
+            <label for="exampleInputPassword1">Lozinka</label>
+            <input type="password" class="form-control" id="exampleInputPassword1" name="exampleInputPassword1" placeholder="Unesite lozinku" required [(ngModel)]="password">
+          </div>
+          <br>
+        </form>
+        <button type="submit" class="btn get-started-btn" style="margin: 0;" [disabled]="loginF.invalid" (click)="login()">Potvrdi</button>
+      </div>
+      </div>
+      </div>
+      <div style="margin-left: 80px; margin-top: 10px;color: crimson;">
+        {{message}}
+      </div>
+  </section>
+</main><!-- End #main -->

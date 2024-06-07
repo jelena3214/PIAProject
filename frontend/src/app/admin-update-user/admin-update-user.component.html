@@ -29,10 +29,6 @@
           <input type="text" id="adresa" [(ngModel)]="address" name="adresa">
         </div>
         <div class="form-group">
-          <label for="mejl">E-mail adresa:</label>
-          <input type="email" id="mejl" [(ngModel)]="email" name="mejl">
-        </div>
-        <div class="form-group">
           <label for="brojTelefona">Kontakt telefon:</label>
           <input type="text" id="brojTelefona" [(ngModel)]="phone" name="brojTelefona">
         </div>
@@ -45,31 +41,8 @@
           <input type="file" id="slika" (change)="onFileSelected($event)">
         </div>
         <button type="submit" class="btn get-started-btn" style="margin-left: 0;">Ažuriraj</button>
-        <div style="color: red;">
+        <div>
           {{message}}
-        </div>
-      </form>
-    </div>
-
-    <div class="user-container">
-      <form (ngSubmit)="changePassword()" #passForm="ngForm">
-        <h2>Promenite lozinku</h2>
-        <div class="form-group">
-          <label for="old">Lozinka:</label>
-          <input type="password" id="old" [(ngModel)]="oldPass" name="pas">
-        </div>
-        <div class="form-group">
-          <label for="new1">Nova lozinka:</label>
-          <input type="password" id="new1" [(ngModel)]="newPass1" name="pas1">
-        </div>
-        <div class="form-group">
-          <label for="new2">Ponovljena nova lozinka:</label>
-          <input type="password" id="new2" [(ngModel)]="newPass2" name="pas2">
-        </div>
-
-        <button type="submit" class="btn get-started-btn" style="margin-left: 0;">Promeni</button>
-        <div style="color: red;">
-          {{message1}}
         </div>
       </form>
     </div>

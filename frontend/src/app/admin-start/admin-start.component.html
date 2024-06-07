@@ -1,0 +1,49 @@
+<main id="main">
+  <section id="about" class="about">
+    <div class="user-container">
+      <h2>Prihvaćeni gosti</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Username</th>
+            <th>Aktivan</th>
+          </tr>
+        </thead>
+        <tbody>
+          <ng-container *ngFor="let guest of allGuests">
+            <tr *ngIf="guest.prihvacen">
+              <td [ngClass]="{ 'red': guest.aktivan == false }">{{ guest.korIme }}</td>
+              <td [ngClass]="{ 'red': guest.aktivan == false }">{{ guest.aktivan }}</td>
+              <td>
+                <button type="submit" class="btn get-started-btn" (click)="changeStatus(guest.korIme)">Promeni status</button>
+                <button type="submit" class="btn get-started-btn" [routerLink]="['/admin-update-user', guest.korIme]">Ažuriraj</button>
+              </td>
+            </tr>
+          </ng-container>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="user-container">
+      <h2>Zahtevi</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Username</th>
+          </tr>
+        </thead>
+        <tbody>
+          <ng-container *ngFor="let guest of allGuests">
+            <tr *ngIf="!guest.prihvacen && !guest.blokiran">
+              <td>{{ guest.korIme }}</td>
+              <td>
+                <button type="submit" class="btn get-started-btn" (click)="acceptUser(guest.korIme)">Prihvati zahtev</button>
+                <button type="submit" class="btn get-started-btn" (click)="declineUser(guest.korIme)">Odbij zahtev</button>
+              </td>
+            </tr>
+          </ng-container>
+        </tbody>
+      </table>
+    </div>
+  </section>
+</main>

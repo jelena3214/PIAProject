@@ -63,4 +63,12 @@ export class UserService {
 
     return this.http.post<any>(`${this.url}/user/checkPassword`, data);
   }
+
+  getUserByUsername(username:string){
+    const data = {
+      username: username
+    }
+
+    return this.http.post<User>(`${this.url}/user/getUserByUsername`, data);
+  }
 }

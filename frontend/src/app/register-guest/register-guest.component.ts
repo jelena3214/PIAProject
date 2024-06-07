@@ -82,7 +82,7 @@ export class RegisterGuestComponent {
     }
 
     const imagePath = 'user.png';
-    let newGuest = new User(this.name, this.lastName, this.username, this.password, this.gender, this.adr, this.phone, this.email, "gost", false, {pitanje:this.safeQuestion, odgovor:this.safeResponse}, imagePath, this.creditCard);
+    let newGuest = new User(this.name, this.lastName, this.username, this.password, this.gender, this.adr, this.phone, this.email, "gost", false, false, false, {pitanje:this.safeQuestion, odgovor:this.safeResponse}, imagePath, this.creditCard);
 
     this.guestService.registerGuest(newGuest).subscribe(
       (msg)=>{

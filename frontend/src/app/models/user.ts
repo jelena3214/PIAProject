@@ -9,6 +9,8 @@ export class User {
   mejl: string;
   tip: string;
   aktivan: boolean;
+  prihvacen: boolean;
+  blokiran:boolean
   bezPitanje: { pitanje: string; odgovor: string };
   slika: string;
   brojKreditneKartice: string;
@@ -24,6 +26,8 @@ export class User {
     mejl: string = "",
     tip: string = "",
     aktivan: boolean = false,
+    prihvacen: boolean = false,
+    blokiran:boolean = false,
     bezPitanje: { pitanje: string; odgovor: string } = { pitanje: "", odgovor: "" },
     slika: string = "",
     brojKreditneKartice: string = ""
@@ -38,6 +42,8 @@ export class User {
     this.mejl = mejl;
     this.tip = tip;
     this.aktivan = aktivan;
+    this.prihvacen = prihvacen;
+    this.blokiran = blokiran;
     this.bezPitanje = bezPitanje;
     this.slika = slika;
     this.brojKreditneKartice = brojKreditneKartice;

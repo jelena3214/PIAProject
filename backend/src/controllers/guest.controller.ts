@@ -85,6 +85,17 @@ export class GuestController{
         });
     }
 
+    getAll = (req: express.Request, res: express.Response)=>{
+        UserM.find({ tip: 'gost' })
+            .then(guests => {
+                res.json(guests);
+            })
+        .catch(err => {
+            console.error(err);
+            res.json(null);
+        });
+    }
+
     // checkAnswer = (req: express.Request, res: express.Response)=>{
     //     let usernameP = req.body.username;
     //     let answer = req.body.answer;

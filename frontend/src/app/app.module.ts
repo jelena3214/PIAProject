@@ -15,6 +15,9 @@ import { ForgotPasswordSafeqaComponent } from './forgot-password-safeqa/forgot-p
 import { ForgotPasswordChangePassComponent } from './forgot-password-change-pass/forgot-password-change-pass.component';
 import { GuestRestaurantComponent } from './guest-restaurant/guest-restaurant.component';
 import { RestaurantDetailComponent } from './restaurant-detail/restaurant-detail.component';
+import { AdminStartComponent } from './admin-start/admin-start.component';
+import { AdminLoginComponent } from './admin-login/admin-login.component';
+import { AdminUpdateUserComponent } from './admin-update-user/admin-update-user.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +30,10 @@ import { RestaurantDetailComponent } from './restaurant-detail/restaurant-detail
     ForgotPasswordSafeqaComponent,
     ForgotPasswordChangePassComponent,
     GuestRestaurantComponent,
-    RestaurantDetailComponent
+    RestaurantDetailComponent,
+    AdminStartComponent,
+    AdminLoginComponent,
+    AdminUpdateUserComponent
   ],
   imports: [
     BrowserModule,

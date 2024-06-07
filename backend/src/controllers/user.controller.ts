@@ -64,6 +64,17 @@ export class UserController{
         })
     }
 
+    getUserByUsername = (req: express.Request, res: express.Response)=>{
+        const username = req.body.username;
+        UserM.findOne({ korIme: username}).then(
+            (user)=>{
+                res.json(user)
+        }).catch((err)=>{
+            console.log(err);
+            res.json(null);
+        })
+    }
+
     checkIfUserWithEmailExists = (req: express.Request, res: express.Response)=>{
         const email = req.params.email;
 

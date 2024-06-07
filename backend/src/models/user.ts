@@ -14,6 +14,8 @@ let userSchema = new Schema(
     mejl:String,
     tip:String,
     aktivan:Boolean,
+    prihvacen:Boolean,
+    blokiran:Boolean,
     bezPitanje:
         {
             pitanje:String, odgovor:String

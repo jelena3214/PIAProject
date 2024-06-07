@@ -27,4 +27,8 @@ userRouter.route("/checkPassword").post(
     (req,res)=>new UserController().checkPassword(req,res)
 )
 
+userRouter.route("/getUserByUsername").post(
+    (req,res)=>new UserController().getUserByUsername(req,res)
+)
+
 export default userRouter;

@@ -12,4 +12,8 @@ guestRouter.route("/getNumberOfGuests").get(
     (req,res)=>new GuestController().getNumberOfGuests(req,res)
 )
 
+guestRouter.route("/getAll").get(
+    (req,res)=>new GuestController().getAll(req,res)
+)
+
 export default guestRouter;

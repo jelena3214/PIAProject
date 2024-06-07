@@ -9,6 +9,7 @@ import { User } from './models/user';
 export class AppComponent implements OnInit{
   isGuest:boolean = false
   isVaiter:boolean = false
+  isAdmin:boolean = false
 
   ngOnInit(): void {
     this.changeNavBar();
@@ -18,6 +19,7 @@ export class AppComponent implements OnInit{
     try {
       const us = JSON.parse(localStorage.getItem('user') || '');
       if(us.tip == 'gost')this.isGuest = true
+      if(us.tip == 'admin')this.isAdmin = true
     } catch (error) {
       console.log('error app comp - ger user')
       return

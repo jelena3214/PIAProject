@@ -21,7 +21,7 @@ export class LoginComponent {
         if(user == null){
           this.message = "Korisnik ne postoji!"
           return;
-        }else if (user.aktivan){
+        }else if (user.prihvacen && user.aktivan){
           localStorage.setItem("user", JSON.stringify(user));
           this.appComp.changeNavBar()
           if(user.tip == 'gost'){
@@ -29,8 +29,12 @@ export class LoginComponent {
           }else{
             this.router.navigate(['konobarStart']);
           }
-        }else{
-          this.message = "Još niste aktivan korisnik."
+        }else if(user.blokiran){
+          this.message = "Vaš zahtev je odbijen!"
+        }else if(!user.aktivan){
+          this.message = "Vaš nalog je deaktiviran!"
+        }else if(!user.prihvacen){
+          this.message = "Još niste aktivan korisnik!"
         }
       }
     )

@@ -1,9 +1,10 @@
 <header id="header" class="fixed-top">
   <div class="container d-flex align-items-center">
 
-    <h1 class="logo me-auto"><a routerLink="">Kutak dobre hrane</a></h1>
 
-    <ng-container *ngIf="isGuest; else loggedOut">
+
+    <ng-container *ngIf="isGuest; else admin">
+      <h1 class="logo me-auto"><a routerLink="guestStart">Kutak dobre hrane</a></h1>
       <a href="guestStart" class="get-started-btn">Profil</a>
       <a href="guestRestaurant" class="get-started-btn">Restorani</a>
       <a href="" class="get-started-btn">Rezervacije</a>
@@ -11,7 +12,18 @@
       <a href="" class="get-started-btn" (click)="logOut()">Izloguj se</a>
     </ng-container>
 
+    <ng-template #admin>
+      <ng-container *ngIf="isAdmin; else loggedOut">
+        <h1 class="logo me-auto"><a routerLink="adminStart">Kutak dobre hrane</a></h1>
+        <a href="adminStart" class="get-started-btn">Gosti</a>
+        <a href="" class="get-started-btn">Konobari</a>
+        <a href="" class="get-started-btn">Restorani</a>
+        <a href="" class="get-started-btn" (click)="logOut()">Izloguj se</a>
+      </ng-container>
+    </ng-template>
+
     <ng-template #loggedOut>
+      <h1 class="logo me-auto"><a routerLink="">Kutak dobre hrane</a></h1>
       <a href="login" class="get-started-btn">Uloguj se</a>
       <a href="registerGuest" class="get-started-btn">Registruj se kao gost</a>
     </ng-template>
