@@ -3,7 +3,7 @@ export class Restaurant{
   Naziv: string = ""
   Adresa: string = ""
   Tip: string = ""
-  Konobari:number[] = []
+  Konobari:string[] = []
   ProsecnaOcena: number = 0
   Telefon:string = ""
   RadniDani: {

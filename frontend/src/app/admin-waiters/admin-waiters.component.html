@@ -1,0 +1,83 @@
+<main id="main">
+  <section id="about" class="about">
+    <div class="user-container">
+      <h2>Konobari</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Username</th>
+            <th>Aktivan</th>
+          </tr>
+        </thead>
+        <tbody>
+          <ng-container *ngFor="let waiter of allWaiters">
+            <tr *ngIf="waiter.prihvacen">
+              <td [ngClass]="{ 'red': waiter.aktivan == false }">{{ waiter.korIme }}</td>
+              <td [ngClass]="{ 'red': waiter.aktivan == false }">{{ waiter.aktivan }}</td>
+              <td>
+                <button type="submit" class="btn get-started-btn" (click)="changeStatus(waiter.korIme)">Promeni status</button>
+                <button type="submit" class="btn get-started-btn" [routerLink]="['/admin-update-user', waiter.korIme]">Ažuriraj</button>
+              </td>
+            </tr>
+          </ng-container>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="user-container">
+      <h2>Dodaj konobara</h2>
+      <form (ngSubmit)="registerWaiter(); userForm.reset()" #userForm="ngForm">
+        <div class="form-group">
+          <label for="usernmae">Korisničko ime:</label>
+          <input type="text" id="usernmae" [(ngModel)]="username" name="usernmae">
+        </div>
+        <div class="form-group">
+          <label for="pass">Lozinka:</label>
+          <input type="password" id="password" [(ngModel)]="password" name="pass">
+        </div>
+        <div class="form-group">
+          <label for="ime">Ime:</label>
+          <input type="text" id="ime" [(ngModel)]="name" name="ime">
+        </div>
+        <div class="form-group">
+          <label for="prezime">Prezime:</label>
+          <input type="text" id="prezime" [(ngModel)]="lastName" name="prezime">
+        </div>
+        <div class="form-group">
+          <label for="mejl">Mejl:</label>
+          <input type="text" id="mejl" [(ngModel)]="email" name="mejl">
+        </div>
+        <div>
+          <label for="pol">Pol:</label><br>
+          <input type="radio" id="musko" name="pol" [(ngModel)]="gender" value="M">
+          <label for="musko">M</label><br>
+          <input type="radio" id="zensko" name="pol" [(ngModel)]="gender" value="F">
+          <label for="zensko">Ž</label><br>
+        </div>
+        <br>
+        <div class="form-group">
+          <label for="adresa">Adresa:</label>
+          <input type="text" id="adresa" [(ngModel)]="adr" name="adresa">
+        </div>
+        <div class="form-group">
+          <label for="brojTelefona">Kontakt telefon:</label>
+          <input type="text" id="brojTelefona" [(ngModel)]="phone" name="brojTelefona">
+        </div>
+        <div class="form-group">
+          <label for="slika">Slika:</label>
+          <input type="file" id="slika" (change)="onFileSelected($event)">
+        </div>
+        <div class="form-group">
+          <label for="restoran">Restoran:</label>
+          <select id="restoran" name="restoran" [(ngModel)]="restaurant">
+            <option *ngFor="let restaurant of allRestaurants" [value]="restaurant._id" name="restaurant._id" id="restaurant._id">{{ restaurant.Naziv }}</option>
+          </select>
+        </div>
+        <button type="submit" class="btn get-started-btn" style="margin-left: 0;">Dodaj konobara</button>
+        <div>
+          {{message}}
+        </div>
+      </form>
+    </div>
+  </section>
+</main>

@@ -8,7 +8,7 @@ import { User } from './models/user';
 })
 export class AppComponent implements OnInit{
   isGuest:boolean = false
-  isVaiter:boolean = false
+  iswaiter:boolean = false
   isAdmin:boolean = false
 
   ngOnInit(): void {
@@ -29,6 +29,6 @@ export class AppComponent implements OnInit{
   logOut(){
     localStorage.clear()
     this.isGuest = false
-    this.isVaiter = false
+    this.iswaiter = false
   }
 }

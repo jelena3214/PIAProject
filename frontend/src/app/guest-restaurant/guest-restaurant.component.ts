@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Restaurant } from '../models/restaurant';
 import { HttpClient } from '@angular/common/http';
 import { RestaurantService } from '../services/restaurant.service';
+import { UserService } from '../services/user.service';
 
 @Component({
   selector: 'app-guest-restaurant',
@@ -16,9 +17,10 @@ export class GuestRestaurantComponent implements OnInit{
   name:string = ""
   address:string = ""
   type:string = ""
+  waiterInfoMap: { [restaurantId: string]: string } = {};
 
 
-  constructor(private http: HttpClient, private restaurantService:RestaurantService) { }
+  constructor(private http: HttpClient, private restaurantService:RestaurantService, private userService:UserService) { }
 
   ngOnInit(): void {
     this.restaurantService.getAllRestaurants().subscribe(
@@ -26,6 +28,9 @@ export class GuestRestaurantComponent implements OnInit{
         if(restaurants){
           this.restaurantInfo = restaurants
           this.filteredRestaurants = restaurants
+          restaurants.forEach(restaurant => {
+            this.getWaitersInfoAndDisplay(restaurant._id);
+          });
         }
       }
     )
@@ -65,5 +70,45 @@ export class GuestRestaurantComponent implements OnInit{
     const halfStarCount = this.hasHalfStar(rating) ? 1 : 0;
     const quarterStarCount = this.hasQuarterStar(rating) ? 1 : 0;
     return Array(5 - fullStarsCount - halfStarCount - quarterStarCount).fill(0);
+  }
+
+  async getWaitersInfo(restaurantId: string): Promise<string> {
+    const restaurant = this.restaurantInfo.find(r => r._id === restaurantId);
+    if (!restaurant) {
+      return 'Restaurant not found';
+    }
+
+    const waiterPromises: Promise<string>[] = [];
+
+    restaurant.Konobari.forEach(username => {
+      waiterPromises.push(this.getUserFullName(username));
+    });
+
+    const waiterNames = await Promise.all(waiterPromises);
+    return waiterNames.join('  ');
+  }
+
+  private async getUserFullName(username: string): Promise<string> {
+    try {
+      const user = await this.userService.getUserByUsername(username).toPromise();
+      if (user && user.aktivan) {
+        return `${user.ime} ${user.prezime}`;
+      } else {
+        return ''; // Handle case where user is not found
+      }
+    } catch (error) {
+      console.error('Error fetching user:', error);
+      return ''; // Handle error
+    }
+  }
+
+  getWaitersInfoAndDisplay(restaurantId: string): void {
+    this.getWaitersInfo(restaurantId)
+      .then(waitersInfo => {
+        this.waiterInfoMap[restaurantId] = waitersInfo;
+      })
+      .catch(error => {
+        console.error('Error fetching waiters info:', error);
+      });
   }
 }

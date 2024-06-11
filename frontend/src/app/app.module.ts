@@ -18,6 +18,7 @@ import { RestaurantDetailComponent } from './restaurant-detail/restaurant-detail
 import { AdminStartComponent } from './admin-start/admin-start.component';
 import { AdminLoginComponent } from './admin-login/admin-login.component';
 import { AdminUpdateUserComponent } from './admin-update-user/admin-update-user.component';
+import { AdminWaitersComponent } from './admin-waiters/admin-waiters.component';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,8 @@ import { AdminUpdateUserComponent } from './admin-update-user/admin-update-user.
     RestaurantDetailComponent,
     AdminStartComponent,
     AdminLoginComponent,
-    AdminUpdateUserComponent
+    AdminUpdateUserComponent,
+    AdminWaitersComponent
   ],
   imports: [
     BrowserModule,

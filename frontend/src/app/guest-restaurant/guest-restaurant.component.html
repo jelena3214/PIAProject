@@ -19,7 +19,7 @@
                 <td><a [routerLink]="['/restaurant', rest._id]">{{ rest.Naziv }}</a></td>
                 <td>{{ rest.Adresa }}</td>
                 <td>{{ rest.Tip }}</td>
-                <td>{{ rest.Konobari.join(', ') }}</td>
+                <td>{{ waiterInfoMap[rest._id] }}</td>
                 <td>
                   <div class="rating">
                     <span>{{ rest.ProsecnaOcena }}</span> <!-- Numerička vrednost ocene -->

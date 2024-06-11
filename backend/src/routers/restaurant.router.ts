@@ -23,4 +23,8 @@ restaurantRouter.route('/makeReservation').post(
     (req,res)=>new RestaurantController().makeReservation(req,res)
 )
 
+restaurantRouter.route('/addWaiter').post(
+    (req,res)=>new RestaurantController().addWaiter(req,res)
+)
+
 export default restaurantRouter;

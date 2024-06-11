@@ -15,6 +15,8 @@ interface User {
     bezPitanje: { pitanje: string; odgovor: string };
     slika: string;
     brojKreditneKartice:string;
+    prihvacen:boolean;
+    blokiran:boolean;
 }
 
 import crypto from 'crypto';
@@ -56,6 +58,8 @@ export class GuestController{
                         newGuest.bezPitanje = user.bezPitanje
                         newGuest.slika = user.slika
                         newGuest.brojKreditneKartice = user.brojKreditneKartice
+                        newGuest.prihvacen = user.prihvacen
+                        newGuest.blokiran = user.blokiran
 
                         newGuest.save().then((user)=>{
                             res.json({"msg":"ok", "code":"0"});

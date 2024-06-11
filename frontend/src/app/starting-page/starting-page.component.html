@@ -15,7 +15,7 @@
 
       <div class="row">
         <div class="content">
-          <h3>Pretraži restoran. DODATI IME PREZIME I BROJ REZ</h3>
+          <h3>Pretraži restoran</h3>
           <table>
             <thead>
               <tr>
@@ -30,7 +30,7 @@
                 <td>{{ rest.Naziv }}</td>
                 <td>{{ rest.Adresa }}</td>
                 <td>{{ rest.Tip }}</td>
-                <td>{{ rest.Konobari.join(', ') }}</td>
+                <td>{{ waiterInfoMap[rest._id] }}</td>
               </tr>
             </tbody>
           </table>
@@ -96,16 +96,19 @@
         <div class="col-lg-2 col-md-2 col-sm-12 text-center">
           <span data-purecounter-start="0" data-purecounter-end="42" data-purecounter-duration="1" class="purecounter"></span>
           <p>Broj rezervacija u prethodnih 24h</p>
+          <p>{{numOfResLast24h}}</p>
         </div>
 
         <div class="col-lg-2 col-md-2 col-sm-12 text-center">
           <span data-purecounter-start="0" data-purecounter-end="42" data-purecounter-duration="1" class="purecounter"></span>
           <p>Broj rezervacija u prethodnih sedam dana</p>
+          <p>{{numOfResLast7d}}</p>
         </div>
 
         <div class="col-lg-2 col-md-2 col-sm-12 text-center">
           <span data-purecounter-start="0" data-purecounter-end="15" data-purecounter-duration="1" class="purecounter"></span>
           <p>Broj rezervacija u prethodnih mesec dana</p>
+          <p>{{numOfResLast30d}}</p>
         </div>
 
       </div>

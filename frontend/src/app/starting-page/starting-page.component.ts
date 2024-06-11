@@ -18,9 +18,15 @@ export class StartingPageComponent {
   name:string = ""
   address:string = ""
   type:string = ""
+  numOfResLast24h:number = 0
+  numOfResLast7d:number = 0
+  numOfResLast30d:number = 0
 
 
-  constructor(private http: HttpClient, private guestService:GuestService, private restaurantService:RestaurantService) { }
+  waiterInfoMap: { [restaurantId: string]: string } = {};
+
+
+  constructor(private http: HttpClient, private guestService:GuestService, private restaurantService:RestaurantService, private userService:UserService) { }
 
   ngOnInit(): void {
     this.guestService.getNumberOfGuests().subscribe(
@@ -45,6 +51,34 @@ export class StartingPageComponent {
         if(restaurants){
           this.restaurantInfo = restaurants
           this.filteredRestaurants = restaurants
+          restaurants.forEach(restaurant => {
+            this.getWaitersInfoAndDisplay(restaurant._id);
+          });
+        }
+      }
+    )
+
+    this.restaurantService.getNumOfReservationsLast24Hours().subscribe(
+      (num)=>{
+        if(num){
+          this.numOfResLast24h = num
+          console.log(num)
+        }
+      }
+    )
+
+    this.restaurantService.getNumOfReservationsLast7Days().subscribe(
+      (num)=>{
+        if(num){
+          this.numOfResLast7d = num
+        }
+      }
+    )
+
+    this.restaurantService.getNumOfReservationsLast30Days().subscribe(
+      (num)=>{
+        if(num){
+          this.numOfResLast30d = num
         }
       }
     )
@@ -95,6 +129,45 @@ export class StartingPageComponent {
     });
   }
 
+  async getWaitersInfo(restaurantId: string): Promise<string> {
+    const restaurant = this.restaurantInfo.find(r => r._id === restaurantId);
+    if (!restaurant) {
+      return 'Restaurant not found';
+    }
+
+    const waiterPromises: Promise<string>[] = [];
+
+    restaurant.Konobari.forEach(username => {
+      waiterPromises.push(this.getUserFullName(username));
+    });
+
+    const waiterNames = await Promise.all(waiterPromises);
+    return waiterNames.join('  ');
+  }
+
+  private async getUserFullName(username: string): Promise<string> {
+    try {
+      const user = await this.userService.getUserByUsername(username).toPromise();
+      if (user && user.aktivan) {
+        return `${user.ime} ${user.prezime}`;
+      } else {
+        return ''; // Handle case where user is not found
+      }
+    } catch (error) {
+      console.error('Error fetching user:', error);
+      return ''; // Handle error
+    }
+  }
+
+  getWaitersInfoAndDisplay(restaurantId: string): void {
+    this.getWaitersInfo(restaurantId)
+      .then(waitersInfo => {
+        this.waiterInfoMap[restaurantId] = waitersInfo;
+      })
+      .catch(error => {
+        console.error('Error fetching waiters info:', error);
+      });
+  }
 
   // sortPredmet(){
   //   this.predmetiNastavnici.sort((a, b) => {
