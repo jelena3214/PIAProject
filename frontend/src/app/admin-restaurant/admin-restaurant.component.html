@@ -1,0 +1,46 @@
+<div class="canvas-container">
+  <h2>Nacrtajte raspored restorana</h2>
+  <canvas #myCanvas width="800" height="400"></canvas>
+  <div class="controls">
+    <button type="submit" class="btn get-started-btn" (click)="validateAndClear()">Potvrdi</button>
+    <br>
+    <div class="message">{{ message }}</div>
+  </div>
+</div>
+
+<div class="user-container">
+  <h2>Uvezite .json fajl</h2>
+  <input type="file" (change)="onFileSelected($event)" class="file-input">
+  <br>
+  <div class="message">{{ filemessage }}</div>
+</div>
+
+<div class="user-container">
+  <h2>Postavite radno vreme restorana</h2>
+  <form [formGroup]="workingHoursForm" (ngSubmit)="onSubmit()" class="working-hours-form">
+    <div formGroupName="days">
+      <div *ngFor="let day of daysOfWeek" class="day">
+        <label class="checkbox-label">
+          <input type="checkbox" [checked]="day.isWorking" (change)="toggleWorking(day)">
+          {{ day.name }}
+        </label>
+        <div class="time-inputs">
+          <input type="time" formControlName="{{ day.name + 'Start' }}" placeholder="Start Time" [disabled]="!day.isWorking">
+          <span>-</span>
+          <input type="time" formControlName="{{ day.name + 'End' }}" placeholder="End Time" [disabled]="!day.isWorking">
+        </div>
+      </div>
+    </div>
+
+    <button type="submit" class="btn get-started-btn" [disabled]="workingHoursForm.invalid">Submit</button>
+  </form>
+</div>
+
+<div *ngIf="submitted" class="submitted-message">
+  <h3>Uneta radna vremena:</h3>
+  <ul>
+    <li *ngFor="let day of daysOfWeek">
+      <strong>{{ day.name }}:</strong> {{ workingHoursForm.value.days[day.name + 'Start'] }} - {{ workingHoursForm.value.days[day.name + 'End'] }}
+    </li>
+  </ul>
+</div>

@@ -1,0 +1,67 @@
+.canvas-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 80px;
+}
+
+canvas {
+  border: 1px solid #000;
+}
+
+.controls {
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+}
+
+.controls > * {
+  margin: 0 5px;
+}
+
+.message {
+  margin-top: 10px;
+  text-align: center;
+}
+
+.working-hours-form {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.day {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.checkbox-label {
+  margin-right: 10px;
+}
+
+.time-inputs {
+  display: flex;
+  align-items: center;
+}
+
+.time-inputs > input {
+  margin: 0 5px;
+  padding: 5px;
+  width: 100px;
+}
+
+.time-inputs > span {
+  margin: 0 5px;
+}
+
+.submitted-message {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.submitted-message h3 {
+  margin-bottom: 10px;
+}
