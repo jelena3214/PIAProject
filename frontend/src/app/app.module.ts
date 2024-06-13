@@ -20,6 +20,7 @@ import { AdminLoginComponent } from './admin-login/admin-login.component';
 import { AdminUpdateUserComponent } from './admin-update-user/admin-update-user.component';
 import { AdminWaitersComponent } from './admin-waiters/admin-waiters.component';
 import { AdminRestaurantComponent } from './admin-restaurant/admin-restaurant.component';
+import { AdminUpdateRestaurantComponent } from './admin-update-restaurant/admin-update-restaurant.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +38,8 @@ import { AdminRestaurantComponent } from './admin-restaurant/admin-restaurant.co
     AdminLoginComponent,
     AdminUpdateUserComponent,
     AdminWaitersComponent,
-    AdminRestaurantComponent
+    AdminRestaurantComponent,
+    AdminUpdateRestaurantComponent
   ],
   imports: [
     BrowserModule,

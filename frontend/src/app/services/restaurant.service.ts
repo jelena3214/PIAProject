@@ -4,6 +4,7 @@ import { Restaurant } from '../models/restaurant';
 import { Observable } from 'rxjs/internal/Observable';
 import { Reservation } from '../models/reservation';
 import { Msg } from '../models/msg';
+import { Shape } from '../models/shape';
 
 @Injectable({
   providedIn: 'root'
@@ -51,5 +52,20 @@ export class RestaurantService {
 
   getNumOfReservationsLast30Days(){
     return this.http.get<number>(`${this.url}/reservation/last30d`);
+  }
+
+  addRestaurant(rest: { Adresa: string; Tip: string; Naziv: string; Opis: string; ProsecnaOcena: number; Konobari: never[]; Telefon: string; RadniDani: { "1": { od: string; do: string; }; "2": { od: string; do: string; }; "3": { od: string; do: string; }; "4": { od: string; do: string; }; "5": { od: string; do: string; }; "6": { od: string; do: string; }; "7": { od: string; do: string; }; }; }, layout:Shape[]){
+    const data = {
+      restaurant:rest,
+      layout:layout
+    }
+    return this.http.post<Msg>(`${this.url}/restaurant/addRestaurant`, data);
+  }
+
+  updateRestaurantWorkingHours(restaurantId: string, workingHours: any) {
+    const data = {
+      workingHours: workingHours
+    }
+    return this.http.put<Msg>(`${this.url}/restaurant/${restaurantId}/working-hours`, data);
   }
 }

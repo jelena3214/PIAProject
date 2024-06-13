@@ -10,14 +10,15 @@ let restaurantSchema = new Schema(
     Konobari: [String],
     ProsecnaOcena: Number,
     Telefon: String,
+    Opis:String,
     RadniDani: {
-      "1": { od: String, do: String },
-      "2": { od: String, do: String },
-      "3": { od: String, do: String },
-      "4": { od: String, do: String },
-      "5": { od: String, do: String },
-      "6": { od: String, do: String },
-      "7": { od: String, do: String }
+      "1": { od: String, do: String, radan: Boolean },
+      "2": { od: String, do: String, radan: Boolean },
+      "3": { od: String, do: String, radan: Boolean },
+      "4": { od: String, do: String, radan: Boolean },
+      "5": { od: String, do: String, radan: Boolean },
+      "6": { od: String, do: String, radan: Boolean },
+      "7": { od: String, do: String, radan: Boolean }
     },
     Stolovi: [
       {

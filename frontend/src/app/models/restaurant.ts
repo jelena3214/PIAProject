@@ -6,16 +6,17 @@ export class Restaurant{
   Konobari:string[] = []
   ProsecnaOcena: number = 0
   Telefon:string = ""
+  Opis:string = ""
   RadniDani: {
-    [key: string]: { od: string; do: string };
+    [key: string]: { od: string; do: string, radan: boolean };
   } = {
-    "1": { od: "", do: "" },
-    "2": { od: "", do: "" },
-    "3": { od: "", do: "" },
-    "4": { od: "", do: "" },
-    "5": { od: "", do: "" },
-    "6": { od: "", do: "" },
-    "7": { od: "", do: "" }
+    "1": { od: "", do: "" , radan: false},
+    "2": { od: "", do: "" , radan: false},
+    "3": { od: "", do: "", radan: false },
+    "4": { od: "", do: "", radan: false },
+    "5": { od: "", do: "" , radan: false},
+    "6": { od: "", do: "" , radan: false},
+    "7": { od: "", do: "" , radan: false}
   }
   Stolovi: {
     stoID: number,

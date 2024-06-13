@@ -1,6 +1,7 @@
 import express from 'express'
 import RestaurantM from '../models/restaurant'
 import ReservationM from '../models/reservation'
+import RestaurantLayoutM from '../models/restaurantLayout'
 
 export class RestaurantController{
     getNumberOfRestaurants = (req: express.Request, res: express.Response)=>{
@@ -109,5 +110,49 @@ export class RestaurantController{
         });
             
 
+    }
+
+    addRestaurant =  async (req: express.Request, res: express.Response)=>{
+        try{
+            const { restaurant, layout } = req.body;
+        
+            // Kreiranje i cuvanje novog restorana
+            const newRestaurant = new RestaurantM(restaurant);
+            const savedRestaurant = await newRestaurant.save();
+        
+            // Kreiranje i cuvanje rasporeda povezanog sa restoranom
+            const newLayout = new RestaurantLayoutM({
+                restoranId: savedRestaurant._id,
+                raspored: layout
+            });
+            await newLayout.save();
+        
+            res.json({"msg":"ok", "code":"0"});
+        }catch(err){
+            console.log(err)
+            res.json({"msg":"error", "code":"1"});
+        }
+    }
+
+    updateWorkingHours =  async (req: express.Request, res: express.Response)=>{
+        const restaurantId = req.params.id;
+        const workingHours = req.body.workingHours;
+        console.log(workingHours)
+
+        try {
+            const updatedRestaurant = await RestaurantM.findByIdAndUpdate(
+                restaurantId,
+                { RadniDani: workingHours },
+                { new: true } // vraca novoupdatovani dokument
+            );
+
+            if (!updatedRestaurant) {
+                res.json({"msg":"restaurant not found", "code":"1"});
+            }
+
+            res.json({"msg":"ok", "code":"0"});
+        } catch (error) {
+            res.json({"msg":"error", "code":"1"});
+        }
     }
 }

@@ -16,6 +16,7 @@ import { guestGuardGuard } from './guest-guard.guard';
 import { AdminUpdateUserComponent } from './admin-update-user/admin-update-user.component';
 import { AdminWaitersComponent } from './admin-waiters/admin-waiters.component';
 import { AdminRestaurantComponent } from './admin-restaurant/admin-restaurant.component';
+import { AdminUpdateRestaurantComponent } from './admin-update-restaurant/admin-update-restaurant.component';
 
 const routes: Routes = [
   {path:"", component:StartingPageComponent},
@@ -31,7 +32,8 @@ const routes: Routes = [
   {path: 'adminLogin', component: AdminLoginComponent, canActivate: [adminLoginGuard] },
   { path: 'admin-update-user/:username', component: AdminUpdateUserComponent, canActivate: [adminLoginGuard]  },
   { path: 'adminWaiters', component: AdminWaitersComponent, canActivate: [adminLoginGuard]  },
-  { path: 'adminRestaurant', component: AdminRestaurantComponent, canActivate: [adminLoginGuard]  }
+  { path: 'adminRestaurant', component: AdminRestaurantComponent, canActivate: [adminLoginGuard]  },
+  { path: 'admin-update-restaurant/:restaurantId', component: AdminUpdateRestaurantComponent, canActivate: [adminLoginGuard]  },
 ];
 
 @NgModule({

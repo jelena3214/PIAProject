@@ -1,46 +1,76 @@
-<div class="canvas-container">
-  <h2>Nacrtajte raspored restorana</h2>
-  <canvas #myCanvas width="800" height="400"></canvas>
-  <div class="controls">
-    <button type="submit" class="btn get-started-btn" (click)="validateAndClear()">Potvrdi</button>
-    <br>
-    <div class="message">{{ message }}</div>
-  </div>
-</div>
+<main id="main">
+  <section id="about" class="about">
 
-<div class="user-container">
-  <h2>Uvezite .json fajl</h2>
-  <input type="file" (change)="onFileSelected($event)" class="file-input">
-  <br>
-  <div class="message">{{ filemessage }}</div>
-</div>
 
-<div class="user-container">
-  <h2>Postavite radno vreme restorana</h2>
-  <form [formGroup]="workingHoursForm" (ngSubmit)="onSubmit()" class="working-hours-form">
-    <div formGroupName="days">
-      <div *ngFor="let day of daysOfWeek" class="day">
-        <label class="checkbox-label">
-          <input type="checkbox" [checked]="day.isWorking" (change)="toggleWorking(day)">
-          {{ day.name }}
-        </label>
-        <div class="time-inputs">
-          <input type="time" formControlName="{{ day.name + 'Start' }}" placeholder="Start Time" [disabled]="!day.isWorking">
-          <span>-</span>
-          <input type="time" formControlName="{{ day.name + 'End' }}" placeholder="End Time" [disabled]="!day.isWorking">
-        </div>
+    <div class="user-container">
+      <h2>Restorani</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Naziv</th>
+            <th>Adresa</th>
+            <th>Tip</th>
+          </tr>
+        </thead>
+        <tbody>
+          <ng-container *ngFor="let rest of allRestaurants">
+            <tr>
+              <td>{{ rest.Naziv }}</td>
+              <td>{{ rest.Adresa }}</td>
+              <td>{{rest.Tip}}</td>
+              <td>
+                <button type="submit" class="btn get-started-btn" [routerLink]="['/admin-update-restaurant', rest._id]">Ažuriraj radno vreme</button>
+              </td>
+            </tr>
+          </ng-container>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="user-container">
+      <h2>Unesi novi restoran</h2>
+      <div class="form-group">
+        <label for="ime">Naziv:</label>
+        <input type="text" id="ime" [(ngModel)]="name" name="ime">
+      </div>
+      <div class="form-group">
+        <label for="type">Tip:</label>
+        <input type="text" id="type" [(ngModel)]="type" name="type">
+      </div>
+      <div class="form-group">
+        <label for="adresa">Adresa:</label>
+        <input type="text" id="adresa" [(ngModel)]="address" name="adresa">
+      </div>
+      <div class="form-group">
+        <label for="brojTelefona">Kontakt telefon:</label>
+        <input type="text" id="brojTelefona" [(ngModel)]="phone" name="brojTelefona">
+      </div>
+      <div class="form-group">
+        <label for="brojKredineKartice">Opis:</label>
+        <input type="text" id="brojKredineKartice" [(ngModel)]="description" name="brojKredineKartice">
       </div>
     </div>
 
-    <button type="submit" class="btn get-started-btn" [disabled]="workingHoursForm.invalid">Submit</button>
-  </form>
-</div>
 
-<div *ngIf="submitted" class="submitted-message">
-  <h3>Uneta radna vremena:</h3>
-  <ul>
-    <li *ngFor="let day of daysOfWeek">
-      <strong>{{ day.name }}:</strong> {{ workingHoursForm.value.days[day.name + 'Start'] }} - {{ workingHoursForm.value.days[day.name + 'End'] }}
-    </li>
-  </ul>
-</div>
+    <div class="canvas-container">
+      <h2>Nacrtajte raspored restorana</h2>
+      <canvas #myCanvas width="800" height="400"></canvas>
+    </div>
+
+    <div class="user-container">
+      <h2>Uvezite .json fajl</h2>
+      <input type="file" (change)="onFileSelected($event)" class="file-input">
+      <br>
+      <div class="message">{{ filemessage }}</div>
+    </div>
+
+    <div class="canvas-container">
+      <div class="controls">
+        <button type="submit" class="btn get-started-btn" (click)="addRestaurant()">Potvrdi</button>
+        <br>
+        <div class="message">{{ message }}</div>
+      </div>
+    </div>
+
+  </section>
+</main>

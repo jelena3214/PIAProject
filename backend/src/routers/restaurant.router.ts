@@ -27,4 +27,13 @@ restaurantRouter.route('/addWaiter').post(
     (req,res)=>new RestaurantController().addWaiter(req,res)
 )
 
+restaurantRouter.route('/addRestaurant').post(
+    (req,res)=>new RestaurantController().addRestaurant(req,res)
+);
+
+
+restaurantRouter.route('/:id/working-hours').put(
+    (req,res)=>new RestaurantController().updateWorkingHours(req,res)
+)
+
 export default restaurantRouter;

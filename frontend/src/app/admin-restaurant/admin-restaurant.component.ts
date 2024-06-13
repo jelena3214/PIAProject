@@ -1,19 +1,8 @@
 import { Component, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-
-// vrtsPravougaonika 1-kuhinja 2-toalet
-
-type Shape = {
-  type: 'rectangle' | 'circle';
-  x: number;
-  y: number;
-  width: number;
-  height: number;
-  radius: number;
-  brojLjudi:number;
-  vrstaPravougaonika:number
-} | null;
-
+import { Restaurant } from '../models/restaurant';
+import { RestaurantService } from '../services/restaurant.service';
+import { Shape } from '../models/shape';
 
 @Component({
   selector: 'app-admin-restaurant',
@@ -30,56 +19,21 @@ export class AdminRestaurantComponent implements OnInit, AfterViewInit {
   private isDrawing = false;
   message:string = ""
   filemessage = ""
+  name:string = ""
+  address:string = ""
+  type:string = ""
+  phone:string = ""
+  description:string = ""
+  allRestaurants:Restaurant[] = []
 
-
-  workingHoursForm: FormGroup;
-  submitted = false;
-
-  daysOfWeek = [
-    { name: 'Monday', isWorking: true },
-    { name: 'Tuesday', isWorking: true },
-    { name: 'Wednesday', isWorking: true },
-    { name: 'Thursday', isWorking: true },
-    { name: 'Friday', isWorking: true },
-    { name: 'Saturday', isWorking: true },
-    { name: 'Sunday', isWorking: true }
-  ];
-
-  constructor(private formBuilder: FormBuilder) {
-    this.workingHoursForm = this.formBuilder.group({
-      days: this.formBuilder.group({})
-    });
-  }
+  constructor(private restaurantService:RestaurantService) {}
 
   ngOnInit(): void {
-    const daysGroup = this.workingHoursForm.get('days') as FormGroup;
-
-    this.daysOfWeek.forEach(day => {
-      const startControl = this.formBuilder.control({ value: '', disabled: !day.isWorking }, Validators.required);
-      const endControl = this.formBuilder.control({ value: '', disabled: !day.isWorking }, Validators.required);
-
-      daysGroup.addControl(`${day.name}Start`, startControl);
-      daysGroup.addControl(`${day.name}End`, endControl);
-    });
-  }
-
-  toggleWorking(day: any): void {
-    day.isWorking = !day.isWorking;
-
-    const startControl = this.workingHoursForm.get(`days.${day.name}Start`);
-    const endControl = this.workingHoursForm.get(`days.${day.name}End`);
-
-    startControl?.[day.isWorking ? 'enable' : 'disable']();
-    endControl?.[day.isWorking ? 'enable' : 'disable']();
-  }
-
-
-  onSubmit(): void {
-    this.submitted = true;
-
-    // Additional logic can be added here to handle form submission
-    // For now, just log the form value
-    console.log(this.workingHoursForm.value);
+    this.restaurantService.getAllRestaurants().subscribe(
+      (rest)=>{
+        this.allRestaurants = rest
+      }
+    )
   }
 
   ngAfterViewInit(): void {
@@ -206,7 +160,6 @@ export class AdminRestaurantComponent implements OnInit, AfterViewInit {
   }
 
   drawShapes(): void {
-    console.log(this.shapes)
     this.ctx.clearRect(0, 0, this.canvas.nativeElement.width, this.canvas.nativeElement.height);
 
     for (const shape of this.shapes) {
@@ -251,8 +204,51 @@ export class AdminRestaurantComponent implements OnInit, AfterViewInit {
     }
   }
 
+  addRestaurant(){
+    if(!this.validateAndClear())return;
 
-  validateAndClear(): void {
+    if(this.name.length == 0 || this.address.length == 0){
+      this.message = "Morate popuniti sva polja!"
+      return
+    }
+
+    const phoneRegex = /^\+3816\d{8,9}$/;
+    if(!phoneRegex.test(this.phone)){
+      this.message = "Telefon nije u dobrom formatu!"
+      return
+    }
+
+    const newRestaurant = {
+      Adresa: this.address,
+      Tip :this.type,
+      Naziv: this.name,
+      Opis : this.description,
+      ProsecnaOcena : 0,
+      Konobari : [],
+      Telefon : this.phone,
+      RadniDani : {
+        "1": { od: "08:00", do: "22:00" },
+        "2": { od: "08:00", do: "22:00" },
+        "3": { od: "08:00", do: "22:00" },
+        "4": { od: "08:00", do: "22:00" },
+        "5": { od: "08:00", do: "22:00" },
+        "6": { od: "08:00", do: "22:00" },
+        "7": { od: "08:00", do: "22:00" }
+      }
+    }
+
+    this.restaurantService.addRestaurant(newRestaurant, this.shapes).subscribe(
+      (msg) => {
+        if(msg.code == 0){
+          this.message = "Uspešno dodat restoran!"
+        }else{
+          this.message = "Greška pri unosu restorana!"
+        }
+      }
+    );
+  }
+
+  validateAndClear(): boolean {
     // Provera minimalnog broja oblika
     let kitchenNum = 0;
     let toiletNum = 0;
@@ -269,7 +265,7 @@ export class AdminRestaurantComponent implements OnInit, AfterViewInit {
 
     if (kitchenNum < 1 || toiletNum < 1 || circleCount < 3) {
       this.message = 'Morate imati minimalno 1 kuhinju, 1 toalet i 3 stola.';
-      return;
+      return false;
     }
 
     // Provera preklapanja oblika
@@ -280,12 +276,13 @@ export class AdminRestaurantComponent implements OnInit, AfterViewInit {
         if (this.checkOverlap(shapeA, shapeB)) {
           this.message = 'Oblici se ne smeju preklapati.';
           this.clearCanvas();
-          return;
+          return false;
         }
       }
     }
 
     this.message = "Uspešno iscrtano!"
+    return true;
   }
 
   checkOverlap(shapeA: Shape, shapeB: Shape): boolean {

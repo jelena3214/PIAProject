@@ -1,0 +1,44 @@
+<main id="main">
+  <section id="about" class="about">
+
+    <div class="user-container">
+      <h2>Trenutno radno vreme restorana</h2>
+      <div class="existing-working-hours">
+        <ul>
+          <li *ngFor="let day of daysOfWeek">
+            <ng-container *ngIf="restaurant.RadniDani[day.key]?.radan">
+              <strong>{{ day.name }}:</strong>
+              {{ restaurant.RadniDani[day.key]?.od || '00:00' }} -
+              {{ restaurant.RadniDani[day.key]?.do || '00:00' }}
+            </ng-container>
+            <ng-container *ngIf="!restaurant.RadniDani[day.key]?.radan">
+              <strong>{{ day.name }}:</strong> Neradni dan
+            </ng-container>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="user-container">
+      <h2>Postavite radno vreme restorana</h2>
+      <form [formGroup]="workingHoursForm" (ngSubmit)="onSubmit()" class="working-hours-form">
+        <div formGroupName="days">
+          <div *ngFor="let day of daysOfWeek" class="day">
+            <label class="checkbox-label">
+              <input type="checkbox" [checked]="day.isWorking" (change)="toggleWorking(day)">
+              {{ day.name }}
+            </label>
+            <div class="time-inputs">
+              <input type="time" [formControlName]="day.key + 'Start'" placeholder="Start Time" [disabled]="!day.isWorking">
+              <span>-</span>
+              <input type="time" [formControlName]="day.key + 'End'" placeholder="End Time" [disabled]="!day.isWorking">
+            </div>
+          </div>
+        </div>
+
+        <button type="submit" class="btn get-started-btn" [disabled]="workingHoursForm.invalid || !workingHoursForm.dirty" style="margin-top: 20px;">Submit</button>
+      </form>
+    </div>
+
+  </section>
+</main>
