@@ -49,17 +49,19 @@ export class RestaurantController{
     }
 
     makeReservation = (req: express.Request, res: express.Response)=>{
+        let mx = (new Date(req.body.datumVreme)).toLocaleString('se-SE',{ timeZone: 'Europe/Paris' }) + "Z";
+        console.log(mx)
         const newReservation = new ReservationM({
             korIme: req.body.korIme,
             restoranId: req.body.restoranId,
             uToku: req.body.uToku,
             komentar: req.body.komentar,
             ocena: req.body.ocena,
-            datumVreme: new Date(req.body.datumVreme),
+            datumVreme: new Date(mx),
             brojOsoba: req.body.brojOsoba,
             opis: req.body.opis
         });
-        
+        console.log(newReservation.datumVreme)
         newReservation.save().then(reservation => {
             res.json(reservation);
         })
@@ -153,6 +155,17 @@ export class RestaurantController{
             res.json({"msg":"ok", "code":"0"});
         } catch (error) {
             res.json({"msg":"error", "code":"1"});
+        }
+    }
+
+    getLayout =  async (req: express.Request, res: express.Response)=>{
+        const restaurantId = req.params.id;
+
+        try {
+            const layout = await RestaurantLayoutM.findOne({restoranId:restaurantId});
+            res.json(layout.raspored);
+        } catch (error) {
+            res.json(null);
         }
     }
 }

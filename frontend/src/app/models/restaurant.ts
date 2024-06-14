@@ -18,8 +18,4 @@ export class Restaurant{
     "6": { od: "", do: "" , radan: false},
     "7": { od: "", do: "" , radan: false}
   }
-  Stolovi: {
-    stoID: number,
-    maksimalanBrojLjudi: number
-  }[] = [];
 }

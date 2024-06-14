@@ -19,13 +19,7 @@ let restaurantSchema = new Schema(
       "5": { od: String, do: String, radan: Boolean },
       "6": { od: String, do: String, radan: Boolean },
       "7": { od: String, do: String, radan: Boolean }
-    },
-    Stolovi: [
-      {
-        stoID: Number,
-        maksimalanBrojLjudi: Number
-      }
-    ]
+    }
   },
   {
     versionKey: false

@@ -36,4 +36,8 @@ restaurantRouter.route('/:id/working-hours').put(
     (req,res)=>new RestaurantController().updateWorkingHours(req,res)
 )
 
+restaurantRouter.route('/:id/getLayout').get(
+    (req,res)=>new RestaurantController().getLayout(req,res)
+)
+
 export default restaurantRouter;

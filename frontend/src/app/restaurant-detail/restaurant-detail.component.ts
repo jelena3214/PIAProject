@@ -6,6 +6,7 @@ import * as L from 'leaflet';
 import { HttpClient } from '@angular/common/http';
 import { Reservation } from '../models/reservation';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Shape } from '../models/shape';
 
 interface Comment {
   id: number;
@@ -23,6 +24,7 @@ export class RestaurantDetailComponent implements OnInit {
   reservations: Reservation[] = []
   reservationForm: FormGroup
   message:string = ""
+  restaurantLayout:Shape[] = []
 
   constructor(
     private route: ActivatedRoute,
@@ -55,6 +57,7 @@ export class RestaurantDetailComponent implements OnInit {
       if (!selectedDate) return null;
 
       const selectedDateTime = new Date(`${selectedDate}T${control.value}`);
+      console.log(selectedDateTime)
       const currentDateTime = new Date();
       if (selectedDateTime < currentDateTime) {
         return { 'invalidTime': true };
@@ -75,6 +78,12 @@ export class RestaurantDetailComponent implements OnInit {
     this.restaurantService.getRestaurantReservationsById(id).subscribe(
       (reservations)=>{
         this.reservations = reservations
+      }
+    )
+    this.restaurantService.getRestaurantLayout(id).subscribe(
+      (layout)=>{
+        this.restaurantLayout = layout
+        console.log(layout)
       }
     )
   }
@@ -111,16 +120,17 @@ export class RestaurantDetailComponent implements OnInit {
   submitReservation(): void {
     if (this.reservationForm.valid) {
       const reservation = this.reservationForm.value;
-      const reservationDateTime = new Date(`${reservation.date}T${reservation.time}`);
+      const dateString = `${reservation.date}T${reservation.time}`
+      const reservationDateTime = new Date(dateString);
       const dayOfWeek = reservationDateTime.getDay();
       const dayOfWeekNumber = dayOfWeek === 0 ? 7 : dayOfWeek;
 
-      if (this.restaurant && this.restaurant.RadniDani[dayOfWeekNumber]) {
+      if (this.restaurant && this.restaurant.RadniDani[dayOfWeekNumber].radan) {
         const workingHours = this.restaurant.RadniDani[dayOfWeekNumber];
         const reservationTime = reservation.time;
 
         if (reservationTime >= workingHours.od && reservationTime <= workingHours.do) {
-          const availableTables = this.restaurant.Stolovi.filter(table => table.maksimalanBrojLjudi >= reservation.numberOfPeople);
+          const availableTables = this.restaurantLayout.filter(table => table?.type == 'circle' && table?.brojLjudi >= reservation.numberOfPeople);
           if (availableTables.length > 0) {
             const newReservation: Reservation = {
               korIme: JSON.parse(localStorage.getItem("user") || "").korIme,
@@ -128,7 +138,7 @@ export class RestaurantDetailComponent implements OnInit {
               uToku: true,
               komentar: "",
               ocena: 0,
-              datumVreme: reservationDateTime,
+              datumVreme: dateString,
               brojOsoba: reservation.numberOfPeople,
               opis: reservation.additionalRequests
             };

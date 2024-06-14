@@ -12,12 +12,14 @@
       <div class="user-info">
         <h2>Komentari</h2>
         <div class="comment-list">
-          <div *ngFor="let comment of reservations" class="comment">
-            <div class="comment-header">
-              <h3>{{ comment.korIme }}</h3>
-            </div>
-            <div class="comment-body">
-              <p>{{ comment.komentar }}</p>
+          <div *ngFor="let comment of reservations">
+            <div class="comment" *ngIf="comment.ocena > 0">
+              <div class="comment-header">
+                <h3>{{ comment.korIme }}</h3>
+              </div>
+              <div class="comment-body">
+                <p>{{ comment.komentar }}</p>
+              </div>
             </div>
           </div>
         </div>

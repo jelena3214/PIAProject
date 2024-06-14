@@ -68,4 +68,8 @@ export class RestaurantService {
     }
     return this.http.put<Msg>(`${this.url}/restaurant/${restaurantId}/working-hours`, data);
   }
+
+  getRestaurantLayout(restaurantId:string){
+    return this.http.get<Shape[]>(`${this.url}/restaurant/${restaurantId}/getLayout`);
+  }
 }
