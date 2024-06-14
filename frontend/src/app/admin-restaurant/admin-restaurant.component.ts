@@ -67,7 +67,8 @@ export class AdminRestaurantComponent implements OnInit, AfterViewInit {
         height: 0,
         radius:0,
         brojLjudi:0,
-        vrstaPravougaonika:0
+        vrstaPravougaonika:0,
+        _id : ""
       };
     } else {
       this.drawingShape = {
@@ -78,7 +79,8 @@ export class AdminRestaurantComponent implements OnInit, AfterViewInit {
         width:0,
         height:0,
         brojLjudi:0,
-        vrstaPravougaonika:0
+        vrstaPravougaonika:0,
+        _id : ""
       };
     }
 

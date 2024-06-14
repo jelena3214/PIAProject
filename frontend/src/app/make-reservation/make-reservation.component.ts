@@ -1,0 +1,201 @@
+import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { RestaurantService } from '../services/restaurant.service';
+import { ActivatedRoute } from '@angular/router';
+import { Shape } from '../models/shape';
+import { Restaurant } from '../models/restaurant';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Reservation } from '../models/reservation';
+
+@Component({
+  selector: 'app-make-reservation',
+  templateUrl: './make-reservation.component.html',
+  styleUrls: ['./make-reservation.component.css']
+})
+export class MakeReservationComponent implements OnInit, AfterViewInit {
+  @ViewChild('myCanvas', { static: false })
+  canvas!: ElementRef;
+  private ctx!: CanvasRenderingContext2D;
+
+  reservations: Reservation[] = []
+  reservationForm: FormGroup
+  message:string = ""
+
+  id:string = ""
+  restaurantLayout:Shape[] = []
+  restaurant:Restaurant = new Restaurant()
+  submited:boolean = false
+  selectedTableId:string = ""
+
+  constructor(private restaurantService:RestaurantService, private route: ActivatedRoute,
+    private fb: FormBuilder){
+      this.reservationForm = this.fb.group({
+        date: ['', [Validators.required, this.minDateValidator()]],
+        time: ['', [Validators.required, this.minTimeValidator()]]
+      });
+  }
+
+  minDateValidator() {
+    return (control: { value: string | number | Date; }) => {
+      const selectedDate = new Date(control.value);
+      const currentDate = new Date();
+      if (selectedDate < currentDate) {
+        return { 'invalidDate': true };
+      }
+      return null;
+    };
+  }
+
+  minTimeValidator() {
+    return (control: { value: any; }) => {
+      const selectedDate = this.reservationForm?.get('date')?.value;
+      if (!selectedDate) return null;
+
+      const selectedDateTime = new Date(`${selectedDate}T${control.value}`);
+      console.log(selectedDateTime)
+      const currentDateTime = new Date();
+      if (selectedDateTime < currentDateTime) {
+        return { 'invalidTime': true };
+      }
+      return null;
+    };
+  }
+
+  ngOnInit(): void {
+    this.route.params.subscribe(params => {
+      this.id = params['restaurantId']
+    });
+
+    this.restaurantService.getRestaurantLayout(this.id).subscribe(
+      (layout)=>{
+        this.restaurantLayout = layout
+        this.drawShapes()
+      }
+    )
+
+    this.restaurantService.getRestaurantById(this.id).subscribe(
+      (rest)=>{
+        this.restaurant = rest
+      }
+    )
+  }
+
+  showLayout(){
+    if (this.reservationForm.valid) {
+      const reservation = this.reservationForm.value;
+      const dateString = `${reservation.date}T${reservation.time}`
+      this.restaurantService.getReservationsForSpecificDateTime(this.restaurant._id, dateString).subscribe(
+        (reservations)=>{
+          this.reservations = reservations
+          console.log(this.restaurantLayout)
+          this.submited = true
+          this.drawShapes()
+        }
+      )
+    }else{
+      this.message = "Morate uneti korektne podatke!"
+    }
+
+  }
+
+
+  ngAfterViewInit(): void {
+    if (this.canvas && this.canvas.nativeElement) {
+      this.ctx = this.canvas.nativeElement.getContext('2d');
+      this.setupCanvas();
+    }
+  }
+
+  setupCanvas(): void {
+    this.ctx.lineWidth = 2;
+    this.ctx.strokeStyle = 'black';
+
+    this.canvas.nativeElement.addEventListener('mousedown', this.onMouseDown.bind(this));
+  }
+
+  onMouseDown(event: MouseEvent): void {
+    if(this.submited){
+      const rect = this.canvas.nativeElement.getBoundingClientRect();
+      const mouseX = event.clientX - rect.left;
+      const mouseY = event.clientY - rect.top;
+      let clickedInsideCircle = false, clickedInsideRect = false;
+
+      for (const shape of this.restaurantLayout) {
+        if (shape?.type === 'circle') {
+          this.ctx.beginPath();
+          this.ctx.arc(shape.x, shape.y, shape.radius, 0, Math.PI * 2);
+          this.ctx.closePath();
+
+          const reserved = this.reservations.some(reservation => reservation.stoId === shape._id);
+
+          if (this.ctx.isPointInPath(mouseX, mouseY)) {
+            clickedInsideCircle = true;
+
+            if (this.selectedTableId == "" && !reserved) {
+              this.selectedTableId = shape._id;
+            }
+          }
+        }else if (shape?.type == "rectangle"){
+          if (mouseX >= shape.x && mouseX <= (shape.x + shape.width) &&
+            mouseY >= shape.y && mouseY <= (shape.y + shape.height)) {
+            clickedInsideRect = true;
+          }
+        }
+      }
+
+      if (!clickedInsideCircle && !clickedInsideRect) {
+        this.selectedTableId = "";
+      }
+
+      this.drawShapes();
+    }
+  }
+
+  drawShapes(): void {
+    this.ctx.clearRect(0, 0, this.canvas.nativeElement.width, this.canvas.nativeElement.height);
+
+    for (const shape of this.restaurantLayout) {
+      if (shape?.type === 'rectangle') {
+        this.ctx.fillStyle = 'lightblue';
+        this.ctx.fillRect(shape.x, shape.y, shape.width, shape.height);
+        this.ctx.lineWidth = 2;
+        this.ctx.strokeStyle = 'black';
+        this.ctx.strokeRect(shape.x, shape.y, shape.width, shape.height);
+
+        if (shape.vrstaPravougaonika !== 0 && shape.vrstaPravougaonika !== null) {
+          this.ctx.fillStyle = 'black';
+          this.ctx.textAlign = 'center';
+          this.ctx.textBaseline = 'middle';
+          this.ctx.font = '16px Arial';
+          this.ctx.fillText(shape.vrstaPravougaonika == 1?'Kuhinja':'Toalet', shape.x + shape.width/2, shape.y + shape.height/2);
+        }
+      } else if (shape?.type === 'circle') {
+        const reserved = this.reservations.some(reservation => reservation.stoId === shape._id);
+
+        if (this.selectedTableId === shape._id) {
+          this.ctx.fillStyle = 'green';
+        } else if (reserved) {
+          this.ctx.fillStyle = 'red';
+        } else {
+          this.ctx.fillStyle = 'orange';
+        }
+        this.ctx.beginPath();
+        this.ctx.arc(shape.x, shape.y, shape.radius, 0, Math.PI * 2);
+        this.ctx.closePath();
+        this.ctx.fill();
+
+        this.ctx.lineWidth = 2;
+        this.ctx.strokeStyle = 'black';
+        this.ctx.stroke();
+
+        if (shape.brojLjudi !== undefined && shape.brojLjudi !== 0 && !reserved) {
+          this.ctx.fillStyle = 'black';
+          this.ctx.textAlign = 'center';
+          this.ctx.textBaseline = 'middle';
+          this.ctx.font = '16px Arial';
+          this.ctx.fillText(shape.brojLjudi.toString(), shape.x, shape.y);
+        }
+      }
+    }
+  }
+
+}

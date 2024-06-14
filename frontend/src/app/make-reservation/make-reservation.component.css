@@ -1,0 +1,10 @@
+.canvas-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 40px;
+}
+
+canvas {
+  border: 1px solid #000;
+}

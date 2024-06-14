@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Restaurant } from '../models/restaurant';
 import { Observable } from 'rxjs/internal/Observable';
@@ -71,5 +71,13 @@ export class RestaurantService {
 
   getRestaurantLayout(restaurantId:string){
     return this.http.get<Shape[]>(`${this.url}/restaurant/${restaurantId}/getLayout`);
+  }
+
+  getReservationsForSpecificDateTime(restaurantId:string, dateTime:string){
+    const data = {
+      restoranId:restaurantId,
+      datumVreme:dateTime
+    }
+    return this.http.post<Reservation[]>(`${this.url}/restaurant/getReservationsForTime`, data);
   }
 }

@@ -40,4 +40,8 @@ restaurantRouter.route('/:id/getLayout').get(
     (req,res)=>new RestaurantController().getLayout(req,res)
 )
 
+restaurantRouter.route('/getReservationsForTime').post(
+    (req,res)=>new RestaurantController().getReservationsForSpecificDateTime(req,res)
+);
+
 export default restaurantRouter;

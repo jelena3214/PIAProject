@@ -11,5 +11,6 @@ export type Shape = {
   radius: number;
   brojLjudi:number;
   vrstaPravougaonika:number
+  _id:string
 } | null;
 

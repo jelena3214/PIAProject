@@ -21,6 +21,7 @@ import { AdminUpdateUserComponent } from './admin-update-user/admin-update-user.
 import { AdminWaitersComponent } from './admin-waiters/admin-waiters.component';
 import { AdminRestaurantComponent } from './admin-restaurant/admin-restaurant.component';
 import { AdminUpdateRestaurantComponent } from './admin-update-restaurant/admin-update-restaurant.component';
+import { MakeReservationComponent } from './make-reservation/make-reservation.component';
 
 @NgModule({
   declarations: [
@@ -39,7 +40,8 @@ import { AdminUpdateRestaurantComponent } from './admin-update-restaurant/admin-
     AdminUpdateUserComponent,
     AdminWaitersComponent,
     AdminRestaurantComponent,
-    AdminUpdateRestaurantComponent
+    AdminUpdateRestaurantComponent,
+    MakeReservationComponent
   ],
   imports: [
     BrowserModule,

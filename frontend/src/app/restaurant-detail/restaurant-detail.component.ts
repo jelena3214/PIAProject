@@ -20,7 +20,7 @@ interface Comment {
   styleUrls: ['./restaurant-detail.component.css']
 })
 export class RestaurantDetailComponent implements OnInit {
-  restaurant: Restaurant | undefined;
+  restaurant: Restaurant = new Restaurant();
   reservations: Reservation[] = []
   reservationForm: FormGroup
   message:string = ""
@@ -131,29 +131,42 @@ export class RestaurantDetailComponent implements OnInit {
 
         if (reservationTime >= workingHours.od && reservationTime <= workingHours.do) {
           const availableTables = this.restaurantLayout.filter(table => table?.type == 'circle' && table?.brojLjudi >= reservation.numberOfPeople);
-          if (availableTables.length > 0) {
-            const newReservation: Reservation = {
-              korIme: JSON.parse(localStorage.getItem("user") || "").korIme,
-              restoranId: this.restaurant._id,
-              uToku: true,
-              komentar: "",
-              ocena: 0,
-              datumVreme: dateString,
-              brojOsoba: reservation.numberOfPeople,
-              opis: reservation.additionalRequests
-            };
-            this.restaurantService.makeReservation(newReservation).subscribe(
-              (reservation)=>{
-                if(reservation){
-                  this.message = 'Vaša rezervacija je uspešna!';
-                }else{
-                  this.message = 'Greska pri rezervaciji.';
-                }
+          console.log(availableTables)
+          this.restaurantService.getReservationsForSpecificDateTime(this.restaurant._id, dateString).subscribe(
+            (reservations)=>{
+              const isTableAvailable = availableTables.some(table => {
+                return !reservations.some(reservation => reservation.stoId === table?._id);
+              });
+
+              console.log(reservations)
+
+              if (isTableAvailable) {
+                const newReservation: Reservation = {
+                  korIme: JSON.parse(localStorage.getItem("user") || "").korIme,
+                  restoranId: this.restaurant._id,
+                  uToku: true,
+                  komentar: "",
+                  ocena: 0,
+                  datumVreme: dateString,
+                  brojOsoba: reservation.numberOfPeople,
+                  opis: reservation.additionalRequests,
+                  stoId:""
+                };
+                this.restaurantService.makeReservation(newReservation).subscribe(
+                  (reservation)=>{
+                    if(reservation){
+                      this.message = 'Vaša rezervacija je uspešna!';
+                    }else{
+                      this.message = 'Greska pri rezervaciji.';
+                    }
+                  }
+                )
+              } else {
+                this.message = 'Nema slobodnih mesta za traženi broj ljudi i termin.';
               }
-            )
-          } else {
-            this.message = 'Nema slobodnih mesta za traženi broj ljudi i termin.';
-          }
+            }
+          )
+
         } else {
           this.message = 'Restoran ne radi u tom periodu.';
         }

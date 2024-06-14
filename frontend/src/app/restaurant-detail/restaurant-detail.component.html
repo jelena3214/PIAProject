@@ -50,5 +50,9 @@
 
       <p>{{ message }}</p>
     </div>
+
+    <div class="user-container">
+      <button type="submit" class="btn get-started-btn" [routerLink]="['/make-reservation', restaurant?._id]">Rezerviši kroz interaktivni meni</button>
+    </div>
   </section>
 </main>

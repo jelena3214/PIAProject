@@ -168,4 +168,29 @@ export class RestaurantController{
             res.json(null);
         }
     }
+
+    getReservationsForSpecificDateTime =  async (req: express.Request, res: express.Response)=>{
+        const restoranId = req.body.restoranId
+        const datumVreme = req.body.datumVreme
+
+        if (!restoranId || !datumVreme) {
+            return res.status(400).send('restoranId and datumVreme are required');
+        }
+        
+        let mx = (new Date(req.body.datumVreme)).toLocaleString('se-SE',{ timeZone: 'Europe/Paris' }) + "Z";
+        const date = new Date(mx)
+
+        const threeHoursBefore = new Date(date.getTime() - 3 * 60 * 60 * 1000);
+
+        try {
+            const reservations = await ReservationM.find({
+                restoranId: restoranId,
+                datumVreme: { $gte: threeHoursBefore, $lte: date },
+                uToku: false
+            });
+            res.json(reservations);
+        } catch (error) {
+            res.json(null)
+        }
+    }
 }

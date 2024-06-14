@@ -7,4 +7,5 @@ export class Reservation{
   datumVreme:string = ""
   brojOsoba:number = 0
   opis:string = ""
+  stoId:string = ""
 }
