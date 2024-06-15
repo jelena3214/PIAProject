@@ -2,10 +2,10 @@
   <section id="about" class="about">
     <div class="user-container">
       <div class="user-info">
-        <h2>{{restaurant?.Naziv}}</h2>
-        <p><strong>Adresa:</strong> {{restaurant?.Adresa}}</p>
-        <p><strong>Tip:</strong> {{restaurant?.Tip}}</p>
-        <p><strong>Broj Telefona:</strong> {{restaurant?.Telefon}}</p>
+        <h2>{{restaurant.Naziv}}</h2>
+        <p><strong>Adresa:</strong> {{restaurant.Adresa}}</p>
+        <p><strong>Tip:</strong> {{restaurant.Tip}}</p>
+        <p><strong>Broj Telefona:</strong> {{restaurant.Telefon}}</p>
       </div>
     </div>
     <div class="user-container">
@@ -52,7 +52,7 @@
     </div>
 
     <div class="user-container">
-      <button type="submit" class="btn get-started-btn" [routerLink]="['/make-reservation', restaurant?._id]">Rezerviši kroz interaktivni meni</button>
+      <button type="submit" class="btn get-started-btn" [routerLink]="['/make-reservation', restaurant._id]">Rezerviši kroz interaktivni meni</button>
     </div>
   </section>
 </main>

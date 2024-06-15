@@ -20,6 +20,9 @@ export class MakeReservationComponent implements OnInit, AfterViewInit {
   reservationForm: FormGroup
   message:string = ""
 
+  reservationDateTime:string = ""
+  reservationNumOfPeople:number = 0
+
   id:string = ""
   restaurantLayout:Shape[] = []
   restaurant:Restaurant = new Restaurant()
@@ -60,6 +63,56 @@ export class MakeReservationComponent implements OnInit, AfterViewInit {
     };
   }
 
+  reservationMessage:string = ""
+
+  makeReservation(){
+    if(this.submited && this.selectedTableId != ""){
+      const selectedTable = this.restaurantLayout.find(table => table?._id === this.selectedTableId);
+      const userInput = prompt('Unesite broj ljudi za stolom:', '1');
+
+      if (userInput === null) {
+        return
+      } else {
+        const numberOfPeople = parseInt(userInput, 10);
+
+        if (isNaN(numberOfPeople) || numberOfPeople <= 0) {
+          this.reservationMessage = "Unos broja ljudi nije validan!"
+          return
+        }
+
+        if(selectedTable && numberOfPeople > selectedTable?.brojLjudi){
+          this.reservationMessage = "Izabrani sto se ne može rezervisati za taj broj ljudi!"
+          return
+        }
+
+        const newReservation: Reservation = {
+          korIme: JSON.parse(localStorage.getItem("user") || "").korIme,
+          restoranId: this.restaurant._id,
+          uToku: true,
+          komentar: "",
+          ocena: 0,
+          datumVreme: this.reservationDateTime,
+          brojOsoba: numberOfPeople,
+          opis: "",
+          stoId:this.selectedTableId
+        };
+        this.restaurantService.makeReservation(newReservation).subscribe(
+          (reservation)=>{
+            if(reservation){
+              this.reservationMessage = 'Vaša rezervacija je uspešna!';
+            }else{
+              this.reservationMessage = 'Greska pri rezervaciji.';
+            }
+          }
+        )
+
+      }
+
+    }else{
+      this.reservationMessage = "Morate uneti sve potrebne podatke!"
+    }
+  }
+
   ngOnInit(): void {
     this.route.params.subscribe(params => {
       this.id = params['restaurantId']
@@ -82,8 +135,8 @@ export class MakeReservationComponent implements OnInit, AfterViewInit {
   showLayout(){
     if (this.reservationForm.valid) {
       const reservation = this.reservationForm.value;
-      const dateString = `${reservation.date}T${reservation.time}`
-      this.restaurantService.getReservationsForSpecificDateTime(this.restaurant._id, dateString).subscribe(
+      this.reservationDateTime = `${reservation.date}T${reservation.time}`
+      this.restaurantService.getReservationsForSpecificDateTime(this.restaurant._id, this.reservationDateTime).subscribe(
         (reservations)=>{
           this.reservations = reservations
           console.log(this.restaurantLayout)

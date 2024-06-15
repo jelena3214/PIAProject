@@ -8,8 +8,8 @@
           <li *ngFor="let day of daysOfWeek">
             <ng-container *ngIf="restaurant.RadniDani[day.key]?.radan">
               <strong>{{ day.name }}:</strong>
-              {{ restaurant.RadniDani[day.key]?.od || '00:00' }} -
-              {{ restaurant.RadniDani[day.key]?.do || '00:00' }}
+              {{ restaurant.RadniDani[day.key].od || '00:00' }} -
+              {{ restaurant.RadniDani[day.key].do || '00:00' }}
             </ng-container>
             <ng-container *ngIf="!restaurant.RadniDani[day.key]?.radan">
               <strong>{{ day.name }}:</strong> Neradni dan

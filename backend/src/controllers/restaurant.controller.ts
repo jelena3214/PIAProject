@@ -59,7 +59,8 @@ export class RestaurantController{
             ocena: req.body.ocena,
             datumVreme: new Date(mx),
             brojOsoba: req.body.brojOsoba,
-            opis: req.body.opis
+            opis: req.body.opis,
+            stoId: req.body.stoId
         });
         console.log(newReservation.datumVreme)
         newReservation.save().then(reservation => {
