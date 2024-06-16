@@ -3,6 +3,7 @@ import RestaurantM from '../models/restaurant'
 import ReservationM from '../models/reservation'
 import RestaurantLayoutM from '../models/restaurantLayout'
 import RestaurantDishM from '../models/restaurantDish'
+import OrderM from '../models/order'
 
 export class RestaurantController{
     getNumberOfRestaurants = (req: express.Request, res: express.Response)=>{
@@ -206,5 +207,26 @@ export class RestaurantController{
         } catch (error) {
             res.json(null);
         }
+    }
+
+    makeAnOrder = (req: express.Request, res: express.Response)=>{
+        let mx = (new Date(req.body.datum)).toLocaleString('se-SE',{ timeZone: 'Europe/Paris' }) + "Z";
+        console.log(mx)
+        const newOrder = new OrderM({
+            korIme: req.body.korIme,
+            restoranId: req.body.restoranId,
+            vremeDostave:req.body.vremeDostave,
+            status:req.body.status,
+            naruceno:req.body.naruceno,
+            datum:new Date(mx),
+            iznos:req.body.iznos
+        });
+        newOrder.save().then(order => {
+            res.json(order);
+        })
+        .catch(err => {
+            console.error(err);
+            res.json(null);
+        });
     }
 }

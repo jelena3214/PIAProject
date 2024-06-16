@@ -48,4 +48,8 @@ restaurantRouter.route('/:id/getDishes').get(
     (req,res)=>new RestaurantController().getDishes(req,res)
 );
 
+restaurantRouter.route('/makeAnOrder').post(
+    (req,res)=>new RestaurantController().makeAnOrder(req,res)
+)
+
 export default restaurantRouter;

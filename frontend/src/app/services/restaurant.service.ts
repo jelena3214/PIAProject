@@ -6,6 +6,7 @@ import { Reservation } from '../models/reservation';
 import { Msg } from '../models/msg';
 import { Shape } from '../models/shape';
 import { Dish } from '../models/dish';
+import { Order } from '../models/order';
 
 @Injectable({
   providedIn: 'root'
@@ -88,5 +89,9 @@ export class RestaurantService {
 
   getDishes(restaurantId:string){
     return this.http.get<Dish[]>(`${this.url}/restaurant/${restaurantId}/getDishes`);
+  }
+
+  makeAnOrder(order: Order): Observable<any> {
+    return this.http.post(`${this.url}/restaurant/makeAnOrder`, order);
   }
 }
