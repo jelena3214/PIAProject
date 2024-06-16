@@ -1,6 +1,6 @@
 export class Dish {
-  name: string = "";
-  price: number = 0;
-  ingredients: string[] = [];
-  image: File | null = null
+  naziv: string = "";
+  cena: number = 0;
+  sastojci: string[] = [];
+  slika: File | null = null
 }

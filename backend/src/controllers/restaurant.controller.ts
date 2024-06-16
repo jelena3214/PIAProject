@@ -2,6 +2,7 @@ import express from 'express'
 import RestaurantM from '../models/restaurant'
 import ReservationM from '../models/reservation'
 import RestaurantLayoutM from '../models/restaurantLayout'
+import RestaurantDishM from '../models/restaurantDish'
 
 export class RestaurantController{
     getNumberOfRestaurants = (req: express.Request, res: express.Response)=>{
@@ -192,6 +193,18 @@ export class RestaurantController{
             res.json(reservations);
         } catch (error) {
             res.json(null)
+        }
+    }
+
+    
+    getDishes =  async (req: express.Request, res: express.Response)=>{
+        const restaurantId = req.params.id;
+
+        try {
+            const dishes = await RestaurantDishM.findOne({restoranId:restaurantId});
+            res.json(dishes?.jela);
+        } catch (error) {
+            res.json(null);
         }
     }
 }

@@ -85,4 +85,8 @@ export class RestaurantService {
   saveDishes(formData: FormData){
     return this.http.post<any>(`${this.url}/restaurant/saveDishes`, formData);
   }
+
+  getDishes(restaurantId:string){
+    return this.http.get<Dish[]>(`${this.url}/restaurant/${restaurantId}/getDishes`);
+  }
 }

@@ -19,6 +19,8 @@ import { AdminRestaurantComponent } from './admin-restaurant/admin-restaurant.co
 import { AdminUpdateRestaurantComponent } from './admin-update-restaurant/admin-update-restaurant.component';
 import { MakeReservationComponent } from './make-reservation/make-reservation.component';
 import { AddDishesComponent } from './add-dishes/add-dishes.component';
+import { GuestDeliveryComponent } from './guest-delivery/guest-delivery.component';
+import { MakeDeliveryRequestComponent } from './make-delivery-request/make-delivery-request.component';
 
 const routes: Routes = [
   {path:"", component:StartingPageComponent},
@@ -38,6 +40,8 @@ const routes: Routes = [
   { path: 'admin-update-restaurant/:restaurantId', component: AdminUpdateRestaurantComponent, canActivate: [adminLoginGuard]  },
   { path: 'add-dishes/:restaurantId', component: AddDishesComponent, canActivate: [adminLoginGuard]  },
   { path: 'make-reservation/:restaurantId', component: MakeReservationComponent, canActivate: [guestGuardGuard]  },
+  { path: 'make-delivery-request/:restaurantId', component: MakeDeliveryRequestComponent, canActivate: [guestGuardGuard]  },
+  { path: 'guestDelivery', component: GuestDeliveryComponent, canActivate: [guestGuardGuard]  }
 ];
 
 @NgModule({
