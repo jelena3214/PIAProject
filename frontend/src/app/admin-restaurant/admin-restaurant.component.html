@@ -67,9 +67,13 @@
     <div class="canvas-container">
       <div class="controls">
         <button type="submit" class="btn get-started-btn" (click)="addRestaurant()">Potvrdi</button>
-        <br>
         <div class="message">{{ message }}</div>
       </div>
+    </div>
+
+    <div class="user-container">
+      <h2>Dodajte jela restorana</h2>
+      <button type="submit" class="btn get-started-btn" [disabled]="addedRestaurant == ''" [routerLink]="['/add-dishes', addedRestaurant]">Unesi jela</button>
     </div>
 
   </section>

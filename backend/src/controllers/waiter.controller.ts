@@ -37,12 +37,12 @@ export class WaiterController{
         // provera username
         UserM.findOne({korIme:user.korIme}).then((user1)=>{
             if(user1){
-                res.json({"msg":"exists", "code":"2"});
+                res.json({"mess":"exists", "code":"2"});
                 return;
             }else{
                 UserM.findOne({mejl:user.mejl}).then((user2)=>{
                     if(user2){
-                        res.json({"msg":"exists", "code":"3"});
+                        res.json({"mess":"exists", "code":"3"});
                     }else{
                         let newWaiter = new UserM();
                         newWaiter.ime = user.ime
@@ -62,17 +62,17 @@ export class WaiterController{
                         newWaiter.blokiran = user.blokiran
 
                         newWaiter.save().then((user)=>{
-                            res.json({"msg":"ok", "code":"0"});
+                            res.json({"mess":"ok", "code":"0"});
                         }).catch((err)=>{
-                            res.json({"msg":"error", "code":"1"});
+                            res.json({"mess":"error", "code":"1"});
                         })
                     }
                 }).catch((err)=>{
-                    res.json({"msg":"error", "code":"1"});
+                    res.json({"mess":"error", "code":"1"});
                 })
             }
         }).catch((err)=>{
-            res.json({"msg":"error", "code":"1"});
+            res.json({"mess":"error", "code":"1"});
         })
 
         

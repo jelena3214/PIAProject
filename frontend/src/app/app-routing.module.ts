@@ -18,6 +18,7 @@ import { AdminWaitersComponent } from './admin-waiters/admin-waiters.component';
 import { AdminRestaurantComponent } from './admin-restaurant/admin-restaurant.component';
 import { AdminUpdateRestaurantComponent } from './admin-update-restaurant/admin-update-restaurant.component';
 import { MakeReservationComponent } from './make-reservation/make-reservation.component';
+import { AddDishesComponent } from './add-dishes/add-dishes.component';
 
 const routes: Routes = [
   {path:"", component:StartingPageComponent},
@@ -35,6 +36,7 @@ const routes: Routes = [
   { path: 'adminWaiters', component: AdminWaitersComponent, canActivate: [adminLoginGuard]  },
   { path: 'adminRestaurant', component: AdminRestaurantComponent, canActivate: [adminLoginGuard]  },
   { path: 'admin-update-restaurant/:restaurantId', component: AdminUpdateRestaurantComponent, canActivate: [adminLoginGuard]  },
+  { path: 'add-dishes/:restaurantId', component: AddDishesComponent, canActivate: [adminLoginGuard]  },
   { path: 'make-reservation/:restaurantId', component: MakeReservationComponent, canActivate: [guestGuardGuard]  },
 ];
 

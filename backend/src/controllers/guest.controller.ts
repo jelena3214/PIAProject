@@ -37,12 +37,12 @@ export class GuestController{
         // provera username
         UserM.findOne({korIme:user.korIme}).then((user1)=>{
             if(user1){
-                res.json({"msg":"exists", "code":"2"});
+                res.json({"mess":"exists", "code":"2"});
                 return;
             }else{
                 UserM.findOne({mejl:user.mejl}).then((user2)=>{
                     if(user2){
-                        res.json({"msg":"exists", "code":"3"});
+                        res.json({"mess":"exists", "code":"3"});
                     }else{
                         let newGuest = new UserM();
                         newGuest.ime = user.ime
@@ -62,17 +62,17 @@ export class GuestController{
                         newGuest.blokiran = user.blokiran
 
                         newGuest.save().then((user)=>{
-                            res.json({"msg":"ok", "code":"0"});
+                            res.json({"mess":"ok", "code":"0"});
                         }).catch((err)=>{
-                            res.json({"msg":"error", "code":"1"});
+                            res.json({"mess":"error", "code":"1"});
                         })
                     }
                 }).catch((err)=>{
-                    res.json({"msg":"error", "code":"1"});
+                    res.json({"mess":"error", "code":"1"});
                 })
             }
         }).catch((err)=>{
-            res.json({"msg":"error", "code":"1"});
+            res.json({"mess":"error", "code":"1"});
         })
 
         
@@ -107,12 +107,12 @@ export class GuestController{
     //     UserM.findOne({korIme: usernameP}).then((user)=>{
     //         if(user){
     //             if(user.bezPitanje?.odgovor == answer){
-    //                 res.json({"msg":"ok", "code":"0"});
+    //                 res.json({"mess":"ok", "code":"0"});
     //             }else{
-    //                 res.json({"msg":"error", "code":"1"});
+    //                 res.json({"mess":"error", "code":"1"});
     //             }
     //         }else{
-    //             res.json({"msg":"error", "code":"1"});
+    //             res.json({"mess":"error", "code":"1"});
     //         }
     //     }).catch((err)=>{
     //         console.log(err)
@@ -123,9 +123,9 @@ export class GuestController{
     //     let usernameP = req.body.username;
     //     let passwordP = req.body.newPassword;
     //     UserM.updateOne({korIme: usernameP},{lozinka: encryptPassword(passwordP)}).then((user)=>{
-    //         res.json({"msg":"ok", "code":"0"});
+    //         res.json({"mess":"ok", "code":"0"});
     //     }).catch((err)=>{
-    //         res.json({"msg":"error", "code":"1"});
+    //         res.json({"mess":"error", "code":"1"});
     //     })
     // }
 

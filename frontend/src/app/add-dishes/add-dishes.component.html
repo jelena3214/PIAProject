@@ -1,0 +1,42 @@
+<main id="main">
+  <section id="about" class="about">
+    <div class="user-container">
+      <form [formGroup]="dishesForm" (ngSubmit)="submitForm()" enctype="multipart/form-data">
+        <div formArrayName="dishes">
+          <div *ngFor="let dishGroup of dishes.controls; let i = index" [formGroupName]="i" class="mb-3">
+            <h4>Jelo {{ i + 1 }}</h4>
+            <div class="form-group">
+              <label for="name">Naziv jela:</label>
+              <input type="text" id="name" class="form-control" formControlName="name">
+            </div>
+            <div class="form-group">
+              <label for="price">Cena:</label>
+              <input type="number" id="price" class="form-control" formControlName="price">
+            </div>
+            <div class="form-group">
+              <label for="ingredients">Sastojci:</label>
+              <div formArrayName="ingredients">
+                <div *ngFor="let ingredient of getIngredients(i); let j = index" class="d-flex mb-2">
+                  <input type="text" class="form-control me-2" [formControlName]="j">
+                  <button type="button" class="btn btn-danger" (click)="removeIngredient(i, j)">Ukloni</button>
+                </div>
+                <button type="button" class="btn get-started-btn" (click)="addIngredient(i)" style="margin: 0;">Dodaj sastojak</button>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="image">Slika:</label>
+              <input type="file" id="image" class="form-control-file" (change)="onFileChange($event, i)">
+            </div>
+            <button type="button" class="btn btn-danger" (click)="removeDish(i)">Ukloni jelo</button>
+          </div>
+        </div>
+        <button type="button" class="btn get-started-btn mt-3" (click)="addDish()" style="margin: 0;">Dodaj novo jelo</button>
+        <br>
+        <button type="submit" class="btn get-started-btn mt-3" style="margin: 0;">Sačuvaj jela</button>
+        <div>
+          {{message}}
+        </div>
+      </form>
+    </div>
+  </section>
+</main>

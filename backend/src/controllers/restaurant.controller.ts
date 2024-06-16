@@ -79,7 +79,7 @@ export class RestaurantController{
 
         RestaurantM.findOne({ Konobari: { $in: [konobarUsername] } }).then(rest =>{
             if(rest){
-                res.json({"msg":"waiter already busy", "code":"2"});
+                res.json({"mess":"waiter already busy", "code":"2"});
                 return;
             }else{
                 RestaurantM.findById(restoranId).then(
@@ -88,28 +88,28 @@ export class RestaurantController{
                             restaurant.Konobari.push(konobarUsername);
                             restaurant.save().then(
                                 (ss)=>{
-                                    res.json({"msg":"ok", "code":"0"});
+                                    res.json({"mess":"ok", "code":"0"});
                                     return;
                                 }
                             ).catch(err => {
-                                res.json({"msg":"error", "code":"1"});
+                                res.json({"mess":"error", "code":"1"});
                                 return;
                             });
                             
                         }else{
-                            res.json({"msg":"nonexistant restaurant", "code":"3"});
+                            res.json({"mess":"nonexistant restaurant", "code":"3"});
                             return;
                         }
                     }
                 ).catch(error => {
                     console.error("Greška prilikom dodavanja konobara u restoran:", error);
-                    res.json({"msg":"error", "code":"1"});
+                    res.json({"mess":"error", "code":"1"});
                     return;
                 });
             }
         }).catch(error => {
             console.error("Greška prilikom dodavanja konobara u restoran:", error);
-            res.json({"msg":"error", "code":"1"});
+            res.json({"mess":"error", "code":"1"});
         });
             
 
@@ -130,10 +130,10 @@ export class RestaurantController{
             });
             await newLayout.save();
         
-            res.json({"msg":"ok", "code":"0"});
+            res.json({"mess":savedRestaurant._id, "code":"0"});
         }catch(err){
             console.log(err)
-            res.json({"msg":"error", "code":"1"});
+            res.json({"mess":"error", "code":"1"});
         }
     }
 
@@ -150,12 +150,12 @@ export class RestaurantController{
             );
 
             if (!updatedRestaurant) {
-                res.json({"msg":"restaurant not found", "code":"1"});
+                res.json({"mess":"restaurant not found", "code":"1"});
             }
 
-            res.json({"msg":"ok", "code":"0"});
+            res.json({"mess":"ok", "code":"0"});
         } catch (error) {
-            res.json({"msg":"error", "code":"1"});
+            res.json({"mess":"error", "code":"1"});
         }
     }
 

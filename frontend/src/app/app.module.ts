@@ -22,6 +22,7 @@ import { AdminWaitersComponent } from './admin-waiters/admin-waiters.component';
 import { AdminRestaurantComponent } from './admin-restaurant/admin-restaurant.component';
 import { AdminUpdateRestaurantComponent } from './admin-update-restaurant/admin-update-restaurant.component';
 import { MakeReservationComponent } from './make-reservation/make-reservation.component';
+import { AddDishesComponent } from './add-dishes/add-dishes.component';
 
 @NgModule({
   declarations: [
@@ -41,7 +42,8 @@ import { MakeReservationComponent } from './make-reservation/make-reservation.co
     AdminWaitersComponent,
     AdminRestaurantComponent,
     AdminUpdateRestaurantComponent,
-    MakeReservationComponent
+    MakeReservationComponent,
+    AddDishesComponent
   ],
   imports: [
     BrowserModule,

@@ -206,6 +206,8 @@ export class AdminRestaurantComponent implements OnInit, AfterViewInit {
     }
   }
 
+  addedRestaurant:string = ""
+
   addRestaurant(){
     if(!this.validateAndClear())return;
 
@@ -243,6 +245,7 @@ export class AdminRestaurantComponent implements OnInit, AfterViewInit {
       (msg) => {
         if(msg.code == 0){
           this.message = "Uspešno dodat restoran!"
+          this.addedRestaurant = msg.mess
         }else{
           this.message = "Greška pri unosu restorana!"
         }

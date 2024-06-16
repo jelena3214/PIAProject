@@ -5,6 +5,7 @@ import { Observable } from 'rxjs/internal/Observable';
 import { Reservation } from '../models/reservation';
 import { Msg } from '../models/msg';
 import { Shape } from '../models/shape';
+import { Dish } from '../models/dish';
 
 @Injectable({
   providedIn: 'root'
@@ -79,5 +80,9 @@ export class RestaurantService {
       datumVreme:dateTime
     }
     return this.http.post<Reservation[]>(`${this.url}/restaurant/getReservationsForTime`, data);
+  }
+
+  saveDishes(formData: FormData){
+    return this.http.post<any>(`${this.url}/restaurant/saveDishes`, formData);
   }
 }

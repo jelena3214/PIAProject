@@ -46,10 +46,10 @@ export class UserController{
 
         UserM.updateOne({korIme: usernameP}, {lozinka: encryptPassword(passwordP)}).then(
             (user)=>{
-                res.json({"msg":"ok", "code":"0"})
+                res.json({"mess":"ok", "code":"0"})
         }).catch((err)=>{
             console.log(err);
-            res.json({"msg":"error", "code":"1"});
+            res.json({"mess":"error", "code":"1"});
         })
     }
 
@@ -57,10 +57,10 @@ export class UserController{
         const updatedUser = req.body;
         UserM.updateOne({ _id: updatedUser._id }, { $set: updatedUser }).then(
             (user)=>{
-                res.json({"msg":"ok", "code":"0"})
+                res.json({"mess":"ok", "code":"0"})
         }).catch((err)=>{
             console.log(err);
-            res.json({"msg":"error", "code":"1"});
+            res.json({"mess":"error", "code":"1"});
         })
     }
 

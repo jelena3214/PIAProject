@@ -7,6 +7,7 @@ import guestRouter from './routers/guest.router';
 import restaurantRouter from './routers/restaurant.router';
 import waiterRouter from './routers/waiter.router';
 import reservationRouter from './routers/reservation.router';
+import RestaurantDishM from './models/restaurantDish'
 
 const app = express();
 app.use(cors())
@@ -66,6 +67,70 @@ router.post('/uploadPhoto',  upload.single('file'), (req, res) => {
     console.log(filename)
     console.log(user)
 });
+
+router.post('/restaurant/saveDishes', upload.array('images', 10), async (req, res) => {
+    const dishesData = JSON.parse(req.body.dishesData);
+    const restaurantId = req.body.restaurantId;
+    console.log(dishesData)
+    console.log(restaurantId)
+    try{
+        if (req.files && Array.isArray(req.files)) {
+            const uploadedImages = req.files.map(file => {
+                const originalFilename = file.filename;
+                const fileExtension = path.extname(originalFilename);
+                const baseName = path.basename(originalFilename, fileExtension);
+                const newFilename = `${restaurantId}_${baseName}${fileExtension}`;
+                const newPath = path.join('upload', newFilename);
+        
+                // Preimenujemo fajl
+                try {
+                  fs.renameSync(path.join('upload', originalFilename), newPath);
+                  console.log(`File renamed to: ${newFilename}`);
+                } catch (err) {
+                  console.error(`Error renaming file: ${err}`);
+                }
+        
+                return {
+                  filename: newFilename,
+                  path: newPath
+                };
+            });
+    
+            console.log('Uploaded images:', uploadedImages);
+
+            const dishesAdd: any[] = [];
+            for (let i = 0; i < dishesData.length; i++) {
+                const dishData = dishesData[i]
+                const { name, price, ingredients } = dishData;
+
+                const imagePath = uploadedImages[i].filename
+
+                const newDish = {
+                    naziv: name,
+                    cena: price,
+                    sastojci: ingredients,
+                    slika: imagePath
+                };
+
+                dishesAdd.push(newDish);
+            }
+
+            console.log(dishesAdd)
+
+            const newDishPlan = new RestaurantDishM({
+                restoranId: restaurantId,
+                jela: dishesAdd
+            });
+
+            await newDishPlan.save();
+            res.json({"mess":"ok", "code":"0"});
+        }
+    }catch{
+        res.json({"mess":"error", "code":"2"});
+    }
+    
+});
+
 
 app.use("/" ,router)
 app.listen(4000, () => console.log(`Express server running on port 4000`));
