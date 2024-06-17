@@ -10,7 +10,8 @@ let orderSchema = new Schema(
     status:String,
     naruceno:Array,
     datum:Date,
-    iznos:Number
+    iznos:Number,
+    datumDostave:Date
   },
   {
     versionKey:false

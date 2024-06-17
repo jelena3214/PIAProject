@@ -1,1 +1,20 @@
-<p>guest-delivery works!</p>
+<main id="main">
+  <section id="current-orders" class="orders-section" style="margin-top: 100px;">
+    <h2>Aktuelne dostave</h2>
+    <div *ngFor="let order of currentOrders" class="order-item">
+      <p>Restoran: {{ getRestaurantName(order.restoranId) }}</p>
+      <p>Status narudžbine: {{ getStatus(order.status) }}</p>
+      <p *ngIf="order.status === 'P'">Procenjeno vreme dostave: {{ getDeliveryTime(order.vremeDostave) }}</p>
+    </div>
+  </section>
+
+  <section id="previous-orders" class="orders-section">
+    <h2>Arhiva dostava</h2>
+    <div *ngFor="let order of previousOrders" class="order-item">
+      <p *ngIf="order.status != 'O'">Datum dostave: {{ order.datumDostave | date }}</p>
+      <p>Status narudžbine: {{ getStatus(order.status) }}</p>
+      <p>Iznos računa: {{ order.iznos | currency:'RSD':'symbol':'1.2-2' }}</p>
+      <p>Restoran: {{ getRestaurantName(order.restoranId) }}</p>
+    </div>
+  </section>
+</main>

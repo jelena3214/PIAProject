@@ -219,7 +219,8 @@ export class RestaurantController{
             status:req.body.status,
             naruceno:req.body.naruceno,
             datum:new Date(mx),
-            iznos:req.body.iznos
+            iznos:req.body.iznos,
+            datumDostave:null
         });
         newOrder.save().then(order => {
             res.json(order);

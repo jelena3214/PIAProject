@@ -6,4 +6,5 @@ export class Order{
   naruceno: { naziv: string, kolicina: number }[] = []
   datum:Date = new Date()
   iznos:number = 0
+  datumDostave:Date = new Date() // ppunjava tek konobar kada potvrdi dostavu
 }
