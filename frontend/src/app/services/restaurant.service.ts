@@ -94,4 +94,12 @@ export class RestaurantService {
   makeAnOrder(order: Order): Observable<any> {
     return this.http.post(`${this.url}/restaurant/makeAnOrder`, order);
   }
+
+  cancelReservation(reservationId: string): Observable<Reservation> {
+    return this.http.put<Reservation>(`${this.url}/reservation/cancelReservation/${reservationId}`, {});
+  }
+
+  updateReservation(reservation: Reservation): Observable<Reservation> {
+    return this.http.put<Reservation>(`${this.url}/reservation/${reservation._id}/updateReservation`, reservation);
+  }
 }

@@ -43,4 +43,39 @@ export class ReservationController{
             res.json(null);
         });
     };
+
+    cancelReservation = async (req: express.Request, res: express.Response)=>{
+        try {
+            const reservation = await ReservationM.findByIdAndUpdate(req.params.id, { uToku: false }, { new: true } );
+            if (!reservation) {
+                res.json(null);
+                return
+            }
+            res.json(reservation);
+        } catch (error) {
+            res.json(null)
+        }
+    }
+
+    updateReservation = async (req: express.Request, res: express.Response)=>{
+        try {
+            const reservationId = req.params.id;
+            const { komentar, ocena } = req.body;
+        
+            const updatedReservation = await ReservationM.findByIdAndUpdate(
+                reservationId,
+                { komentar, ocena },
+                { new: true }
+            );
+        
+            if (!updatedReservation) {
+                return res.json(null);
+            }
+        
+            res.json(updatedReservation);
+        } catch (error) {
+            console.error('Error updating reservation:', error);
+            res.status(500).json(null);
+        }
+    }
 }

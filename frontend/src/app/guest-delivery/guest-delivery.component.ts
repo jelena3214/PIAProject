@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Order } from '../models/order';
 import { RestaurantService } from '../services/restaurant.service';
-import { UserService } from '../services/user.service';
+import { GuestService } from '../services/guest.service';
 
 @Component({
   selector: 'app-guest-delivery',
@@ -15,12 +15,12 @@ export class GuestDeliveryComponent implements OnInit{
   previousOrders: Order[] = [];
   restaurantsMap: { [key: string]: string } = {};
 
-  constructor(private restaurantService:RestaurantService, private userService:UserService){
+  constructor(private restaurantService:RestaurantService, private guestService:GuestService){
 
   }
 
   ngOnInit(): void {
-    this.userService.getAllOrders(JSON.parse(localStorage.getItem("user") || "").korIme).subscribe(
+    this.guestService.getAllOrders(JSON.parse(localStorage.getItem("user") || "").korIme).subscribe(
       (orders)=>{
         this.allDeliveries = orders
         this.filterOrders()

@@ -142,6 +142,7 @@ export class RestaurantDetailComponent implements OnInit {
 
               if (isTableAvailable) {
                 const newReservation: Reservation = {
+                  _id:"",
                   korIme: JSON.parse(localStorage.getItem("user") || "").korIme,
                   restoranId: this.restaurant._id,
                   uToku: true,
@@ -150,7 +151,8 @@ export class RestaurantDetailComponent implements OnInit {
                   datumVreme: dateString,
                   brojOsoba: reservation.numberOfPeople,
                   opis: reservation.additionalRequests,
-                  stoId:""
+                  stoId:"",
+                  pojavioSe:false
                 };
                 this.restaurantService.makeReservation(newReservation).subscribe(
                   (reservation)=>{

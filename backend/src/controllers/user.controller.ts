@@ -1,6 +1,7 @@
 import express from 'express'
 import UserM from '../models/user'
 import OrderM from '../models/order'
+import ReservationM from '../models/reservation'
 import crypto from 'crypto';
 
 function encryptPassword(password: string): string {
@@ -109,16 +110,5 @@ export class UserController{
             console.error('Greška pri promeri lozinke:', err);
             res.status(500).json({ error: 'Greška'});
         });
-    }
-
-    getAllOrders =  async (req: express.Request, res: express.Response)=>{
-        const username = req.params.username;
-
-        try {
-            const orders = await OrderM.find({korIme:username});
-            res.json(orders);
-        } catch (error) {
-            res.json(null);
-        }
     }
 }

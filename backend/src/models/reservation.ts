@@ -12,7 +12,8 @@ let reservationSchema = new Schema(
     datumVreme:Date,
     brojOsoba:Number,
     opis:String,
-    stoId:String
+    stoId:String,
+    pojavioSe:Boolean
   },
   {
     versionKey:false

@@ -1,5 +1,7 @@
 import express from 'express'
 import UserM from '../models/user'
+import OrderM from '../models/order'
+import ReservationM from '../models/reservation'
 
 interface User {
     ime: string;
@@ -100,78 +102,25 @@ export class GuestController{
         });
     }
 
-    // checkAnswer = (req: express.Request, res: express.Response)=>{
-    //     let usernameP = req.body.username;
-    //     let answer = req.body.answer;
-    
-    //     UserM.findOne({korIme: usernameP}).then((user)=>{
-    //         if(user){
-    //             if(user.bezPitanje?.odgovor == answer){
-    //                 res.json({"mess":"ok", "code":"0"});
-    //             }else{
-    //                 res.json({"mess":"error", "code":"1"});
-    //             }
-    //         }else{
-    //             res.json({"mess":"error", "code":"1"});
-    //         }
-    //     }).catch((err)=>{
-    //         console.log(err)
-    //     })
-    // }
+    getAllOrders =  async (req: express.Request, res: express.Response)=>{
+        const username = req.params.username;
 
-    // changePassword = (req: express.Request, res: express.Response)=>{
-    //     let usernameP = req.body.username;
-    //     let passwordP = req.body.newPassword;
-    //     UserM.updateOne({korIme: usernameP},{lozinka: encryptPassword(passwordP)}).then((user)=>{
-    //         res.json({"mess":"ok", "code":"0"});
-    //     }).catch((err)=>{
-    //         res.json({"mess":"error", "code":"1"});
-    //     })
-    // }
+        try {
+            const orders = await OrderM.find({korIme:username});
+            res.json(orders);
+        } catch (error) {
+            res.json(null);
+        }
+    }
 
-    // getInfo = async (req: express.Request, res: express.Response) => {
-    //     try {
-    //       const totalStudents = await UserM.countDocuments({ tip: 'student' }); // Broj učenika
-    //       const totalActiveTeachers = await UserM.countDocuments({ tip: 'nastavnik', aktivan: true }); // Broj aktivnih nastavnika
-    //       res.json({ totalStudents, totalActiveTeachers });
-    //     } catch (error) {
-    //       console.error('Error fetching general info:', error);
-    //       res.status(500).json({ error: 'Internal server error' });
-    //     }
-    // };
+    getAllReservations =  async (req: express.Request, res: express.Response)=>{
+        const username = req.params.username;
 
-
-    // getTeachersPerSubject = async (req: express.Request, res: express.Response) => {
-    //     try {
-    //         // Pronalaženje svih nastavnika
-    //         const nastavnici = await UserM.find({ tip: 'nastavnik' });
-    
-    //         // Formiranje liste predmeta sa listom trenutno angažovanih nastavnika po predmetu
-    //         interface PredmetNastavnik {
-    //             predmet: string;
-    //             nastavnici: { ime: string; prezime: string }[];
-    //         }
-              
-    //         const predmeti: PredmetNastavnik[] = [];
-            
-    //         nastavnici.forEach(nastavnik => {
-    //             if(nastavnik){
-    //                 nastavnik.nastavnikPitanja?.zeljeniPredmeti.forEach(predmet => {
-    //                     const index = predmeti.findIndex(item => item.predmet === predmet);
-    //                     if (index !== -1) {
-    //                         predmeti[index].nastavnici.push({ ime: nastavnik.ime? nastavnik.ime:"", prezime: nastavnik.prezime?nastavnik.prezime:"" });
-    //                     } else {
-    //                         predmeti.push({ predmet: predmet, nastavnici: [{ ime: nastavnik.ime?nastavnik.ime:"", prezime: nastavnik.prezime?nastavnik.prezime:"" }] });
-    //                     }
-    //                 });
-    //             }
-    //         });
-    
-    //         // Slanje liste predmeta sa listom trenutno angažovanih nastavnika po predmetu
-    //         res.json({ success: true, predmeti });
-    //     } catch (err) {
-    //         // Slanje odgovora u slučaju greške
-    //         res.status(500).json({ success: false, message: "greska" });
-    //     }
-    // };
+        try {
+            const reservations = await ReservationM.find({korIme:username});
+            res.json(reservations);
+        } catch (error) {
+            res.json(null);
+        }
+    }
 }

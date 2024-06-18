@@ -1,0 +1,77 @@
+<main id="main">
+  <section id="current-reservations" class="reservations-section" style="margin-top: 100px;">
+    <h2>Aktuelne rezervacije</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Restoran</th>
+          <th>Adresa restorana</th>
+          <th>Datum i vreme</th>
+          <th>Opcije</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let reservation of currentReservations">
+          <td>{{ getRestaurantName(reservation.restoranId) }}</td>
+          <td>{{ getRestaurantAddress(reservation.restoranId) }}</td>
+          <td>{{ formatDateTime(reservation.datumVreme) }}</td>
+          <td>
+            <button *ngIf="canCancelReservation(reservation)" (click)="cancelReservation(reservation)" class="btn get-started-btn">Otkaži</button>
+            <p *ngIf="!canCancelReservation(reservation)">Ne možete otkazati rezervaciju</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section id="past-reservations" class="reservations-section">
+    <h2>Arhiva rezervacija</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Datum rezervisanja</th>
+          <th>Restoran</th>
+          <th>Komentar</th>
+          <th>Ocena</th>
+          <th>Opcije</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let reservation of pastReservations">
+          <td>{{ formatDateTime(reservation.datumVreme) }}</td>
+          <td>{{ getRestaurantName(reservation.restoranId) }}</td>
+          <td>{{ reservation.komentar }}</td>
+          <td>{{ reservation.ocena }}</td>
+          <td>
+            <button *ngIf="canRateReservation(reservation)" (click)="openRatingForm(reservation)" class="btn get-started-btn">Oceni</button>
+            <p *ngIf="!canRateReservation(reservation)">Ne možete oceniti restoran</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- Rating Form Modal -->
+  <div *ngIf="selectedReservation != null" class="modal">
+    <div class="modal-content">
+      <h3>Ocena rezervacije</h3>
+      <p>Restoran: {{ getRestaurantName(selectedReservation.restoranId) }}</p>
+      <p>Adresa: {{ getRestaurantAddress(selectedReservation.restoranId) }}</p>
+      <label for="rating">Ocena:</label>
+      <div class="star-rating">
+        <span *ngFor="let star of stars; let i = index"
+              [ngClass]="{'filled': i < ocena}"
+              (click)="setRating(i + 1)">
+          &#9733;
+        </span>
+      </div>
+      <br>
+      <label for="comment">Komentar:</label>
+      <textarea id="comment" [(ngModel)]="komentar"></textarea>
+      <br>
+      <button (click)="submitRating()" class="submit">Pošalji</button>
+      <button (click)="selectedReservation = null" class="close">Otkaži</button>
+    </div>
+  </div>
+
+</main>

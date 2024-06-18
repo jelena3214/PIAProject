@@ -2,6 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { User } from '../models/user';
 import { Msg } from '../models/msg';
+import { Order } from '../models/order';
+import { Reservation } from '../models/reservation';
 
 @Injectable({
   providedIn: 'root'
@@ -25,5 +27,13 @@ export class GuestService {
 
   getAllGuests(){
     return this.http.get<User[]>(`${this.url}/guest/getAll`);
+  }
+
+  getAllOrders(username:string){
+    return this.http.get<Order[]>(`${this.url}/guest/${username}/getAllOrders`);
+  }
+
+  getAllReservations(username:string){
+    return this.http.get<Reservation[]>(`${this.url}/guest/${username}/getAllReservations`);
   }
 }

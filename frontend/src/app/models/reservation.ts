@@ -1,4 +1,5 @@
 export class Reservation{
+  _id:string = ""
   korIme:string = ""
   restoranId:string = ""
   uToku:boolean = false
@@ -8,4 +9,5 @@ export class Reservation{
   brojOsoba:number = 0
   opis:string = ""
   stoId:string = ""
+  pojavioSe:boolean = false
 }

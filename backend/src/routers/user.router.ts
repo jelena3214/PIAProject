@@ -31,8 +31,4 @@ userRouter.route("/getUserByUsername").post(
     (req,res)=>new UserController().getUserByUsername(req,res)
 )
 
-userRouter.route('/:username/getAllOrders').get(
-    (req,res)=>new UserController().getAllOrders(req,res)
-);
-
 export default userRouter;

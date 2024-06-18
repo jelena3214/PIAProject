@@ -86,6 +86,7 @@ export class MakeReservationComponent implements OnInit, AfterViewInit {
         }
 
         const newReservation: Reservation = {
+          _id:"",
           korIme: JSON.parse(localStorage.getItem("user") || "").korIme,
           restoranId: this.restaurant._id,
           uToku: true,
@@ -94,7 +95,8 @@ export class MakeReservationComponent implements OnInit, AfterViewInit {
           datumVreme: this.reservationDateTime,
           brojOsoba: numberOfPeople,
           opis: "",
-          stoId:this.selectedTableId
+          stoId:this.selectedTableId,
+          pojavioSe:false
         };
         this.restaurantService.makeReservation(newReservation).subscribe(
           (reservation)=>{

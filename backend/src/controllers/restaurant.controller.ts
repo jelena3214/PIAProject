@@ -51,18 +51,17 @@ export class RestaurantController{
     }
 
     makeReservation = (req: express.Request, res: express.Response)=>{
-        let mx = (new Date(req.body.datumVreme)).toLocaleString('se-SE',{ timeZone: 'Europe/Paris' }) + "Z";
-        console.log(mx)
         const newReservation = new ReservationM({
             korIme: req.body.korIme,
             restoranId: req.body.restoranId,
             uToku: req.body.uToku,
             komentar: req.body.komentar,
             ocena: req.body.ocena,
-            datumVreme: new Date(mx),
+            datumVreme: new Date(req.body.datumVreme),
             brojOsoba: req.body.brojOsoba,
             opis: req.body.opis,
-            stoId: req.body.stoId
+            stoId: req.body.stoId,
+            pojavioSe:false
         });
         console.log(newReservation.datumVreme)
         newReservation.save().then(reservation => {
@@ -179,9 +178,8 @@ export class RestaurantController{
         if (!restoranId || !datumVreme) {
             return res.status(400).send('restoranId and datumVreme are required');
         }
-        
-        let mx = (new Date(req.body.datumVreme)).toLocaleString('se-SE',{ timeZone: 'Europe/Paris' }) + "Z";
-        const date = new Date(mx)
+
+        const date = new Date(req.body.datumVreme)
 
         const threeHoursBefore = new Date(date.getTime() - 3 * 60 * 60 * 1000);
 
@@ -210,15 +208,13 @@ export class RestaurantController{
     }
 
     makeAnOrder = (req: express.Request, res: express.Response)=>{
-        let mx = (new Date(req.body.datum)).toLocaleString('se-SE',{ timeZone: 'Europe/Paris' }) + "Z";
-        console.log(mx)
         const newOrder = new OrderM({
             korIme: req.body.korIme,
             restoranId: req.body.restoranId,
             vremeDostave:req.body.vremeDostave,
             status:req.body.status,
             naruceno:req.body.naruceno,
-            datum:new Date(mx),
+            datum:new Date(req.body.datumVreme),
             iznos:req.body.iznos,
             datumDostave:null
         });

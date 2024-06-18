@@ -25,6 +25,7 @@ import { MakeReservationComponent } from './make-reservation/make-reservation.co
 import { AddDishesComponent } from './add-dishes/add-dishes.component';
 import { GuestDeliveryComponent } from './guest-delivery/guest-delivery.component';
 import { MakeDeliveryRequestComponent } from './make-delivery-request/make-delivery-request.component';
+import { GuestReservationComponent } from './guest-reservation/guest-reservation.component';
 
 @NgModule({
   declarations: [
@@ -47,7 +48,8 @@ import { MakeDeliveryRequestComponent } from './make-delivery-request/make-deliv
     MakeReservationComponent,
     AddDishesComponent,
     GuestDeliveryComponent,
-    MakeDeliveryRequestComponent
+    MakeDeliveryRequestComponent,
+    GuestReservationComponent
   ],
   imports: [
     BrowserModule,

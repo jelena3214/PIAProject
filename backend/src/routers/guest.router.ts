@@ -16,4 +16,12 @@ guestRouter.route("/getAll").get(
     (req,res)=>new GuestController().getAll(req,res)
 )
 
+guestRouter.route("/:username/getAllOrders").get(
+    (req,res)=>new GuestController().getAllOrders(req,res)
+);
+
+guestRouter.route("/:username/getAllReservations").get(
+    (req,res)=>new GuestController().getAllReservations(req,res)
+);
+
 export default guestRouter;

@@ -3,7 +3,6 @@ import { Injectable } from '@angular/core';
 import { User } from '../models/user';
 import { Msg } from '../models/msg';
 import { SafeQA } from '../models/safeqa';
-import { Order } from '../models/order';
 
 @Injectable({
   providedIn: 'root'
@@ -71,9 +70,5 @@ export class UserService {
     }
 
     return this.http.post<User>(`${this.url}/user/getUserByUsername`, data);
-  }
-
-  getAllOrders(username:string){
-    return this.http.get<Order[]>(`${this.url}/user/${username}/getAllOrders`);
   }
 }
