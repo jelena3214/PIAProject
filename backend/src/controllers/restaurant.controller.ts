@@ -61,7 +61,9 @@ export class RestaurantController{
             brojOsoba: req.body.brojOsoba,
             opis: req.body.opis,
             stoId: req.body.stoId,
-            pojavioSe:false
+            pojavioSe:false,
+            konobar:"",
+            odbijanjeKom:""
         });
         console.log(newReservation.datumVreme)
         newReservation.save().then(reservation => {

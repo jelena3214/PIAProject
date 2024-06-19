@@ -1,5 +1,7 @@
 import express from 'express'
 import UserM from '../models/user'
+import RestaurantM from '../models/restaurant'
+import ReservationM from '../models/reservation'
 
 interface User {
     ime: string;
@@ -88,4 +90,20 @@ export class WaiterController{
             res.json(null);
         });
     }
+
+    getRestaurantByWaiterId = async (req: express.Request, res: express.Response)=>{
+        const waiterId = req.params.id;
+
+        try {
+            const restoran = await RestaurantM.findOne({ Konobari: waiterId });
+            if (restoran) {
+                res.json(restoran);
+            } else {
+                res.json(null);
+            }
+        } catch (error) {
+            res.json(null);
+        }
+    }
+
 }

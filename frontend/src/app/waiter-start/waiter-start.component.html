@@ -6,7 +6,6 @@
         <p><strong>Adresa:</strong> {{user?.adresa}}</p>
         <p><strong>Email:</strong> {{user?.mejl}}</p>
         <p><strong>Broj Telefona:</strong> {{user?.telefon}}</p>
-        <p><strong>Broj Kreditne Kartice:</strong> {{user?.brojKreditneKartice}}</p>
       </div>
       <div class="user-photo">
         <img [src]="'http://localhost:4000/' + user?.slika" alt="User Photo">
@@ -35,10 +34,6 @@
         <div class="form-group">
           <label for="brojTelefona">Kontakt telefon:</label>
           <input type="text" id="brojTelefona" [(ngModel)]="phone" name="brojTelefona">
-        </div>
-        <div class="form-group">
-          <label for="brojKredineKartice">Broj kreditne kartice:</label>
-          <input type="text" id="brojKredineKartice" [(ngModel)]="creditcard" name="brojKredineKartice">
         </div>
         <div class="form-group">
           <label for="slika">Slika:</label>

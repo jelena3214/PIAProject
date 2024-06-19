@@ -1,0 +1,95 @@
+<main id="main">
+  <section id="current-reservations" class="reservations-section" style="margin-top: 100px;">
+    <h2>Aktuelne rezervacije</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Korisnik</th>
+          <th>Broj ljudi</th>
+          <th>Datum i vreme</th>
+          <th>Opcije</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let reservation of currentReservations">
+          <td>{{ reservation.korIme }}</td>
+          <td>{{ reservation.brojOsoba}}</td>
+          <td>{{ formatDateTime(reservation.datumVreme) }}</td>
+          <td>
+            <button (click)="openReservationForm(reservation)" class="btn get-started-btn">Ažuriraj</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- <section id="past-reservations" class="reservations-section">
+    <h2>Arhiva rezervacija</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Datum rezervisanja</th>
+          <th>Restoran</th>
+          <th>Komentar</th>
+          <th>Ocena</th>
+          <th>Opcije</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let reservation of pastReservations">
+          <td>{{ formatDateTime(reservation.datumVreme) }}</td>
+          <td>{{ restaurant.Naziv }}</td>
+          <td>{{ reservation.komentar }}</td>
+          <td>{{ reservation.ocena }}</td>
+          <td>
+            <button *ngIf="canRateReservation(reservation)" (click)="openRatingForm(reservation)" class="btn get-started-btn">Oceni</button>
+            <p *ngIf="!canRateReservation(reservation)">Ne možete oceniti restoran</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </section> -->
+
+  <!-- Reservation Form Modal -->
+  <div [hidden]="selectedReservation == null" class="modal">
+    <div class="modal-content">
+      <h3>Ažuriraj rezervaciju</h3>
+
+      <label for="action">Akcija:</label>
+      <br>
+      <input type="radio" id="confirm" name="action" value="confirm" [(ngModel)]="action">
+      <label for="confirm">Potvrdi</label>
+      <br>
+      <input type="radio" id="reject" name="action" value="reject" [(ngModel)]="action">
+      <label for="reject">Odbij</label>
+      <br><br>
+
+      <div *ngIf="action === 'reject'">
+        <label for="comment">Komentar:</label>
+        <br>
+        <textarea id="comment" [(ngModel)]="comment" rows="4" cols="50" required></textarea>
+        <br>
+      </div>
+
+      <div [hidden]="selectedReservation?.stoId != ''">
+        <select *ngIf="restaurantLayout.length > 0" [(ngModel)]="selectedTableId" (change)="drawShapes()">
+          <option value="">Ništa nije selektovano</option>
+          <ng-container *ngFor="let shape of restaurantLayout">
+            <option *ngIf="shape?.type === 'circle' && !isTableReserved(shape?._id || '')" [value]="shape?._id">
+              ID: {{ shape?._id }} - Broj mesta: {{ shape?.brojLjudi }}
+            </option>
+          </ng-container>
+        </select>
+      </div>
+
+      <div class="canvas-container">
+        <canvas #myCanvas width="800" height="400"></canvas>
+      </div>
+
+      <button (click)="submitReservation()" class="submit">Potvrdi</button>
+      <button (click)="selectedReservation = null;confirmed=false;denied=false;selectedTableId=''" class="close">Zatvori prozor</button>
+    </div>
+  </div>
+
+
+</main>

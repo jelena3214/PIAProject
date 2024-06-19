@@ -50,7 +50,7 @@ export class GuestReservationComponent implements OnInit{
   // Jer ako je ovo Z ne prikazuje trenutnu vremensku zonu
   formatDateTime(dateString: string): string {
     const date = new Date(dateString);
-    return this.datePipe.transform(date, 'dd/MM/yyyy HH:mm') || ""; // Prilagodite format ako je potrebno
+    return this.datePipe.transform(date, 'dd/MM/yyyy HH:mm') || "";
   }
 
   filterReservations() {

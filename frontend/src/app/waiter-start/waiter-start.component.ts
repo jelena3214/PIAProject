@@ -1,14 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { User } from '../models/user';
-import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { UserService } from '../services/user.service';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
-  selector: 'app-guest-start',
-  templateUrl: './guest-start.component.html',
-  styleUrls: ['./guest-start.component.css']
+  selector: 'app-waiter-start',
+  templateUrl: './waiter-start.component.html',
+  styleUrls: ['./waiter-start.component.css']
 })
-export class GuestStartComponent implements OnInit{
+export class WaiterStartComponent implements OnInit{
   user:User | null = null
   name:string = ""
   lastName:string = ""

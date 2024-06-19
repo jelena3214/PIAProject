@@ -13,11 +13,22 @@
     </ng-container>
 
     <ng-template #admin>
-      <ng-container *ngIf="isAdmin; else loggedOut">
+      <ng-container *ngIf="isAdmin; else waiter">
         <h1 class="logo me-auto"><a routerLink="adminStart">Kutak dobre hrane</a></h1>
         <a href="adminStart" class="get-started-btn">Gosti</a>
         <a href="adminWaiters" class="get-started-btn">Konobari</a>
         <a href="adminRestaurant" class="get-started-btn">Restorani</a>
+        <a href="" class="get-started-btn" (click)="logOut()">Izloguj se</a>
+      </ng-container>
+    </ng-template>
+
+    <ng-template #waiter>
+      <ng-container *ngIf="isWaiter; else loggedOut">
+        <h1 class="logo me-auto"><a routerLink="waiterStart">Kutak dobre hrane</a></h1>
+        <a href="waiterStart" class="get-started-btn">Profil</a>
+        <a href="waiterReservations" class="get-started-btn">Rezervacije</a>
+        <a href="" class="get-started-btn">Dostave</a>
+        <a href="" class="get-started-btn">Statistika</a>
         <a href="" class="get-started-btn" (click)="logOut()">Izloguj se</a>
       </ng-container>
     </ng-template>

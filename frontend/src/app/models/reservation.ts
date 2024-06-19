@@ -10,4 +10,6 @@ export class Reservation{
   opis:string = ""
   stoId:string = ""
   pojavioSe:boolean = false
+  konobar:string = ""
+  odbijanjeKom:string = ""
 }

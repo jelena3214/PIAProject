@@ -26,6 +26,8 @@ import { AddDishesComponent } from './add-dishes/add-dishes.component';
 import { GuestDeliveryComponent } from './guest-delivery/guest-delivery.component';
 import { MakeDeliveryRequestComponent } from './make-delivery-request/make-delivery-request.component';
 import { GuestReservationComponent } from './guest-reservation/guest-reservation.component';
+import { WaiterStartComponent } from './waiter-start/waiter-start.component';
+import { WaiterReservationsComponent } from './waiter-reservations/waiter-reservations.component';
 
 @NgModule({
   declarations: [
@@ -49,7 +51,9 @@ import { GuestReservationComponent } from './guest-reservation/guest-reservation
     AddDishesComponent,
     GuestDeliveryComponent,
     MakeDeliveryRequestComponent,
-    GuestReservationComponent
+    GuestReservationComponent,
+    WaiterStartComponent,
+    WaiterReservationsComponent
   ],
   imports: [
     BrowserModule,

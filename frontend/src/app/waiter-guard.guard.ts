@@ -1,7 +1,7 @@
 import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
 
-export const guestGuardGuard: CanActivateFn = (route, state) => {
+export const waiterGuardGuard: CanActivateFn = (route, state) => {
   const router = inject(Router);
   const user = JSON.parse(localStorage.getItem('user') || '{}');
 
@@ -9,9 +9,9 @@ export const guestGuardGuard: CanActivateFn = (route, state) => {
 
   if(isEmptyObject) return true
 
-  if (user && user.tip !== 'gost') {
+  if (user && user.tip !== 'konobar') {
     if(user.tip == 'admin') router.navigate(['adminStart']);
-    else if(user.tip == 'konobar') router.navigate(['waiterStart'])
+    else if(user.tip == 'gost') router.navigate(['guestStart'])
     else router.navigate(['']);
     return false;
   }

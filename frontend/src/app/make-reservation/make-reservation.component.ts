@@ -96,7 +96,9 @@ export class MakeReservationComponent implements OnInit, AfterViewInit {
           brojOsoba: numberOfPeople,
           opis: "",
           stoId:this.selectedTableId,
-          pojavioSe:false
+          pojavioSe:false,
+          konobar:"",
+          odbijanjeKom:""
         };
         this.restaurantService.makeReservation(newReservation).subscribe(
           (reservation)=>{

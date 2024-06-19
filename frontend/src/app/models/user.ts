@@ -1,4 +1,5 @@
 export class User {
+  _id:string;
   ime: string;
   prezime: string;
   korIme: string;
@@ -16,6 +17,7 @@ export class User {
   brojKreditneKartice: string;
 
   constructor(
+    _id:string = "",
     ime: string = "",
     prezime: string = "",
     korIme: string = "",
@@ -47,5 +49,6 @@ export class User {
     this.bezPitanje = bezPitanje;
     this.slika = slika;
     this.brojKreditneKartice = brojKreditneKartice;
+    this._id = ""
   }
 }

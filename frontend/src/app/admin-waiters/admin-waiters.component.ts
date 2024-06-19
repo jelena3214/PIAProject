@@ -127,7 +127,7 @@ export class AdminWaitersComponent implements OnInit{
     const imagePath = 'user.png';
     this.safeResponse = this.name
 
-    let newWaiter = new User(this.name, this.lastName, this.username, this.password, this.gender, this.adr, this.phone, this.email, "konobar", true, true, false, {pitanje:this.safeQuestion, odgovor:this.safeResponse}, imagePath, "");
+    let newWaiter = new User("", this.name, this.lastName, this.username, this.password, this.gender, this.adr, this.phone, this.email, "konobar", true, true, false, {pitanje:this.safeQuestion, odgovor:this.safeResponse}, imagePath, "");
     console.log(newWaiter)
 
     this.waiterService.registerWaiter(newWaiter).subscribe(

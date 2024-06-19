@@ -152,7 +152,9 @@ export class RestaurantDetailComponent implements OnInit {
                   brojOsoba: reservation.numberOfPeople,
                   opis: reservation.additionalRequests,
                   stoId:"",
-                  pojavioSe:false
+                  pojavioSe:false,
+                  konobar: "",
+                  odbijanjeKom:""
                 };
                 this.restaurantService.makeReservation(newReservation).subscribe(
                   (reservation)=>{

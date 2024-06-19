@@ -8,7 +8,7 @@ import { User } from './models/user';
 })
 export class AppComponent implements OnInit{
   isGuest:boolean = false
-  iswaiter:boolean = false
+  isWaiter:boolean = false
   isAdmin:boolean = false
 
   ngOnInit(): void {
@@ -20,6 +20,7 @@ export class AppComponent implements OnInit{
       const us = JSON.parse(localStorage.getItem('user') || '');
       if(us.tip == 'gost')this.isGuest = true
       if(us.tip == 'admin')this.isAdmin = true
+      if(us.tip == 'konobar')this.isWaiter = true
     } catch (error) {
       console.log('error app comp - ger user')
       return
@@ -29,6 +30,6 @@ export class AppComponent implements OnInit{
   logOut(){
     localStorage.clear()
     this.isGuest = false
-    this.iswaiter = false
+    this.isWaiter = false
   }
 }

@@ -26,8 +26,10 @@ export class LoginComponent {
           this.appComp.changeNavBar()
           if(user.tip == 'gost'){
             this.router.navigate(['guestStart']);
+          }else if(user.tip == 'konobar'){
+            this.router.navigate(['waiterStart']);
           }else{
-            this.router.navigate(['konobarStart']);
+            this.message = "Ako ste admin ulogujte se preko Vaše login stranice!"
           }
         }else if(user.blokiran){
           this.message = "Vaš zahtev je odbijen!"
