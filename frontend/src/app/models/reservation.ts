@@ -9,7 +9,8 @@ export class Reservation{
   brojOsoba:number = 0
   opis:string = ""
   stoId:string = ""
-  pojavioSe:boolean = false
+  pojavioSe:string = ""
   konobar:string = ""
   odbijanjeKom:string = ""
+  produzetak:boolean = false
 }

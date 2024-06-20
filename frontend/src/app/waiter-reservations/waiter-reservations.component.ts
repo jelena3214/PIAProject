@@ -19,17 +19,21 @@ export class WaiterReservationsComponent implements OnInit, AfterViewInit{
   private ctx!: CanvasRenderingContext2D;
 
   restaurant:Restaurant = new Restaurant()
-  waiter:User = new User()
-  allReservations:Reservation[] = []
-  currentReservations:Reservation[] = []
-  pastReservations:Reservation[] = []
-  selectedReservation:Reservation | null = null
   restaurantLayout:Shape[] = []
   reservedTables:Reservation[] = []
+  allReservations:Reservation[] = []
+
+  waiter:User = new User()
+  currentReservations:Reservation[] = []
+  confirmedReservations:Reservation[] = []
+
+  selectedReservation:Reservation | null = null
   selectedTableId:string = ""
 
   action: string = 'confirm';
   comment: string = '';
+
+  message:string = ""
 
   constructor(private waiterService: WaiterService, private restaurantService:RestaurantService, private datePipe: DatePipe){}
 
@@ -62,9 +66,42 @@ export class WaiterReservationsComponent implements OnInit, AfterViewInit{
       .filter(reservation => reservation.uToku)
       .sort((a, b) => new Date(a.datumVreme).getTime() - new Date(b.datumVreme).getTime());
 
-    this.pastReservations = this.allReservations
-      .filter(reservation => !reservation.uToku)
-      .sort((a, b) => new Date(b.datumVreme).getTime() - new Date(a.datumVreme).getTime());
+    this.confirmedReservations = this.allReservations
+      .filter(reservation => reservation.uToku == false && reservation.konobar == this.waiter._id && reservation.odbijanjeKom == "")
+      .sort((a, b) => new Date(a.datumVreme).getTime() - new Date(b.datumVreme).getTime());
+  }
+
+  confirmGuestAppearance(reservation: Reservation, status:string) {
+    reservation.pojavioSe = status
+    this.waiterService.updateReservation(reservation).subscribe(
+      (updatedReservation) => {
+        this.message = "Uspešno potvrđeno"
+      },
+      (error) => {
+        this.message = "Greška pri potvrđivanju"
+      }
+    );
+  }
+
+  addOneHour(reservation:Reservation){
+    if(reservation.produzetak){
+      this.message = "Možete samo jednom produžiti termin!"
+      return
+    }
+    reservation.produzetak = true
+    this.waiterService.updateReservation(reservation).subscribe(
+      (updatedReservation) => {
+        this.message = "Uspešno produžen termin"
+      },
+      (error) => {
+        this.message = "Greška pri produžavanju termina"
+      }
+    );
+  }
+
+  isConfirmationAvailable(reservation: Reservation): boolean {
+    const reservationTime = new Date(reservation.datumVreme).getTime();
+    return new Date().getTime() - reservationTime <= 30 * 60 * 1000 && reservation.pojavioSe == "";
   }
 
   // Jer ako je ovo Z ne prikazuje trenutnu vremensku zonu
@@ -95,23 +132,39 @@ export class WaiterReservationsComponent implements OnInit, AfterViewInit{
       alert('Komentar je obavezan ako odbijate rezervaciju.');
       return;
     }
+    if(this.selectedReservation){
+      if (this.action === 'confirm') {
+        //dodaje se konobarId, uToku false i stoId ako je preko forme
+        this.selectedReservation.konobar = this.waiter._id
+        this.selectedReservation.uToku = false
+        if(this.selectedTableId != ""){ // preko forme rezervisano
+          this.selectedReservation.stoId = this.selectedTableId
+        }
+        this.waiterService.updateReservation(this.selectedReservation).subscribe(
+          (updatedReservation) => {
+            console.log('Updated reservation:', updatedReservation);
+          },
+          (error) => {
+            console.error('Error updating reservation:', error);
+          }
+        );
+        this.confirmed = true
 
-    if (this.action === 'confirm') {
-      //dodaje se konobarId, uToku false
-      if(this.selectedTableId == ""){ // preko panela zakazano
-
-        console.log("panl")
-      }else{
-        console.log("form")
+      } else {
+        //odbijanjeKom dobija i uToku false
+        this.selectedReservation.odbijanjeKom = this.comment
+        this.selectedReservation.uToku = false
+        this.waiterService.updateReservation(this.selectedReservation).subscribe(
+          (updatedReservation) => {
+            console.log('Updated reservation:', updatedReservation);
+          },
+          (error) => {
+            console.error('Error updating reservation:', error);
+          }
+        );
+        this.denied = true
       }
-      console.log('Reservation confirmed:', this.selectedReservation);
-      this.confirmed = true
-    } else {
-      //odbijanjeKom dobija i uToku false
-      console.log('Reservation rejected with comment:', this.comment);
-      this.denied = true
     }
-
 
     this.drawShapes()
     this.action = 'confirm';

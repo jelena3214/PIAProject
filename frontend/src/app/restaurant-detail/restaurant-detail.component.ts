@@ -135,7 +135,7 @@ export class RestaurantDetailComponent implements OnInit {
           this.restaurantService.getReservationsForSpecificDateTime(this.restaurant._id, dateString).subscribe(
             (reservations)=>{
               const isTableAvailable = availableTables.some(table => {
-                return !reservations.some(reservation => reservation.stoId === table?._id);
+                return !reservations.some(reservation => reservation.stoId === table?._id && reservation.pojavioSe != 'F');
               });
 
               console.log(reservations)
@@ -152,9 +152,10 @@ export class RestaurantDetailComponent implements OnInit {
                   brojOsoba: reservation.numberOfPeople,
                   opis: reservation.additionalRequests,
                   stoId:"",
-                  pojavioSe:false,
+                  pojavioSe:"",
                   konobar: "",
-                  odbijanjeKom:""
+                  odbijanjeKom:"",
+                  produzetak:false
                 };
                 this.restaurantService.makeReservation(newReservation).subscribe(
                   (reservation)=>{

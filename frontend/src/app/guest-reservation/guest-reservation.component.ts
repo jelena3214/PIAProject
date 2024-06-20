@@ -92,7 +92,7 @@ export class GuestReservationComponent implements OnInit{
   }
 
   canRateReservation(reservation: Reservation): boolean {
-    return reservation.pojavioSe && !reservation.komentar && reservation.ocena === 0;
+    return reservation.pojavioSe=="T" && !reservation.komentar && reservation.ocena === 0;
   }
 
   openRatingForm(reservation: Reservation) {

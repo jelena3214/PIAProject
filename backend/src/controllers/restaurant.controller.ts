@@ -61,9 +61,10 @@ export class RestaurantController{
             brojOsoba: req.body.brojOsoba,
             opis: req.body.opis,
             stoId: req.body.stoId,
-            pojavioSe:false,
+            pojavioSe:"",
             konobar:"",
-            odbijanjeKom:""
+            odbijanjeKom:"",
+            produzetak:false
         });
         console.log(newReservation.datumVreme)
         newReservation.save().then(reservation => {
@@ -191,7 +192,18 @@ export class RestaurantController{
                 datumVreme: { $gte: threeHoursBefore, $lte: date },
                 uToku: false
             });
-            res.json(reservations);
+
+            const filteredReservations = reservations.filter(reservation => {
+                if (reservation.datumVreme && reservation.produzetak === true) {
+                    // Ako je produzena, koristimo 4 sata pre umesto 3 sata
+                    const fourHoursBefore = new Date(date.getTime() - 4 * 60 * 60 * 1000);
+                    return reservation.datumVreme >= fourHoursBefore && reservation.datumVreme <= date;
+                } else {
+                    return true; // standardno 3h
+                }
+            });
+    
+            res.json(filteredReservations);
         } catch (error) {
             res.json(null)
         }

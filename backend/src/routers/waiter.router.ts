@@ -16,4 +16,8 @@ waiterRouter.route("/getRestaurant/:id").get(
     (req, res)=>new WaiterController().getRestaurantByWaiterId(req, res)
 )
 
+waiterRouter.route("/updateReservation").put(
+    (req, res)=>new WaiterController().updateReservation(req, res)
+)
+
 export default waiterRouter;

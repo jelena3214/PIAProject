@@ -106,4 +106,30 @@ export class WaiterController{
         }
     }
 
+    updateReservation = async (req: express.Request, res: express.Response)=>{
+        const { _id, ...rest } = req.body;
+
+        if (!_id) {
+            return res.status(400).send('Reservation ID is required');
+        }
+
+        try {
+            const updatedReservation = await ReservationM.findByIdAndUpdate(
+                _id,
+                { ...rest },
+                { new: true }
+            );
+
+            if (!updatedReservation) {
+                res.json(null)
+                return
+            }
+
+            res.json(updatedReservation);
+        } catch (error) {
+            res.json(null)
+            return
+        }
+    }
+
 }

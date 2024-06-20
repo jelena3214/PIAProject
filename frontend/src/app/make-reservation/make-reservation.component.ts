@@ -96,9 +96,10 @@ export class MakeReservationComponent implements OnInit, AfterViewInit {
           brojOsoba: numberOfPeople,
           opis: "",
           stoId:this.selectedTableId,
-          pojavioSe:false,
+          pojavioSe:"",
           konobar:"",
-          odbijanjeKom:""
+          odbijanjeKom:"",
+          produzetak:false
         };
         this.restaurantService.makeReservation(newReservation).subscribe(
           (reservation)=>{
@@ -182,7 +183,7 @@ export class MakeReservationComponent implements OnInit, AfterViewInit {
           this.ctx.arc(shape.x, shape.y, shape.radius, 0, Math.PI * 2);
           this.ctx.closePath();
 
-          const reserved = this.reservations.some(reservation => reservation.stoId === shape._id);
+          const reserved = this.reservations.some(reservation => reservation.stoId === shape._id && reservation.pojavioSe != 'F');
 
           if (this.ctx.isPointInPath(mouseX, mouseY)) {
             clickedInsideCircle = true;

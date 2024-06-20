@@ -23,32 +23,36 @@
     </table>
   </section>
 
-  <!-- <section id="past-reservations" class="reservations-section">
+  <section id="confirmed-reservations" class="reservations-section">
     <h2>Arhiva rezervacija</h2>
     <table>
       <thead>
         <tr>
+          <th>Korisnik</th>
           <th>Datum rezervisanja</th>
-          <th>Restoran</th>
           <th>Komentar</th>
-          <th>Ocena</th>
+          <th>Broj osoba</th>
           <th>Opcije</th>
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let reservation of pastReservations">
+        <tr *ngFor="let reservation of confirmedReservations">
+          <td>{{ reservation.korIme }}</td>
           <td>{{ formatDateTime(reservation.datumVreme) }}</td>
-          <td>{{ restaurant.Naziv }}</td>
-          <td>{{ reservation.komentar }}</td>
-          <td>{{ reservation.ocena }}</td>
+          <td>{{reservation.komentar}}</td>
+          <td>{{ reservation.brojOsoba }}</td>
           <td>
-            <button *ngIf="canRateReservation(reservation)" (click)="openRatingForm(reservation)" class="btn get-started-btn">Oceni</button>
-            <p *ngIf="!canRateReservation(reservation)">Ne možete oceniti restoran</p>
+            <button *ngIf="isConfirmationAvailable(reservation)" (click)="confirmGuestAppearance(reservation, 'T')" class="btn get-started-btn">Došao</button>
+            <button *ngIf="isConfirmationAvailable(reservation)" (click)="confirmGuestAppearance(reservation, 'F')" class="btn get-started-btn">Nije došao</button>
+            <button *ngIf="reservation.pojavioSe == 'T'" (click)="addOneHour(reservation)" class="btn get-started-btn">Produži rezervaciju</button>
           </td>
         </tr>
       </tbody>
     </table>
-  </section> -->
+    <div>
+      {{message}}
+    </div>
+  </section>
 
   <!-- Reservation Form Modal -->
   <div [hidden]="selectedReservation == null" class="modal">

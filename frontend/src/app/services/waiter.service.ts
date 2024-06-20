@@ -30,4 +30,8 @@ export class WaiterService {
   getRestoranByWaiterId(konobarId: string): Observable<Restaurant> {
     return this.http.get<Restaurant>(`${this.url}/waiter/getRestaurant/${konobarId}`);
   }
+
+  updateReservation(reservation: Reservation): Observable<Reservation> {
+    return this.http.put<Reservation>(`${this.url}/waiter/updateReservation`, reservation);
+  }
 }
