@@ -21,7 +21,8 @@ let userSchema = new Schema(
             pitanje:String, odgovor:String
         },
     slika:String,
-    brojKreditneKartice:String
+    brojKreditneKartice:String,
+    strajk:Number
   },
   {
     versionKey:false

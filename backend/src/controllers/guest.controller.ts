@@ -62,6 +62,7 @@ export class GuestController{
                         newGuest.brojKreditneKartice = user.brojKreditneKartice
                         newGuest.prihvacen = user.prihvacen
                         newGuest.blokiran = user.blokiran
+                        newGuest.strajk = 0
 
                         newGuest.save().then((user)=>{
                             res.json({"mess":"ok", "code":"0"});
@@ -119,6 +120,20 @@ export class GuestController{
         try {
             const reservations = await ReservationM.find({korIme:username});
             res.json(reservations);
+        } catch (error) {
+            res.json(null);
+        }
+    }
+
+    strikeGuest =  async (req: express.Request, res: express.Response)=>{
+        const username = req.params.username;
+
+        try {
+            const user = await UserM.findOneAndUpdate(
+                { korIme: username },
+                { $inc: { strajk: 1 } }
+            );
+            res.json(user);
         } catch (error) {
             res.json(null);
         }

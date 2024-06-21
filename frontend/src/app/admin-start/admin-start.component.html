@@ -7,6 +7,7 @@
           <tr>
             <th>Username</th>
             <th>Aktivan</th>
+            <th>Broj strajkova</th>
           </tr>
         </thead>
         <tbody>
@@ -14,8 +15,10 @@
             <tr *ngIf="guest.prihvacen">
               <td [ngClass]="{ 'red': guest.aktivan == false }">{{ guest.korIme }}</td>
               <td [ngClass]="{ 'red': guest.aktivan == false }">{{ guest.aktivan }}</td>
+              <td [ngClass]="{ 'red': guest.strajk >= 3 }">{{ guest.strajk }}</td>
               <td>
                 <button type="submit" class="btn get-started-btn" (click)="changeStatus(guest.korIme)">Promeni status</button>
+                <button type="submit" class="btn get-started-btn" (click)="restartStrike(guest.korIme)">Restartuj broj strajkova</button>
                 <button type="submit" class="btn get-started-btn" [routerLink]="['/admin-update-user', guest.korIme]">Ažuriraj</button>
               </td>
             </tr>

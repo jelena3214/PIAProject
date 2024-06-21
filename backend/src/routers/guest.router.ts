@@ -24,4 +24,8 @@ guestRouter.route("/:username/getAllReservations").get(
     (req,res)=>new GuestController().getAllReservations(req,res)
 );
 
+guestRouter.route("/:username/strike").get(
+    (req,res)=>new GuestController().strikeGuest(req,res)
+);
+
 export default guestRouter;

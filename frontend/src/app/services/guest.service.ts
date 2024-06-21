@@ -36,4 +36,8 @@ export class GuestService {
   getAllReservations(username:string){
     return this.http.get<Reservation[]>(`${this.url}/guest/${username}/getAllReservations`);
   }
+
+  strikeGuest(username:string){
+    return this.http.get<User>(`${this.url}/guest/${username}/strike`);
+  }
 }

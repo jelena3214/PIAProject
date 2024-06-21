@@ -7,6 +7,9 @@ import { HttpClient } from '@angular/common/http';
 import { Reservation } from '../models/reservation';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Shape } from '../models/shape';
+import { firstValueFrom } from 'rxjs';
+import { UserService } from '../services/user.service';
+import { User } from '../models/user';
 
 interface Comment {
   id: number;
@@ -30,7 +33,8 @@ export class RestaurantDetailComponent implements OnInit {
     private route: ActivatedRoute,
     private restaurantService: RestaurantService,
     private http: HttpClient,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private userService:UserService
   ) {
     this.reservationForm = this.fb.group({
       date: ['', [Validators.required, this.minDateValidator()]],
@@ -117,8 +121,24 @@ export class RestaurantDetailComponent implements OnInit {
     });
   }
 
-  submitReservation(): void {
+  async canMakeAReservation(){
+    try {
+      const user: User = await firstValueFrom(this.userService.getUserByUsername(JSON.parse(localStorage.getItem("user") || "").korIme));
+      return user.strajk < 3;
+    } catch (error) {
+      console.error('Greška prilikom dohvatanja korisnika:', error);
+      return false;
+    }
+  }
+
+  async submitReservation() {
     if (this.reservationForm.valid) {
+      const canReserve = await this.canMakeAReservation();
+      if(!canReserve){
+        this.message = "Ne možete napraviti novu rezervaciju!"
+        return
+      }
+
       const reservation = this.reservationForm.value;
       const dateString = `${reservation.date}T${reservation.time}`
       const reservationDateTime = new Date(dateString);

@@ -5,6 +5,9 @@ import { Shape } from '../models/shape';
 import { Restaurant } from '../models/restaurant';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Reservation } from '../models/reservation';
+import { User } from '../models/user';
+import { firstValueFrom } from 'rxjs';
+import { UserService } from '../services/user.service';
 
 @Component({
   selector: 'app-make-reservation',
@@ -30,7 +33,7 @@ export class MakeReservationComponent implements OnInit, AfterViewInit {
   selectedTableId:string = ""
 
   constructor(private restaurantService:RestaurantService, private route: ActivatedRoute,
-    private fb: FormBuilder){
+    private fb: FormBuilder, private userService:UserService){
       this.reservationForm = this.fb.group({
         date: ['', [Validators.required, this.minDateValidator()]],
         time: ['', [Validators.required, this.minTimeValidator()]]
@@ -65,7 +68,22 @@ export class MakeReservationComponent implements OnInit, AfterViewInit {
 
   reservationMessage:string = ""
 
-  makeReservation(){
+  async canMakeAReservation(){
+    try {
+      const user: User = await firstValueFrom(this.userService.getUserByUsername(JSON.parse(localStorage.getItem("user") || "").korIme));
+      return user.strajk < 3;
+    } catch (error) {
+      console.error('Greška prilikom dohvatanja korisnika:', error);
+      return false;
+    }
+  }
+
+  async makeReservation(){
+    const canReserve = await this.canMakeAReservation();
+    if(!canReserve){
+      this.reservationMessage = "Ne možete napraviti novu rezervaciju!"
+      return
+    }
     if(this.submited && this.selectedTableId != ""){
       const selectedTable = this.restaurantLayout.find(table => table?._id === this.selectedTableId);
       const userInput = prompt('Unesite broj ljudi za stolom:', '1');

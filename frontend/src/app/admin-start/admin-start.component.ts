@@ -77,4 +77,22 @@ export class AdminStartComponent implements OnInit{
     )
   }
 
+  restartStrike(username:string){
+    this.userService.getUserByUsername(username).subscribe(
+      (user)=>{
+        if(user){
+          user.strajk = 0
+          this.userService.updateUser(user).subscribe((msg) => {
+            if(msg.code == 0){
+              console.log("Azurirano!")
+              this.ngOnInit()
+            }else{
+              console.log("Greska pri azuriranju podataka korisnika!")
+            }
+          });
+        }
+      }
+    )
+  }
+
 }

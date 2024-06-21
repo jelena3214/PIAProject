@@ -15,6 +15,7 @@ export class User {
   bezPitanje: { pitanje: string; odgovor: string };
   slika: string;
   brojKreditneKartice: string;
+  strajk:number;
 
   constructor(
     _id:string = "",
@@ -50,5 +51,6 @@ export class User {
     this.slika = slika;
     this.brojKreditneKartice = brojKreditneKartice;
     this._id = ""
+    this.strajk = 0
   }
 }

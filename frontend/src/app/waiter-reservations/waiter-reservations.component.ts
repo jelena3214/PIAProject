@@ -6,6 +6,7 @@ import { Reservation } from '../models/reservation';
 import { RestaurantService } from '../services/restaurant.service';
 import { DatePipe } from '@angular/common';
 import { Shape } from '../models/shape';
+import { GuestService } from '../services/guest.service';
 
 @Component({
   selector: 'app-waiter-reservations',
@@ -35,7 +36,9 @@ export class WaiterReservationsComponent implements OnInit, AfterViewInit{
 
   message:string = ""
 
-  constructor(private waiterService: WaiterService, private restaurantService:RestaurantService, private datePipe: DatePipe){}
+  constructor(private waiterService: WaiterService, private restaurantService:RestaurantService, private datePipe: DatePipe,
+    private guestService:GuestService
+  ){}
 
   ngOnInit(): void {
     this.waiter = JSON.parse(localStorage.getItem("user") || "");
@@ -75,7 +78,17 @@ export class WaiterReservationsComponent implements OnInit, AfterViewInit{
     reservation.pojavioSe = status
     this.waiterService.updateReservation(reservation).subscribe(
       (updatedReservation) => {
-        this.message = "Uspešno potvrđeno"
+        if(status == 'F'){
+          this.guestService.strikeGuest(reservation.korIme).subscribe(
+            (guest)=>{
+              if(guest){
+                this.message = "Uspešno potvrđeno"
+              }else{
+                this.message = "Greška pri potvrđivanju"
+              }
+            }
+          )
+        }
       },
       (error) => {
         this.message = "Greška pri potvrđivanju"
