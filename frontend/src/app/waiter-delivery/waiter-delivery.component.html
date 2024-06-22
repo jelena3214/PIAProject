@@ -1,0 +1,42 @@
+<main id="main">
+  <section id="about" class="about" style="margin-top: 20px;">
+    <h2>Narudžbine</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Korisnik</th>
+          <th>Naručeno</th>
+          <th>Opcije</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let order of currentOrders">
+          <td>{{ order._id }}</td>
+          <td>{{ order.korIme }}</td>
+          <td>
+            <ul>
+              <li *ngFor="let item of order.naruceno">{{ item.naziv }} ({{ item.kolicina }})</li>
+            </ul>
+          </td>
+          <td>
+            <button (click)="setSelectedOrder(order)" class="btn get-started-btn">Potvrdi/Odbij</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div *ngIf="selectedOrder" style="margin-top: 50px;">
+      <h4>ID: {{ selectedOrder._id }}</h4>
+      <label for="estimatedTime">Odaberite procenjeno vreme dostave:</label>
+      <select id="estimatedTime" [(ngModel)]="estimatedTime">
+        <option value="0">Odaberite opciju...</option>
+        <option value="23">20-30 minuta</option>
+        <option value="34">30-40 minuta</option>
+        <option value="56">50-60 minuta</option>
+      </select>
+      <button (click)="confirmOrder(selectedOrder)" class="btn get-started-btn">Potvrdi</button>
+      <button (click)="rejectOrder(selectedOrder)" class="btn get-started-btn">Odbij</button>
+    </div>
+  </section>
+</main>

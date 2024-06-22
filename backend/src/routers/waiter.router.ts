@@ -20,4 +20,12 @@ waiterRouter.route("/updateReservation").put(
     (req, res)=>new WaiterController().updateReservation(req, res)
 )
 
+waiterRouter.route('/orders/current/:restaurantId').get(
+    (req, res)=>new WaiterController().getCurrentOrders(req, res)
+)
+
+waiterRouter.route('/orders/confirmOrReject').post(
+    (req, res)=>new WaiterController().confirmOrRejectOrder(req, res)
+)
+
 export default waiterRouter;

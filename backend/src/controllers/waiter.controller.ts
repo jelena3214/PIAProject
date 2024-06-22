@@ -2,6 +2,7 @@ import express from 'express'
 import UserM from '../models/user'
 import RestaurantM from '../models/restaurant'
 import ReservationM from '../models/reservation'
+import OrderM from '../models/order'
 
 interface User {
     ime: string;
@@ -131,5 +132,64 @@ export class WaiterController{
             return
         }
     }
+
+    getCurrentOrders = async (req: express.Request, res: express.Response) => {
+        const { restaurantId } = req.params;
+        
+        if (!restaurantId) {
+            return res.status(400).json({ message: 'Restaurant ID is required' });
+        }
+        
+        try {
+            const orders = await OrderM.find({ restoranId: restaurantId, status: 'K' });
+            res.json(orders);
+        } catch (error) {
+            res.status(500).json({ message: 'Error fetching current orders' });
+        }
+    };
+      
+    confirmOrRejectOrder = async (req: express.Request, res: express.Response) => {
+        const { orderId, action, estimatedTime } = req.body;
+
+        if (!orderId || !action) {
+            return res.status(400).json({ message: 'Order ID and action are required' });
+        }
+
+        try {
+            const update = action === 'confirm'
+            ? { status: 'P', estimatedTime }
+            : { status: 'O' };
+
+            let datumDostave = null;
+
+            if (action === 'confirm' && estimatedTime) {
+                const now = new Date();
+                switch (estimatedTime) {
+                    case '23':
+                        datumDostave = new Date(now.getTime() + 30 * 60000);
+                        break;
+                    case '34':
+                        datumDostave = new Date(now.getTime() + 40 * 60000);
+                        break;
+                    case '56':
+                        datumDostave = new Date(now.getTime() + 60 * 60000);
+                        break;
+                    default:
+                        datumDostave = now;
+                }
+            }
+
+            const updatedOrder = await OrderM.findByIdAndUpdate(
+                orderId,
+                { status: update.status, vremeDostave: update.estimatedTime, datumDostave },
+                { new: true }
+            );
+
+            res.json(updatedOrder);
+        } catch (error) {
+            res.status(500).json({ message: 'Error updating order', error });
+        }
+    };
+      
 
 }

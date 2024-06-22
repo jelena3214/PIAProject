@@ -96,7 +96,26 @@ export class WaiterReservationsComponent implements OnInit, AfterViewInit{
     );
   }
 
+  canExtendReservation(reservation: Reservation): boolean {
+    const reservationEndTime = new Date(reservation.datumVreme);
+    reservationEndTime.setHours(reservationEndTime.getHours() + 3);
+
+    const extendedEndTime = new Date(reservationEndTime);
+    extendedEndTime.setHours(extendedEndTime.getHours() + 1);
+
+    return !this.allReservations.some(r =>
+      r.stoId === reservation.stoId &&
+      r._id !== reservation._id &&
+      new Date(r.datumVreme) < extendedEndTime && // provera da li pocinje pre isteka dodatnog sata
+      new Date(r.datumVreme) >= reservationEndTime // provera da li pocinje posle trenutne rezervacije
+    );
+  }
+
   addOneHour(reservation:Reservation){
+    if(!this.canExtendReservation(reservation)){
+      this.message = "Ne možete produžiti termin, jer postoji rezervacija nakon."
+      return
+    }
     if(reservation.produzetak){
       this.message = "Možete samo jednom produžiti termin!"
       return
