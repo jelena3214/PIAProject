@@ -1,5 +1,6 @@
 import express from 'express'
 import ReservationM from '../models/reservation'
+import RestaurantM from '../models/restaurant'
 
 export class ReservationController{
     getReservationsLast24Hours = (req: express.Request, res: express.Response) => {
@@ -61,21 +62,64 @@ export class ReservationController{
         try {
             const reservationId = req.params.id;
             const { komentar, ocena } = req.body;
-        
+    
             const updatedReservation = await ReservationM.findByIdAndUpdate(
                 reservationId,
                 { komentar, ocena },
                 { new: true }
             );
-        
+    
             if (!updatedReservation) {
                 return res.json(null);
             }
-        
+    
+            const restaurantId = updatedReservation.restoranId;
+            const avgRating = await this.calculateAverageRating(restaurantId);
+
+            const restaurant = await RestaurantM.findById(restaurantId);
+            if (!restaurant) {
+                res.json(null);
+                return
+            }
+    
+            restaurant.ProsecnaOcena = avgRating;
+            await restaurant.save();
+    
             res.json(updatedReservation);
         } catch (error) {
             console.error('Error updating reservation:', error);
-            res.status(500).json(null);
+            res.json(null);
+            return
         }
     }
+
+    async calculateAverageRating(restaurantId:any) {
+        try {
+            const reservations = await ReservationM.find({
+                restoranId: restaurantId,
+                ocena: { $ne: 0 }
+            });
+    
+            if (reservations.length === 0) {
+                return 0;
+            }
+    
+            let sumOfRatings = 0;
+            let numberOfRatings = 0;
+    
+            reservations.forEach(reservation => {
+                if (reservation.ocena !== null && reservation.ocena !== undefined) {
+                    sumOfRatings += reservation.ocena;
+                    numberOfRatings++;
+                }
+            });
+    
+            const averageRating = sumOfRatings / numberOfRatings;
+    
+            return averageRating;
+        } catch (error) {
+            console.error('Error:', error);
+            throw error;
+        }
+    }    
 }
