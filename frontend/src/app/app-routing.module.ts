@@ -26,6 +26,7 @@ import { WaiterStartComponent } from './waiter-start/waiter-start.component';
 import { waiterGuardGuard } from './waiter-guard.guard';
 import { WaiterReservationsComponent } from './waiter-reservations/waiter-reservations.component';
 import { WaiterDeliveryComponent } from './waiter-delivery/waiter-delivery.component';
+import { WaiterStatisticsComponent } from './waiter-statistics/waiter-statistics.component';
 
 const routes: Routes = [
   {path:"", component:StartingPageComponent},
@@ -50,7 +51,8 @@ const routes: Routes = [
   { path: 'guestReservation', component: GuestReservationComponent, canActivate: [guestGuardGuard]  },
   { path: 'waiterStart', component: WaiterStartComponent, canActivate: [waiterGuardGuard]  },
   { path: 'waiterReservations', component: WaiterReservationsComponent, canActivate: [waiterGuardGuard]  },
-  { path: 'waiterDelivery', component: WaiterDeliveryComponent, canActivate: [waiterGuardGuard]  }
+  { path: 'waiterDelivery', component: WaiterDeliveryComponent, canActivate: [waiterGuardGuard]  },
+  { path: 'waiterStatistics', component: WaiterStatisticsComponent, canActivate: [waiterGuardGuard]  }
 ];
 
 @NgModule({

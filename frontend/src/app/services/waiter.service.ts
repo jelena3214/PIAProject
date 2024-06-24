@@ -43,4 +43,16 @@ export class WaiterService {
   confirmOrRejectOrder(orderId: string, action: string, estimatedTime?: string): Observable<Order> {
     return this.http.post<Order>(`${this.url}/waiter/orders/confirmOrReject`, { orderId, action, estimatedTime });
   }
+
+  getGuestCountByDay(waiterId: string): Observable<any> {
+    return this.http.get(`${this.url}/waiter/guestCountByDay/${waiterId}`);
+  }
+
+  getGuestDistribution(restaurantId: string): Observable<any> {
+    return this.http.get(`${this.url}/waiter/guestDistribution/${restaurantId}`);
+  }
+
+  getAverageReservationsByWeekday(restaurantId: string): Observable<any> {
+    return this.http.get(`${this.url}/waiter/averageReservationsByWeekday/${restaurantId}`);
+  }
 }

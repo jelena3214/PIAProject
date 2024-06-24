@@ -1,0 +1,38 @@
+<p>waiter-statistics works!</p>
+
+<main id="main">
+  <section id="about" class="about">
+    <div class="user-container">
+      <h2>Broj gostoju po danima</h2>
+      <canvas baseChart
+        [data]="barChartData"
+        [options]="barChartOptions"
+        [plugins]="barChartPlugins"
+        [legend]="barChartLegend"
+        [type]="'bar'">
+      </canvas>
+    </div>
+
+    <div class="user-container">
+      <h2>Rapodela gostiju po konobarima</h2>
+      <canvas baseChart
+        [data]="pieChartData"
+        [labels]="pieChartData.labels"
+        [type]="'pie'"
+        [options]="pieChartOptions"
+        [legend]="pieChartLegend"
+        [plugins]="pieChartPlugins"
+      ></canvas>
+    </div>
+    <div class="user-container">
+      <h2>Prosečan broj gostiju u poslednja 24 meseca u {{restaurant.Naziv}}</h2>
+      <canvas baseChart
+        [data]="histogramData"
+        [options]="histogramOptions"
+        [plugins]="histogramPlugins"
+        [legend]="histogramLegend"
+        [type]="'bar'">
+      </canvas>
+    </div>
+  </section>
+</main>

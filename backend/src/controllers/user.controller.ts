@@ -77,6 +77,17 @@ export class UserController{
         })
     }
 
+    getUserById = (req: express.Request, res: express.Response)=>{
+        const id = req.body.id;
+        UserM.findById(id).then(
+            (user)=>{
+                res.json(user)
+        }).catch((err)=>{
+            console.log(err);
+            res.json(null);
+        })
+    }
+
     checkIfUserWithEmailExists = (req: express.Request, res: express.Response)=>{
         const email = req.params.email;
 

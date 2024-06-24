@@ -71,4 +71,11 @@ export class UserService {
 
     return this.http.post<User>(`${this.url}/user/getUserByUsername`, data);
   }
+
+  getUserById(id:string){
+    const data = {
+      id: id
+    }
+    return this.http.post<User>(`${this.url}/user/getUserById`, data);
+  }
 }

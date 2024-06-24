@@ -28,4 +28,16 @@ waiterRouter.route('/orders/confirmOrReject').post(
     (req, res)=>new WaiterController().confirmOrRejectOrder(req, res)
 )
 
+waiterRouter.route('/guestCountByDay/:waiterId').get(
+    (req, res)=>new WaiterController().getGuestCountByDay(req, res)
+)
+
+waiterRouter.route('/guestDistribution/:restaurantId').get(
+    (req, res)=>new WaiterController().getGuestDistributionAmongWaiters(req, res)
+)
+
+waiterRouter.route('/averageReservationsByWeekday/:restaurantId').get(
+    (req, res)=>new WaiterController().getAverageReservationsByWeekday(req, res)
+)
+
 export default waiterRouter;

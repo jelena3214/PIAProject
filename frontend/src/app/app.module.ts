@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { ReactiveFormsModule } from '@angular/forms';
+import { NgChartsModule } from 'ng2-charts';
+
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -29,6 +31,7 @@ import { GuestReservationComponent } from './guest-reservation/guest-reservation
 import { WaiterStartComponent } from './waiter-start/waiter-start.component';
 import { WaiterReservationsComponent } from './waiter-reservations/waiter-reservations.component';
 import { WaiterDeliveryComponent } from './waiter-delivery/waiter-delivery.component';
+import { WaiterStatisticsComponent } from './waiter-statistics/waiter-statistics.component';
 
 @NgModule({
   declarations: [
@@ -59,6 +62,7 @@ import { WaiterDeliveryComponent } from './waiter-delivery/waiter-delivery.compo
   ],
   imports: [
     BrowserModule,
+    NgChartsModule,
     AppRoutingModule,
     FormsModule,
     HttpClientModule,

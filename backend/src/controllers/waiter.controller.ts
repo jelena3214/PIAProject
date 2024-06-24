@@ -190,6 +190,78 @@ export class WaiterController{
             res.status(500).json({ message: 'Error updating order', error });
         }
     };
+
+    getGuestCountByDay = async (req: express.Request, res: express.Response) => {
+        const waiterId = req.params.waiterId;
+        try {
+            const data = await ReservationM.aggregate([
+                { $match: { konobar: waiterId } },
+                { 
+                    $group: { 
+                        _id: { $dayOfWeek: { $toDate: "$datumVreme" } }, 
+                        count: { $sum: "$brojOsoba" } 
+                    } 
+                },
+                { $sort: { "_id": 1 } }
+            ]);
+
+            // Korekcija dana u nedelji (0 za nedelju, 1 za ponedeljak, itd.)
+            const formattedData = data.map(item => ({
+                dayOfWeek: item._id - 1, // MongoDB $dayOfWeek vraća 1 za nedelju, mi želimo 0
+                count: item.count
+            }));
+
+            res.json(formattedData);
+        } catch (error) {
+            res.json(null);
+        }
+    };
+      
+    getGuestDistributionAmongWaiters = async (req: express.Request, res: express.Response) => {
+        const restaurantId = req.params.restaurantId;
+        try {
+            const data = await ReservationM.aggregate([
+            { $match: { restoranId: restaurantId } },
+            { $group: { _id: "$konobar", count: { $sum: "$brojOsoba" } } },
+            ]);
+            res.json(data);
+        } catch (error) {
+            res.json(null);
+        }
+    };
+      
+    getAverageReservationsByWeekday = async (req: express.Request, res: express.Response) => {
+        const restaurantId = req.params.restaurantId;
+        try {
+            const data = await ReservationM.aggregate([
+                {
+                    $match: {
+                        restoranId: restaurantId,
+                        datumVreme: { $gte: new Date(new Date().setFullYear(new Date().getFullYear() - 2)) }
+                    }
+                },
+                {
+                    $group: {
+                        _id: { $dayOfWeek: "$datumVreme" },
+                        totalReservations: { $sum: 1 }
+                    }
+                },
+                {
+                    $group: {
+                        _id: "$_id",
+                        avgReservations: { $avg: "$totalReservations" }
+                    }
+                },
+                {
+                    $sort: { "_id": 1 }
+                }
+            ]);
+            res.json(data);
+        } catch (error) {
+            console.error('Error fetching data:', error);
+            res.status(500).json({ error: 'Error fetching data' });
+        }
+    };
       
 
 }
