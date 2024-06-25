@@ -7,7 +7,7 @@ export class ReservationController{
         const twentyFourHoursAgo = new Date();
         twentyFourHoursAgo.setDate(twentyFourHoursAgo.getDate() - 1);
     
-        ReservationM.countDocuments({ datumVreme: { $gte: twentyFourHoursAgo } })
+        ReservationM.countDocuments({ createdAt: { $gte: twentyFourHoursAgo } })
         .then(count => {
             res.json(count);
         })
@@ -21,7 +21,7 @@ export class ReservationController{
         const sevenDaysAgo = new Date();
         sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
     
-        ReservationM.countDocuments({ datumVreme: { $gte: sevenDaysAgo } })
+        ReservationM.countDocuments({ createdAt: { $gte: sevenDaysAgo } })
         .then(count => {
             res.json(count);
         })
@@ -35,7 +35,7 @@ export class ReservationController{
         const thirtyDaysAgo = new Date();
         thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
     
-        ReservationM.countDocuments({ datumVreme: { $gte: thirtyDaysAgo } })
+        ReservationM.countDocuments({ createdAt: { $gte: thirtyDaysAgo } })
         .then(count => {
             res.json(count);
         })
@@ -47,7 +47,7 @@ export class ReservationController{
 
     cancelReservation = async (req: express.Request, res: express.Response)=>{
         try {
-            const reservation = await ReservationM.findByIdAndUpdate(req.params.id, { uToku: false }, { new: true } );
+            const reservation = await ReservationM.findByIdAndUpdate(req.params.id, { uToku: false, konobar:"" }, { new: true } );
             if (!reservation) {
                 res.json(null);
                 return

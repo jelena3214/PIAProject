@@ -33,10 +33,10 @@ export class LoginComponent {
           }
         }else if(user.blokiran){
           this.message = "Vaš zahtev je odbijen!"
-        }else if(!user.aktivan){
-          this.message = "Vaš nalog je deaktiviran!"
         }else if(!user.prihvacen){
           this.message = "Još niste aktivan korisnik!"
+        }else if(!user.aktivan){
+          this.message = "Vaš nalog je deaktiviran!"
         }
       }
     )

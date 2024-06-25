@@ -159,6 +159,23 @@ export class MakeReservationComponent implements OnInit, AfterViewInit {
     if (this.reservationForm.valid) {
       const reservation = this.reservationForm.value;
       this.reservationDateTime = `${reservation.date}T${reservation.time}`
+      //provera radnog vremena
+      const date = new Date(this.reservationDateTime);
+      const dayOfWeek = date.getDay();
+      const dayOfWeekNumber = dayOfWeek === 0 ? 7 : dayOfWeek;
+
+      if (this.restaurant && !this.restaurant.RadniDani[dayOfWeekNumber].radan) {
+        this.message = 'Restoran ne radi tog dana.';
+        return
+      }
+      const workingHours = this.restaurant.RadniDani[dayOfWeekNumber];
+      const reservationTime = reservation.time;
+
+      if (!(reservationTime >= workingHours.od && reservationTime <= workingHours.do)) {
+        this.message = 'Restoran ne radi u tom periodu.';
+        return
+      }
+
       this.restaurantService.getReservationsForSpecificDateTime(this.restaurant._id, this.reservationDateTime).subscribe(
         (reservations)=>{
           this.reservations = reservations

@@ -54,10 +54,16 @@ export class GuestReservationComponent implements OnInit{
   }
 
   filterReservations() {
-    this.currentReservations = this.reservations.filter(reservation => reservation.uToku);
+    //potvrdjene rezervacije u buducnosti
+    this.currentReservations = this.reservations.filter(reservation =>
+      !reservation.uToku &&
+      reservation.konobar !== "" &&
+      new Date(reservation.datumVreme) > new Date()
+    );
     console.log(this.currentReservations)
 
-    this.pastReservations = this.reservations.filter(reservation => !reservation.uToku)
+    //sve rezervacije u proslosti i otkazane rezervacije
+    this.pastReservations = this.reservations.filter(reservation => new Date(reservation.datumVreme) < new Date() || !reservation.uToku)
       .sort((a, b) => new Date(b.datumVreme).getTime() - new Date(a.datumVreme).getTime());
   }
 
@@ -72,8 +78,6 @@ export class GuestReservationComponent implements OnInit{
   canCancelReservation(reservation: Reservation): boolean {
     const now = new Date();
     const reservationTime = new Date(reservation.datumVreme);
-    console.log(now)
-    console.log(reservationTime)
     const timeDifference = reservationTime.getTime() - now.getTime();
     return timeDifference >= 45 * 60 * 1000;
   }
@@ -82,8 +86,9 @@ export class GuestReservationComponent implements OnInit{
     this.restaurantService.cancelReservation(reservation._id).subscribe(
       (updatedReservation) => {
         console.log(updatedReservation)
-        reservation.uToku = updatedReservation.uToku;
+        reservation = updatedReservation
         this.filterReservations();
+        this.ngOnInit()
       },
       error => {
         console.error('Error cancelling reservation:', error);

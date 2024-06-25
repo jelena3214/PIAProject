@@ -1,8 +1,7 @@
 <!-- ======= Hero Section ======= -->
 <section id="hero" class="d-flex justify-content-center align-items-center">
   <div class="container position-relative">
-    <h1>Learning Today,<br>Leading Tomorrow</h1>
-    <h2>We are team of talented designers making websites with Bootstrap</h2>
+    <h1>Dobrodošli</h1>
   </div>
 </section><!-- End Hero -->
 
@@ -61,13 +60,13 @@
       </div>
       <div class="row" style="margin-top: 30px;">
         <div class="col-lg-4 ol-md-4 col-sm-12">
-          <button type="submit" class="btn get-started-btn" (click)="sort('naziv')">Sortiraj po nazivu</button>
+          <button type="submit" class="btn get-started-btn" (click)="sort('naziv')">Sortiraj po nazivu {{currentSortDirection['naziv']}}</button>
         </div>
         <div class="col-lg-4 ol-md-4 col-sm-12">
-          <button type="submit" class="btn get-started-btn" (click)="sort('adresa')">Sortiraj po adresi</button>
+          <button type="submit" class="btn get-started-btn" (click)="sort('adresa')">Sortiraj po adresi {{currentSortDirection['adresa']}}</button>
         </div>
         <div class="col-lg-4 col-md-4 col-sm-12">
-          <button type="submit" class="btn get-started-btn" (click)="sort('tip')">Sortiraj po tipu</button>
+          <button type="submit" class="btn get-started-btn" (click)="sort('tip')">Sortiraj po tipu {{currentSortDirection['tip']}}</button>
         </div>
       </div>
 

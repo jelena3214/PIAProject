@@ -82,7 +82,7 @@ export class GuestController{
     }
 
     getNumberOfGuests = (req: express.Request, res: express.Response)=>{
-        UserM.countDocuments({ tip: 'gost' })
+        UserM.countDocuments({ tip: 'gost', prihvacen:true })
             .then(numberOfGuests => {
                 res.json(numberOfGuests);
             })

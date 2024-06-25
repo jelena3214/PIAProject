@@ -102,9 +102,9 @@ export class StartingPageComponent {
   }
 
   currentSortDirection: { [key: string]: string } = {
-    'Naziv': 'asc',
-    'Adresa': 'asc',
-    'Tip': 'asc'
+    'naziv': 'asc',
+    'adresa': 'asc',
+    'tip': 'asc'
   };
 
   sort(key: string): void {

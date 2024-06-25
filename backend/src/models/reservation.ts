@@ -19,7 +19,8 @@ let reservationSchema = new Schema(
     produzetak:Boolean
   },
   {
-    versionKey:false
+    versionKey:false,
+    timestamps:true
   }
 );
 
