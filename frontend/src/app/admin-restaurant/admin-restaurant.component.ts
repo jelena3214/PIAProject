@@ -208,6 +208,10 @@ export class AdminRestaurantComponent implements OnInit, AfterViewInit {
 
   addedRestaurant:string = ""
 
+  removeIdField(shapes: any[]): any[] {
+    return shapes.map(({ _id, ...rest }) => rest);
+  }
+
   addRestaurant(){
     if(!this.validateAndClear())return;
 
@@ -240,8 +244,10 @@ export class AdminRestaurantComponent implements OnInit, AfterViewInit {
         "7": { od: "08:00", do: "22:00" }
       }
     }
+    // zbog nodejsa ne smemo slati prazan id
+    const shapesWithoutId = this.removeIdField(this.shapes);
 
-    this.restaurantService.addRestaurant(newRestaurant, this.shapes).subscribe(
+    this.restaurantService.addRestaurant(newRestaurant, shapesWithoutId).subscribe(
       (msg) => {
         if(msg.code == 0){
           this.message = "Uspešno dodat restoran!"

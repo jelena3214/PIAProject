@@ -74,6 +74,10 @@ export class WaiterReservationsComponent implements OnInit, AfterViewInit{
       .sort((a, b) => new Date(a.datumVreme).getTime() - new Date(b.datumVreme).getTime());
   }
 
+  isFutureReservation(reservationDate: string | Date): boolean {
+    return new Date(reservationDate) > new Date();
+  }
+
   confirmGuestAppearance(reservation: Reservation, status:string) {
     reservation.pojavioSe = status
     this.waiterService.updateReservation(reservation).subscribe(
@@ -109,6 +113,13 @@ export class WaiterReservationsComponent implements OnInit, AfterViewInit{
       new Date(r.datumVreme) < extendedEndTime && // provera da li pocinje pre isteka dodatnog sata
       new Date(r.datumVreme) >= reservationEndTime // provera da li pocinje posle trenutne rezervacije
     );
+  }
+
+  canAddOneHour(reservation:Reservation){
+    const now = new Date();
+    const reservationTime = new Date(reservation.datumVreme);
+    const threeHoursFromReservation = new Date(reservationTime.getTime() + 3 * 60 * 60 * 1000);
+    return reservation.pojavioSe == 'T' && reservationTime < now && now <= threeHoursFromReservation
   }
 
   addOneHour(reservation:Reservation){

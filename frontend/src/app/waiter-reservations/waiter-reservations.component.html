@@ -16,7 +16,7 @@
           <td>{{ reservation.brojOsoba}}</td>
           <td>{{ formatDateTime(reservation.datumVreme) }}</td>
           <td>
-            <button (click)="openReservationForm(reservation)" class="btn get-started-btn">Ažuriraj</button>
+            <button (click)="openReservationForm(reservation)"  *ngIf="isFutureReservation(reservation.datumVreme)" class="btn get-started-btn">Ažuriraj</button>
           </td>
         </tr>
       </tbody>
@@ -44,7 +44,7 @@
           <td>
             <button *ngIf="isConfirmationAvailable(reservation)" (click)="confirmGuestAppearance(reservation, 'T')" class="btn get-started-btn">Došao</button>
             <button *ngIf="isConfirmationAvailable(reservation)" (click)="confirmGuestAppearance(reservation, 'F')" class="btn get-started-btn">Nije došao</button>
-            <button *ngIf="reservation.pojavioSe == 'T'" (click)="addOneHour(reservation)" class="btn get-started-btn">Produži rezervaciju</button>
+            <button *ngIf="canAddOneHour(reservation)" (click)="addOneHour(reservation)" class="btn get-started-btn">Produži rezervaciju</button>
           </td>
         </tr>
       </tbody>
