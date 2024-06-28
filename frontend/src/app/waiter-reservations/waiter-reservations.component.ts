@@ -144,7 +144,10 @@ export class WaiterReservationsComponent implements OnInit, AfterViewInit{
 
   isConfirmationAvailable(reservation: Reservation): boolean {
     const reservationTime = new Date(reservation.datumVreme).getTime();
-    return new Date().getTime() - reservationTime <= 30 * 60 * 1000 && reservation.pojavioSe == "";
+    const currentTime = new Date().getTime();
+    // Provera da li je trenutno vreme unutar 30 minuta nakon vremena rezervacije
+    const isWithin30MinutesAfterReservation = currentTime >= reservationTime && currentTime <= reservationTime + 30 * 60 * 1000;
+    return isWithin30MinutesAfterReservation && reservation.pojavioSe === "";
   }
 
   // Jer ako je ovo Z ne prikazuje trenutnu vremensku zonu

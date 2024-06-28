@@ -228,7 +228,7 @@ export class RestaurantController{
             vremeDostave:req.body.vremeDostave,
             status:req.body.status,
             naruceno:req.body.naruceno,
-            datum:new Date(req.body.datumVreme),
+            datum:new Date(req.body.datum),
             iznos:req.body.iznos,
             datumDostave:null
         });

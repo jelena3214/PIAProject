@@ -35,6 +35,7 @@ export class MakeDeliveryRequestComponent implements OnInit{
   }
 
   addToCart(dish: Dish, quantity: number) {
+    this.message = ""
     const existingItem = this.cart.find(item => item.dish.naziv === dish.naziv);
     if (existingItem) {
       existingItem.quantity += quantity;

@@ -156,6 +156,7 @@ export class MakeReservationComponent implements OnInit, AfterViewInit {
   }
 
   showLayout(){
+    this.message = ""
     if (this.reservationForm.valid) {
       const reservation = this.reservationForm.value;
       this.reservationDateTime = `${reservation.date}T${reservation.time}`
