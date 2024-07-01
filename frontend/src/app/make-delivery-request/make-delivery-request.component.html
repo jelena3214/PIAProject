@@ -13,7 +13,7 @@
           <div>
             <label for="quantity">Količina:</label>
             <input #quantityInput type="number" min="1" value="1">
-            <button type="submit" class="btn get-started-btn" (click)="addToCart(dish, quantityInput.valueAsNumber)" style="margin-left: 0;margin-top: 10px;">Add to Cart</button>
+            <button type="submit" class="btn get-started-btn" (click)="addToCart(dish, quantityInput.valueAsNumber)" style="margin-left: 0;margin-top: 10px;">Dodaj u korpu</button>
           </div>
         </div>
       </div>
@@ -24,7 +24,7 @@
           <h4>{{ item.dish.naziv }}</h4>
           <p>Cena: {{ item.dish.cena | currency:'RSD':'symbol':'1.2-2' }}</p>
           <p>Količina: <input type="number" [(ngModel)]="item.quantity"></p>
-          <button type="submit" class="btn get-started-red-btn" (click)="removeFromCart(item.dish)" style="margin-top: 10px; margin-left: 0;">Remove from Cart</button>
+          <button type="submit" class="btn get-started-red-btn" (click)="removeFromCart(item.dish)" style="margin-top: 10px; margin-left: 0;">Izbaci iz korpe</button>
         </div>
         <button type="submit" class="btn get-started-btn" (click)="confirmOrder()" style="margin: 0;">Potvrdi</button>
         <div>
