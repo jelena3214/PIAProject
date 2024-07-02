@@ -27,14 +27,15 @@ import { waiterGuardGuard } from './waiter-guard.guard';
 import { WaiterReservationsComponent } from './waiter-reservations/waiter-reservations.component';
 import { WaiterDeliveryComponent } from './waiter-delivery/waiter-delivery.component';
 import { WaiterStatisticsComponent } from './waiter-statistics/waiter-statistics.component';
+import { notloggedinGuard } from './notloggedin.guard';
 
 const routes: Routes = [
-  {path:"", component:StartingPageComponent},
-  {path:"login", component:LoginComponent},
-  {path:"registerGuest", component:RegisterGuestComponent},
+  {path:"", component:StartingPageComponent, canActivate: [notloggedinGuard]},
+  {path:"login", component:LoginComponent, canActivate: [notloggedinGuard]},
+  {path:"registerGuest", component:RegisterGuestComponent, canActivate: [notloggedinGuard]},
   {path:"guestStart", component:GuestStartComponent, canActivate: [guestGuardGuard]},
   {path:"guestRestaurant", component:GuestRestaurantComponent, canActivate: [guestGuardGuard]},
-  {path:"forgotPassword", component:ForgotPasswordComponent},
+  {path:"forgotPassword", component:ForgotPasswordComponent, canActivate: [notloggedinGuard]},
   {path: 'forgotPassword/:username', component: ForgotPasswordSafeqaComponent, canActivate: [guestGuardGuard] },
   {path: 'forgotPasswordChange/:username', component: ForgotPasswordChangePassComponent, canActivate: [guestGuardGuard] },
   {path: 'restaurant/:id', component: RestaurantDetailComponent, canActivate: [guestGuardGuard] },

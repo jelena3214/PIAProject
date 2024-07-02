@@ -47,7 +47,7 @@ export class ReservationController{
 
     cancelReservation = async (req: express.Request, res: express.Response)=>{
         try {
-            const reservation = await ReservationM.findByIdAndUpdate(req.params.id, { uToku: false, konobar:"" }, { new: true } );
+            const reservation = await ReservationM.findByIdAndUpdate(req.params.id, { uToku: false, konobar:"", odbijanjeKom:"otkazana" }, { new: true } );
             if (!reservation) {
                 res.json(null);
                 return

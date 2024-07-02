@@ -54,10 +54,11 @@ export class GuestReservationComponent implements OnInit{
   }
 
   filterReservations() {
-    //potvrdjene rezervacije u buducnosti
+    //rezervacije u buducnosti, koje su potvrdjene ili nisu jos, ali nisu odbijene
     this.currentReservations = this.reservations.filter(reservation =>
-      !reservation.uToku &&
-      reservation.konobar !== "" &&
+      // !reservation.uToku &&
+      // reservation.konobar !== "" &&
+      reservation.odbijanjeKom == "" &&
       new Date(reservation.datumVreme) > new Date()
     );
     console.log(this.currentReservations)
@@ -75,11 +76,12 @@ export class GuestReservationComponent implements OnInit{
     return this.restaurantsMap[restoranId]?.adresa || 'Nepoznata';
   }
 
+  // samo ako je potvrdjena, ma konobara, nije odbijena i u buducnosti je 45 min pred pocetak
   canCancelReservation(reservation: Reservation): boolean {
     const now = new Date();
     const reservationTime = new Date(reservation.datumVreme);
     const timeDifference = reservationTime.getTime() - now.getTime();
-    return timeDifference >= 45 * 60 * 1000;
+    return timeDifference >= 45 * 60 * 1000 && reservation.konobar !== "" && !reservation.uToku && reservation.odbijanjeKom == "";
   }
 
   cancelReservation(reservation: Reservation) {

@@ -96,13 +96,23 @@ export class WaiterController{
         const waiterId = req.params.id;
 
         try {
-            const restoran = await RestaurantM.findOne({ Konobari: waiterId });
-            if (restoran) {
-                res.json(restoran);
+            const user = await UserM.findById(waiterId);
+
+            if (user) {
+                const username = user.korIme;
+
+                const restoran = await RestaurantM.findOne({ Konobari: username });
+
+                if (restoran) {
+                    res.json(restoran);
+                } else {
+                    res.json(null);
+                }
             } else {
                 res.json(null);
-            }
+            }   
         } catch (error) {
+            console.error('Error:', error);
             res.json(null);
         }
     }

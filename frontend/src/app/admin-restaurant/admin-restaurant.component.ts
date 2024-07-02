@@ -235,13 +235,13 @@ export class AdminRestaurantComponent implements OnInit, AfterViewInit {
       Konobari : [],
       Telefon : this.phone,
       RadniDani : {
-        "1": { od: "08:00", do: "22:00" },
-        "2": { od: "08:00", do: "22:00" },
-        "3": { od: "08:00", do: "22:00" },
-        "4": { od: "08:00", do: "22:00" },
-        "5": { od: "08:00", do: "22:00" },
-        "6": { od: "08:00", do: "22:00" },
-        "7": { od: "08:00", do: "22:00" }
+        "1": { od: "08:00", do: "22:00", radan:true  },
+        "2": { od: "08:00", do: "22:00", radan:true },
+        "3": { od: "08:00", do: "22:00", radan:true },
+        "4": { od: "08:00", do: "22:00", radan:true },
+        "5": { od: "08:00", do: "22:00", radan:true },
+        "6": { od: "08:00", do: "22:00", radan:true },
+        "7": { od: "08:00", do: "22:00", radan:true }
       }
     }
     // zbog nodejsa ne smemo slati prazan id
