@@ -30,6 +30,7 @@ export class WaiterReservationsComponent implements OnInit, AfterViewInit{
 
   selectedReservation:Reservation | null = null
   selectedTableId:string = ""
+  selectedTablePeopleCnt:number = 0
 
   action: string = 'confirm';
   comment: string = '';
@@ -173,6 +174,14 @@ export class WaiterReservationsComponent implements OnInit, AfterViewInit{
   confirmed:boolean = false
   denied:boolean = false
 
+  checkIfTableSizeIsEnough(stoId: string, numOfPeopleReserv: number): boolean {
+    const shape = this.restaurantLayout.find(shape => shape?._id === stoId);
+    if (!shape) {
+      return false; // Shape nije pronađen
+    }
+    return shape.brojLjudi >= numOfPeopleReserv;
+  }
+
   submitReservation() {
     if (this.action === 'reject' && !this.comment.trim()) {
       alert('Komentar je obavezan ako odbijate rezervaciju.');
@@ -181,10 +190,16 @@ export class WaiterReservationsComponent implements OnInit, AfterViewInit{
     if(this.selectedReservation){
       if (this.action === 'confirm') {
         //dodaje se konobarId, uToku false i stoId ako je preko forme
+        console.log(this.selectedTablePeopleCnt)
         this.selectedReservation.konobar = this.waiter._id
         this.selectedReservation.uToku = false
         if(this.selectedTableId != ""){ // preko forme rezervisano
           this.selectedReservation.stoId = this.selectedTableId
+        }
+        if(!this.checkIfTableSizeIsEnough(this.selectedReservation.stoId, this.selectedReservation.brojOsoba)){
+          alert('Sto nije dovoljan za traženi broj ljudi.');
+          this.selectedReservation.stoId = ""
+          return;
         }
         this.waiterService.updateReservation(this.selectedReservation).subscribe(
           (updatedReservation) => {
@@ -251,6 +266,7 @@ export class WaiterReservationsComponent implements OnInit, AfterViewInit{
           if (this.ctx.isPointInPath(mouseX, mouseY)) {
             if (!reserved) {
               this.selectedTableId = shape._id;
+              this.selectedTablePeopleCnt = shape.brojLjudi
               break;
             }
           }
