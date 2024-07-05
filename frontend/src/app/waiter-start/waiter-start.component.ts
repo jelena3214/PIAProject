@@ -86,27 +86,26 @@ export class WaiterStartComponent implements OnInit{
           if(response.exists){
             this.message = "Korisnik sa unetim email-om vec postoji!"
             return
+          }else if(this.user){
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(this.email)) {
+              this.message = "Mejl nije u dobrom formatu!"
+              return
+            }
+            this.user.mejl = this.email;
+            change = true
+            if(change){
+              this.userService.updateUser(this.user).subscribe((msg) => {
+                if(msg.code == 0){
+                  console.log("Azurirano!")
+                  localStorage.setItem("user", JSON.stringify(this.user))
+                }else{
+                  console.log("Greska pri azuriranju pdoataka korisnika!")
+                }
+              });
+            }
           }
         });
-
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(this.email)) {
-          this.message = "Mejl nije u dobrom formatu!"
-          return
-        }
-        this.user.mejl = this.email;
-        change = true
-      }
-
-      if(change){
-        this.userService.updateUser(this.user).subscribe((msg) => {
-          if(msg.code == 0){
-            console.log("Azurirano!")
-          }else{
-            console.log("Greska pri azuriranju pdoataka korisnika!")
-          }
-        });
-        localStorage.setItem("user", JSON.stringify(this.user))
       }
     }
   }
